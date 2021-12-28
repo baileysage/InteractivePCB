@@ -2,6 +2,8 @@
 
 var globalData = require("../global.js");
 var colorMap   = require("../colormap.js");
+
+
 function createLayerCheckboxChangeHandler(layer, isFront)
 {
     return function()
@@ -110,7 +112,6 @@ class Table_LayerEntry
         
         input.type = "checkbox";
         newlabel.classList.add("check_box_layer")
-
         if(isFront)
         {
             input.checked = this.visible_front;
