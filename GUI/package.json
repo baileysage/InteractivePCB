@@ -2,7 +2,7 @@
   "name": "bom",
   "version": "1.0.0",
   "description": "interactive bom for ECAD applications",
-  "main": "ibom.html",
+  "main": "ipcb.html",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
