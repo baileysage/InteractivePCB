@@ -1,7 +1,7 @@
 "use strict";
 
 var globalData = require("../global.js");
-
+var colorMap   = require("../colormap.js");
 function createLayerCheckboxChangeHandler(layer, isFront)
 {
     return function()
@@ -42,6 +42,7 @@ class Table_LayerEntry
 {
     constructor(layer)
     {
+        console.log(layer)
         this.visible_front = true;
         this.visible_back  = true;
 
@@ -71,10 +72,21 @@ class Table_LayerEntry
             this.visible_back = false;
         }
 
+        // Assumes that all layers are visible by default.
+        if (globalData.readStorage( "checkbox_layer_color_" + layer.name ) == null )
+        {
+            
+        }
+        else
+        {
+         
+        }
+
 
         let tr = document.createElement("TR");
         tr.appendChild(this.CreateCheckbox_Visible(layer, true));
         tr.appendChild(this.CreateCheckbox_Visible(layer, false));
+        tr.appendChild(this.CreateCheckbox_Color(layer));
 
         // Layer
         let td = document.createElement("TD");
@@ -97,7 +109,7 @@ class Table_LayerEntry
         let input    = document.createElement("input");
         
         input.type = "checkbox";
-        newlabel.classList.add("check_box_bom")
+        newlabel.classList.add("check_box_layer")
 
         if(isFront)
         {
@@ -113,6 +125,29 @@ class Table_LayerEntry
         var span = document.createElement("Span");
         span.classList.add("checkmark")
 
+        newlabel.appendChild(input);
+        newlabel.appendChild(span);
+        td.appendChild(newlabel);
+        return td;
+    }
+
+    CreateCheckbox_Color(layer)
+    {
+        let newlabel = document.createElement("Label");
+        let td       = document.createElement("TD");
+        let input    = document.createElement("input");
+        
+        input.type = "checkbox";
+        newlabel.classList.add("check_box_color")
+
+
+        input.onchange = function(){console.log("HELLO WORLD")}
+
+        var span = document.createElement("Span");
+        span.classList.add("checkmark_color")
+        span.style.backgroundColor = colorMap.GetTraceColor(layer.layerNumber);
+
+        console.log(colorMap.GetTraceColor(layer.layerNumber))
         newlabel.appendChild(input);
         newlabel.appendChild(span);
         td.appendChild(newlabel);

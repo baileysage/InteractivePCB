@@ -183,7 +183,7 @@ canvas:active {
 }
 
 .bom .visiableCol {
-  width: 100px;
+  width: 130px;
 }
 
 .bom .Description {
@@ -261,14 +261,6 @@ canvas:active {
 }
 
 /**** LAYER CHECK BOXES ****/
-.check_box_bom input {
-  position: absolute;
-  opacity: 0;
-  cursor: pointer;
-  height: 0;
-  width: 0;
-  display: inline-block;
-}
 
 /* Create a custom checkbox */
 .checkmark {
@@ -281,20 +273,62 @@ canvas:active {
   display: inline-block;
   text-align: center;
 }
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+  content: "";
+  display: inline-block;
+}
+
+.check_box_layer input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+  display: inline-block;
+}
 
 /* When the checkbox is checked, add a blue background */
-.check_box_bom input:checked ~ .checkmark {
+.check_box_layer input:checked ~ .checkmark {
   background:url('./images/layer_on.svg') no-repeat;
   text-align: center;
   background-size: 22px;
   display: inline-block;
 }
 
+
+
+.checkmark_color {
+  height: 22px;
+  width: 22px;
+  background-size: 22px;
+  display: inline-block;
+  text-align: center;
+}
 /* Create the checkmark/indicator (hidden when not checked) */
-.checkmark:after {
+.checkmark_color:after {
   content: "";
   display: inline-block;
 }
+
+
+.check_box_color input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+  display: inline-block;
+}
+
+/* When the checkbox is checked, add a blue background */
+.check_box_color input:checked ~ .checkmark_color {
+  text-align: center;
+  background-size: 22px;
+  display: inline-block;
+}
+
+
 
 
 /***************************/

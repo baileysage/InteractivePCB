@@ -58,16 +58,19 @@ function populateLayerHeader()
     th.classList.add("visiableCol");
 
     let tr2 = document.createElement("TR");
-    let thf = document.createElement("TH");
-    let thb = document.createElement("TH");
+    let thf = document.createElement("TH"); // front
+    let thb = document.createElement("TH"); // back
+    let thc = document.createElement("TH"); // color
 
     thf.innerHTML = "Front"
     thb.innerHTML = "Back"
+    thc.innerHTML = "Color"
     tr2.appendChild(thf)
     tr2.appendChild(thb)
+    tr2.appendChild(thc)
 
     th.innerHTML = "Visible";
-    th.colSpan = 2
+    th.colSpan = 3
     let span = document.createElement("SPAN");
     span.classList.add("none");
     th.appendChild(span);
