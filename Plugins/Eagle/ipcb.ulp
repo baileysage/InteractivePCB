@@ -658,6 +658,8 @@ void GenerateHeader( void )
         PrintKeyValue_KeyString("ecad", "EagleCAD");
         PrintKeyValue_KeyString("project_name", GetProjectName(B.name));
         PrintKeyValue_KeyString("date", t2string(time(), "Uyyyy-MM-dd hh:mm:ss"));
+        PrintKeyValue_KeyString("revision", revision);
+        PrintKeyValue_KeyString("company" , company);
         PrintTabs();
         printf("\"number_parts\": {\"top\" : %d, \"bottom\":%d},\n",partCountTop, partCountBottom );
         tabcount--;

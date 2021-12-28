@@ -905,23 +905,40 @@ function changeCanvasLayout(layout)
 function populateMetadata()
 {
     let metadata  = pcb.GetMetadata();
-
-    if(metadata.revision == "")
+    if(metadata.revision == undefined)
     {
-        document.getElementById("title").innerHTML    = "";
-        document.getElementById("revision").innerHTML = metadata.title;
+        document.getElementById("revision").innerHTML = "";
     }
     else
     {
-        document.getElementById("title").innerHTML    = metadata.title;
-        document.getElementById("revision").innerHTML = "Revision: " + metadata.revision;
+        document.getElementById("revision").innerHTML = "Revision: " + metadata.revision.toString();;
     }
 
-    document.getElementById("company").innerHTML  = metadata.company;
-    document.getElementById("filedate").innerHTML = metadata.date;
-    if (metadata.title != "")
+    if(metadata.company == undefined)
     {
-        document.title = metadata.title + " BOM";
+        document.getElementById("company").innerHTML = "";
+    }
+    else
+    {
+        document.getElementById("company").innerHTML  = metadata.company;
+    }
+
+    if(metadata.title == undefined)
+    {
+         document.getElementById("title").innerHTML = "";
+    }
+    else
+    {
+         document.getElementById("title").innerHTML = metadata.title;
+    }
+
+    if(metadata.date == undefined)
+    {
+         document.getElementById("filedate").innerHTML = "";
+    }
+    else
+    {
+         document.getElementById("filedate").innerHTML = metadata.date;
     }
 }
 
@@ -1263,7 +1280,6 @@ window.onload = function(e)
 
     let versionNumberHTML = document.getElementById("softwareVersion");
     versionNumberHTML.innerHTML = version.GetVersionString();
-    console.log(version.GetVersionString())
     // Create canvas layers. One canvas per pcb layer
 
     globalData.initStorage();
