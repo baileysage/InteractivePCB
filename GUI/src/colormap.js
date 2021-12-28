@@ -18,7 +18,7 @@ var traceColorMap =
     ["#336666C8" , "#336666C8"],
     ["#009966C8" , "#009966C8"],
     ["#006699C8" , "#006699C8"],
-    ["#3232C8B4" , "#3232C8B4"],
+    ["#3232C8B4" , "#traceLayerB4"],
 ];
 //                         Light Mode, Dark Mode
 var padColor_Default     = ["#878787", "#878787"]   ;
@@ -53,7 +53,16 @@ function GetColorPalette()
 
 function GetTraceColor(traceLayer)
 {
-    return traceColorMap[traceLayer][GetColorPalette()];
+    if(traceLayer > 15)
+    {
+        console.log("ERROR: Trace layer out of range. Using default color.")
+        return "#000000";
+    }
+    else
+    {
+        return traceColorMap[traceLayer][GetColorPalette()];
+    }
+    
 }
 
 
