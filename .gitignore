@@ -1,4 +1,5 @@
-# Specify filepatterns you want git to ignore.
+# Specify file patterns you want git to ignore.
 GUI/pcbdata.json
 GUI/index.js
 GUI/node_modules
+*.b#*
