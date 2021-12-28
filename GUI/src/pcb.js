@@ -181,8 +181,8 @@ function Metadata(title, revision, company, date)
 function CreateMetadata(pcbdataStructure)
 {
     metadata = new Metadata( 
-        pcbdataStructure.metadata.title, pcbdataStructure.metadata.revision,
-        pcbdataStructure.metadata.company, pcbdataStructure.metadata.date
+        pcbdataStructure.metadata.project_name, pcbdataStructure.metadata.revision,
+        pcbdataStructure.metadata.company     , pcbdataStructure.metadata.date
     );
 }
 
