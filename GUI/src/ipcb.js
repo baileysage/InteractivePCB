@@ -13,7 +13,6 @@ var handlers_mouse    = require("./handlers_mouse.js");
 let layerBody = undefined;
 let layerHead = undefined;
 let bomhead   = undefined;
-let topmostdiv = undefined;
 let bom = undefined;
 let bomtable = undefined;
 
@@ -47,10 +46,12 @@ function setDarkMode(value)
 {
     if (value)
     {
+        let topmostdiv = document.getElementById("topmostdiv");
         topmostdiv.classList.add("dark");
     }
     else
     {
+        let topmostdiv = document.getElementById("topmostdiv");
         topmostdiv.classList.remove("dark");
     }
     globalData.writeStorage("darkmode", value);
