@@ -15,6 +15,8 @@ var PCB_Layer = require("./PCB/PCB_Layer.js").PCB_Layer;
 
 var Render_Layer = require("./render/Render_Layer.js").Render_Layer;
 
+var version           = require("./version.js");
+
 //TODO: GLOBAL VARIABLES
 let layerBody  = undefined;
 let layerHead  = undefined;
@@ -569,6 +571,10 @@ window.onload = function(e)
     console.time("on load");
     // This function makes so that the user data for the pcb is converted to our internal structure
     pcb.OpenPcbData(pcbdata)
+
+    let versionNumberHTML = document.getElementById("softwareVersion");
+    versionNumberHTML.innerHTML = version.GetVersionString();
+    console.log(version.GetVersionString())
 
     for(let trace of pcbdata.board.traces)
     {
