@@ -6,7 +6,7 @@ var globalData = require("./global.js");
 var render     = require("./render.js");
 var pcb        = require("./pcb.js");
 var handlers_mouse    = require("./handlers_mouse.js");
-
+var version           = require("./version.js");
 
 
 //TODO: GLOBAL VARIABLES
@@ -1261,7 +1261,9 @@ window.onload = function(e)
     // This function makes so that the user data for the pcb is converted to our internal structure
     pcb.OpenPcbData(pcbdata)
 
-
+    let versionNumberHTML = document.getElementById("softwareVersion");
+    versionNumberHTML.innerHTML = version.GetVersionString();
+    console.log(version.GetVersionString())
     // Create canvas layers. One canvas per pcb layer
 
     globalData.initStorage();
