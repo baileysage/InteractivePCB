@@ -1,12 +1,13 @@
 # File Specification
 
 File specification is provided in eBPF form and validated using [BNF Playground](https://bnfplayground.pauliankline.com/).
+
 Generated JSON is validated using [JSON Formatter & Validator](https://jsonformatter.curiousconcept.com/#)
 ```
     /*************** TOP LEVEL ***************/
     <FILE>             ::= "{" <PCB_DATA> "}"
 
-    <PCB_DATA>         ::= <METADATA> "," <BOARD> "," <PARTS>
+    <PCB_DATA>         ::= <METADATA> "," <BOARD> "," <PARTS> ("," <PCB_TEST_POINTS>)? ("," <CONFIGURATION>)? 
 
     /*************** METADATA SECTION ***************/
     <METADATA>         ::= "\"metadata\":" "{" <PROTOCOL_VERSION> "," <ECAD> "," <COMPANY_NAME> "," <PROJECT_NAME> "," <PROJECT_REVISION> "," <DATE> "," <NUMBER_PARTS> "}"
@@ -71,6 +72,19 @@ Generated JSON is validated using [JSON Formatter & Validator](https://jsonforma
     <PAD_PIN_ONE> ::= "\"yes\""  | "\"no\""
     <PAD_SHAPE>   ::= "\"rect\"" | "\"octagon\"" | "\"oblong\"" | "\"circle\""
 
+    /*************** CONFIG SECTION ***************/
+
+    <CONFIGURATION> ::= "\"configuration\":" "[" <PARAMETERS> "]"
+    <PARAMETERS>      ::= <PARAMETER> | <PARAMETER> "," <PARAMETERS>
+    <PARAMETER>       ::= "{" "\"name\":" "\"" <STRING> "\"" "," "\"value\":" "\"" <STRING> "\"" "}"
+
+    /*************** TEST POINT SECTION ***************/
+    <PCB_TEST_POINTS> ::= "\"configuration\":" "[" <TEST_POINTS> "]"
+
+    <TEST_POINTS>     ::= <TEST_POINT> | <TEST_POINT> "," <TEST_POINTS>
+    <TEST_POINT>      ::= "{" "\"name\":" "\"" <STRING> "\"" "," "\"description\":" "\"" <STRING> "\"" "," "\"expected\":" "\"" <STRING> "\"" "}"
+
+
     /*************** COMMON RULES ***************/
 
     <SEGMENT>          ::= <PATHS> | <POLYGONS> | <VIAS>
@@ -89,10 +103,9 @@ Generated JSON is validated using [JSON Formatter & Validator](https://jsonforma
     <ARC_DIRECTION>     ::= "\"clockwise\"" | "\"counterclockwise\""
     <POLYGON_DIRECTION> ::= "1" | "0"
 
-    <VIA_ROUND>    ::= "{" "\"type\"" ":" "\"via_round\""   "," \"layer\":" <UNSIGNED_INTEGER> "," "\"x\"" ":" <REAL_NUMBER> "," "\"y\"" ":" <REAL_NUMBER> "," "\"diameter\"" ":" <REAL_NUMBER> "," "\"drill\"" ":" <REAL_NUMBER> "}"
-    <VIA_SQUARE>   ::= "{" "\"type\"" ":" "\"via_square\""  "," \"layer\":" <UNSIGNED_INTEGER> "," "\"x\"" ":" <REAL_NUMBER> "," "\"y\"" ":" <REAL_NUMBER> "," "\"diameter\"" ":" <REAL_NUMBER> "," "\"drill\"" ":" <REAL_NUMBER> "}"
-    <VIA_OCTAGON>  ::= "{" "\"type\"" ":" "\"via_octagon\"" "," \"layer\":" <UNSIGNED_INTEGER> "," "\"x\"" ":" <REAL_NUMBER> "," "\"y\"" ":" <REAL_NUMBER> "," "\"diameter\"" ":" <REAL_NUMBER> "," "\"drill\"" ":" <REAL_NUMBER> "}"
-
+    <VIA_ROUND>    ::= "{" "\"type\"" ":" "\"via_round\""   "," "\"layer\":" <UNSIGNED_INTEGER> "," "\"x\"" ":" <REAL_NUMBER> "," "\"y\"" ":" <REAL_NUMBER> "," "\"diameter\"" ":" <REAL_NUMBER> "," "\"drill\"" ":" <REAL_NUMBER> "}"
+    <VIA_SQUARE>   ::= "{" "\"type\"" ":" "\"via_square\""  "," "\"layer\":" <UNSIGNED_INTEGER> "," "\"x\"" ":" <REAL_NUMBER> "," "\"y\"" ":" <REAL_NUMBER> "," "\"diameter\"" ":" <REAL_NUMBER> "," "\"drill\"" ":" <REAL_NUMBER> "}"
+    <VIA_OCTAGON>  ::= "{" "\"type\"" ":" "\"via_octagon\"" "," "\"layer\":" <UNSIGNED_INTEGER> "," "\"x\"" ":" <REAL_NUMBER> "," "\"y\"" ":" <REAL_NUMBER> "," "\"diameter\"" ":" <REAL_NUMBER> "," "\"drill\"" ":" <REAL_NUMBER> "}"
 
 
     <BOUNDING_BOX> ::= "\"bounding_box\":" "{" <X0> "," <Y0> "," <X1> "," <Y1> "}"
