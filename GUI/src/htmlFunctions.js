@@ -158,9 +158,11 @@ pcb_btn.onclick=function()
     ipcb.changeBomLayout("PCB");
 };
 
-
-
-
+const lay_btn = document.getElementById("lay-btn");
+lay_btn.onclick=function()
+{
+    ipcb.toggleLayers();
+};
 
 const load_pcb = document.getElementById("pcbFileInput");
 load_pcb.onchange=function()

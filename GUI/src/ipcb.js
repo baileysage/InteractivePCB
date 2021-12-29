@@ -385,6 +385,33 @@ document.onkeydown = function(e)
     }
 };
 
+
+let layerVisable = true;
+document.getElementById("lay-btn").classList.add("depressed");
+function toggleLayers()
+{
+    if (layerVisable)
+    {
+        layerVisable = false;
+        document.getElementById("lay-btn").classList.remove("depressed");
+        document.getElementById("layerdiv").style.display = "none";
+        globalData.destroyLayerSplit();
+        globalData.setLayerSplit(null);
+    }
+    else
+    {
+        layerVisable = true;
+        document.getElementById("lay-btn").classList.add("depressed");
+        document.getElementById("layerdiv").style.display = "";
+        globalData.setLayerSplit(Split(["#datadiv", "#layerdiv"], {
+            sizes: [80, 20],
+            onDragEnd: render.resizeAll,
+            gutterSize: 5,
+            cursor: "col-resize"
+        }));
+    }
+}
+
 function changeBomLayout(layout)
 {
     document.getElementById("bom-btn").classList.remove("depressed");
@@ -699,5 +726,5 @@ window.matchMedia("print").addListener(render.resizeAll);
 
 module.exports = {
     changeBomLayout, setDarkMode        , silkscreenVisible , changeCanvasLayout,
-    setAdditionalAttributes
+    setAdditionalAttributes, toggleLayers
 };

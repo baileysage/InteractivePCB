@@ -89,6 +89,14 @@ button#pcb-btn {
   font-size: 0;
 }
 
+.solo-most-button {
+  border-top-left-radius: 6px;
+  border-bottom-left-radius: 6px;
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
+}
+
+
 .dark .button-container {
   
   : invert(1);
