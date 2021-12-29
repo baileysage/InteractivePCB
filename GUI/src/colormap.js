@@ -56,7 +56,7 @@ function GetTraceColor(traceLayer)
 {
     if (isNaN(traceLayer) || (typeof traceLayer !== 'number') || (traceLayer >= traceColorMap.length))
     {
-        console.log("WARNING: Invalid trace layer number, using default.");
+        //console.log("WARNING: Invalid trace layer number, using default.");
         return traceColor_Default;
     }
     else

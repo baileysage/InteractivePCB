@@ -44,7 +44,6 @@ class Table_LayerEntry
 {
     constructor(layer)
     {
-        console.log(layer)
         this.visible_front = true;
         this.visible_back  = true;
 
@@ -148,7 +147,6 @@ class Table_LayerEntry
         span.classList.add("checkmark_color")
         span.style.backgroundColor = colorMap.GetTraceColor(layer.layerNumber);
 
-        console.log(colorMap.GetTraceColor(layer.layerNumber))
         newlabel.appendChild(input);
         newlabel.appendChild(span);
         td.appendChild(newlabel);

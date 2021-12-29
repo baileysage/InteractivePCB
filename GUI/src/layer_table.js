@@ -138,7 +138,28 @@ function clearLayerTable()
     }
 }
 
+function Filter(s)
+{
+    s = s.toLowerCase();
+    let layerBody = document.getElementById("layerbody");
+    
+    for (let layer of layerBody.rows)
+    {
+
+        if(layer.innerText.trim().toLowerCase().includes(s))
+        {
+            //console.log(layer.innerText.trim())
+            layer.style.display = "";
+        }
+        else
+        {
+            layer.style.display = "none";
+        }
+    }
+   
+}
+
 module.exports = {
     setFilterLayer , getFilterLayer, populateLayerTable, populateLayerHeader, populateLayerBody,
-    clearLayerTable
+    clearLayerTable, Filter
 };

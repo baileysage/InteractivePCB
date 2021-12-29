@@ -88,14 +88,16 @@ clearFilterBOM.onclick=function()
 const filterLayer = document.getElementById("layer-filter");
 filterLayer.oninput=function()
 {
-    ipcb.setFilterLayer(filterLayer.value);
+    layerTable.setFilterLayer(filterLayer.value);
+    layerTable.Filter(filterLayer.value);
 };
 
 const clearFilterLayer = document.getElementById("clearLayerSearch");
 clearFilterLayer.onclick=function()
 {
     filterLayer.value="";
-    ipcb.setFilterLayer(filterLayer.value);
+    layerTable.setFilterLayer(filterLayer.value);
+    layerTable.Filter(filterLayer.value);
 };
 
 const bomCheckboxes = document.getElementById("bomCheckboxes");
@@ -179,7 +181,7 @@ load_pcb.onchange=function()
     // Handle errors load
     reader.onload = function loadHandler(event) {
                         pcbdata = JSON.parse(event.target.result);
-                        //console.log(pcbdata);
+                        pcbdata = JSON.parse(event.target.result);
                         layerTable.clearLayerTable();
                         bomTable.clearBOMTable();
 
