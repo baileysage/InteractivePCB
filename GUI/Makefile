@@ -21,7 +21,7 @@ clean:
 	    Release
 
 index.js: $(JS_DEPS)/.stamp $(JS_SRCS) pcbdata.json index.css
-	$(BROWSERIFY) ./src/ipcb.js --debug --outfile $@ 
+	$(BROWSERIFY) ./src/ipcb.js ./src/render.js ./src/htmlFunctions.js ./src/pcb.js ./src/colormap.js --debug --outfile $@ 
 
 pcbdata.json: ../Examples/Eagle/Simple_BRD/pcbdata.json
 	cp $< $@
