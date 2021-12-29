@@ -79,19 +79,6 @@ function entryMatches(part)
     return false;
 }
 
-function entryMatchesLayer(layer) 
-{
-    // check refs
-    if (layer.name.toLowerCase().indexOf(getFilterLayer()) >= 0) 
-    {
-        return true;
-    }
-    return false;
-}
-
-
-
-
 ////////////////////////////////////////////////////////////////////////////////
 function highlightPreviousRow()
 {

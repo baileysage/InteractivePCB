@@ -26,15 +26,15 @@ var Table_LayerEntry = require("./render/Table_LayerEntry.js").Table_LayerEntry
 
 function populateLayerTable()
 {
+    /* Populate header and BOM body. Place into DOM */
     populateLayerHeader();
     populateLayerBody();
+
+    /* Read filter string. Hide BOM elements that dont cintain string entry */
+    let filterLayer = document.getElementById("layer-filter");
+    Filter(filterLayer.value)
 }
 
-function setFilterLayer(input) 
-{
-    filterLayer = input.toLowerCase();
-    populateLayerTable();
-}
 
 let filterLayer = "";
 function getFilterLayer() 
@@ -103,33 +103,6 @@ function populateLayerBody()
     }
 }
 
-function highlightFilterLayer(s) 
-{
-    if (!getFilterLayer()) 
-    {
-        return s;
-    }
-    let parts = s.toLowerCase().split(getFilterLayer());
-    if (parts.length == 1) 
-    {
-        return s;
-    }
-    let r = "";
-    let pos = 0;
-    for (let i in parts) 
-    {
-        if (i > 0) 
-        {
-            r += "<mark class=\"highlight\">" + s.substring(pos, pos + getFilterLayer().length) + "</mark>";
-            pos += getFilterLayer().length;
-        }
-        r += s.substring(pos, pos + parts[i].length);
-        pos += parts[i].length;
-    }
-    return r;
-}
-
-
 function clearLayerTable()
 {
     while (layerBody.firstChild) 
@@ -148,7 +121,6 @@ function Filter(s)
 
         if(layer.innerText.trim().toLowerCase().includes(s))
         {
-            //console.log(layer.innerText.trim())
             layer.style.display = "";
         }
         else
@@ -160,6 +132,5 @@ function Filter(s)
 }
 
 module.exports = {
-    setFilterLayer , getFilterLayer, populateLayerTable, populateLayerHeader, populateLayerBody,
-    clearLayerTable, Filter
+    populateLayerTable, clearLayerTable, Filter
 };

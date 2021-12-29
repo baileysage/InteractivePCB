@@ -88,7 +88,6 @@ clearFilterBOM.onclick=function()
 const filterLayer = document.getElementById("layer-filter");
 filterLayer.oninput=function()
 {
-    layerTable.setFilterLayer(filterLayer.value);
     layerTable.Filter(filterLayer.value);
 };
 
@@ -96,7 +95,6 @@ const clearFilterLayer = document.getElementById("clearLayerSearch");
 clearFilterLayer.onclick=function()
 {
     filterLayer.value="";
-    layerTable.setFilterLayer(filterLayer.value);
     layerTable.Filter(filterLayer.value);
 };
 
