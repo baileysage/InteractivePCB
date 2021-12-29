@@ -578,13 +578,16 @@ function filterBOM_ByAttribute(part)
         {
             // removing beginning and trailing whitespace
             i = i.trim()
-            if(part.attributes.has(i))
+            for (let value of part.attributes.values())
             {
                 // Id the value is an empty string then dont filter out the entry. 
                 // if the value is anything then filter out the bom entry
-                if(part.attributes.get(i) != "")
+                if(value != "")
                 {
-                    result = true;
+                    if(value == i)
+                    {
+                        result = true;
+                    }
                 }
             }
         }
