@@ -499,17 +499,6 @@ function populateBomHeader()
         }
     }));
 
-    tr.appendChild(createColumnHeader("Footprint", "Footprint", (partA, partB) => {
-        if (partA.package != partB.package)
-        {
-            return partA.package > partB.package ? 1 : -1;
-        }
-        else
-        {
-            return 0;
-        }
-    }));
-
     let additionalAttributes = globalData.getAdditionalAttributes().split(",");
     // Remove null, "", undefined, and 0 values
     additionalAttributes    =additionalAttributes.filter(function(e){return e});
@@ -718,10 +707,6 @@ function populateBomBody()
         // Value
         td = document.createElement("TD");
         td.innerHTML = highlightFilter(bomentry.value);
-        tr.appendChild(td);
-        // Footprint
-        td = document.createElement("TD");
-        td.innerHTML = highlightFilter(bomentry.package);
         tr.appendChild(td);
         
         // Attributes
