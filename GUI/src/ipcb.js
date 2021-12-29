@@ -122,11 +122,6 @@ function entryMatches(part)
     {
         return true;
     } 
-    // check footprint
-    if (part.package.toLowerCase().indexOf(getFilterBOM())>= 0)
-    {
-        return true;
-    }
 
     // Check the displayed attributes
     let additionalAttributes = globalData.getAdditionalAttributes().split(",");
