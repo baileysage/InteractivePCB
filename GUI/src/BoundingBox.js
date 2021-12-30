@@ -5,7 +5,7 @@ var Point          = require("./render/point.js").Point
 
 class BoundingBox
 {
-    constructor(Point a, Point b)
+    constructor(a, b)
     {
         this.pointA = a;
         this.pointB = b;

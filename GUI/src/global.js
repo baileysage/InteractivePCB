@@ -4,8 +4,10 @@
 
 let pcb_traces = [];
 let pcb_layers = 0;
+let pcb_parts = [];
 let render_layers = 1;
 let layer_list = new Map();
+
 
 /*************************************************
               Board Rotation                    
@@ -520,7 +522,7 @@ function GetBoardRotation()
 
 
 module.exports = {
-    pcb_traces, pcb_layers, render_layers, layer_list,
+    pcb_traces, pcb_layers, pcb_parts, render_layers, layer_list,
     initStorage                , readStorage                , writeStorage          ,
     setHighlightedRefs         , getHighlightedRefs         ,
     setRedrawOnDrag            , getRedrawOnDrag            ,

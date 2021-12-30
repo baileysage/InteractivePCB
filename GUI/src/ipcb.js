@@ -3,17 +3,18 @@
 "use strict";
 
 
-var Split      = require("split.js");
-var globalData = require("./global.js");
-var render     = require("./render.js");
-var pcb        = require("./pcb.js");
+var Split             = require("split.js");
+var globalData        = require("./global.js");
+var render            = require("./render.js");
+var pcb               = require("./pcb.js");
 var handlers_mouse    = require("./handlers_mouse.js");
 var layerTable        = require("./layer_table.js")
 var bomTable          = require("./bom_table.js")
-var Metadata = require("./Metadata.js").Metadata;
+var Metadata          = require("./Metadata.js").Metadata;
 
 var PCB_Trace = require("./PCB/PCB_Trace.js").PCB_Trace;
 var PCB_Layer = require("./PCB/PCB_Layer.js").PCB_Layer;
+var PCB_Part  = require("./PCB/PCB_Part.js").PCB_Part;
 
 var Render_Layer = require("./render/Render_Layer.js").Render_Layer;
 var Render_PCB   = require("./render/Render_PCB.js");
@@ -527,6 +528,13 @@ window.onload = function(e)
     {
         globalData.layer_list.set(layer.layerNumber, [new PCB_Layer(layer), new Render_Layer(layer)])
     }
+
+    /* Create layer objects from JSON file */
+    for(let part of pcbdata.parts)
+    {
+        globalData.pcb_parts.push(new PCB_Part(part))
+    }
+
 
     // Create canvas layers. One canvas per pcb layer
 
