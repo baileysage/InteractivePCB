@@ -60,20 +60,21 @@ debugModeBox.onchange=function()
 
 
 
-
+/* BOM Table FIlter */
 const filterBOM = document.getElementById("bom-filter");
 filterBOM.oninput=function()
 {
-    ipcb.setFilterBOM(filterBOM.value);
+    bomTable.Filter(filterBOM.value);
 };
 
 const clearFilterBOM = document.getElementById("clearBOMSearch");
 clearFilterBOM.onclick=function()
 {
     filterBOM.value="";
-    ipcb.setFilterBOM(filterBOM.value);
+    bomTable.Filter(filterBOM.value);
 };
 
+/* Layer Table FIlter */
 const filterLayer = document.getElementById("layer-filter");
 filterLayer.oninput=function()
 {
@@ -87,10 +88,14 @@ clearFilterLayer.onclick=function()
     layerTable.Filter(filterLayer.value);
 };
 
+
+
+
+
 const bomCheckboxes = document.getElementById("bomCheckboxes");
 bomCheckboxes.oninput=function()
 {
-    ipcb.setBomCheckboxes(bomCheckboxes.value);
+    bomTable.setBomCheckboxes(bomCheckboxes.value);
 };
 
 const removeBOMEntries = document.getElementById("removeBOMEntries");

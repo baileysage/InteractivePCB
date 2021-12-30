@@ -37,43 +37,6 @@ function setDarkMode(value)
     Render_PCB.Render_PCB();
 }
 
-function entryMatches(part)
-{
-    // check refs
-    if (part.reference.toLowerCase().indexOf(getFilterBOM()) >= 0)
-    {
-        return true;
-    }
-    // check value
-    if (part.value.toLowerCase().indexOf(getFilterBOM())>= 0)
-    {
-        return true;
-    } 
-    // check footprint
-    if (part.package.toLowerCase().indexOf(getFilterBOM())>= 0)
-    {
-        return true;
-    }
-
-    // Check the displayed attributes
-    let additionalAttributes = globalData.getAdditionalAttributes().split(",");
-    additionalAttributes     = additionalAttributes.filter(function(e){return e;});
-    for (let x of additionalAttributes)
-    {
-        // remove beginning and trailing whitespace
-        x = x.trim();
-        if (part.attributes.has(x))
-        {
-            if(part.attributes.get(x).indexOf(getFilterBOM()) >= 0)
-            {
-                return true;
-            }
-        }
-    }
-
-    return false;
-}
-
 ////////////////////////////////////////////////////////////////////////////////
 function highlightPreviousRow()
 {
@@ -253,7 +216,6 @@ function toggleBomCheckbox(bomrowid, checkboxnum)
     checkbox.onchange();
 }
 
-
 function removeGutterNode(node)
 {
     for (let i = 0; i < node.childNodes.length; i++)
@@ -273,8 +235,6 @@ function cleanGutters()
     removeGutterNode(document.getElementById("bot"));
     removeGutterNode(document.getElementById("canvasdiv"));
 }
-
-
 
 function setAdditionalAttributes(value)
 {
@@ -351,7 +311,7 @@ document.onkeydown = function(e)
     }
 };
 
-
+/* Layer table */
 let layerVisable = true;
 document.getElementById("lay-btn").classList.add("depressed");
 function toggleLayers()

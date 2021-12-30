@@ -3,18 +3,6 @@ var globalData = require("./global.js");
 var pcb        = require("./pcb.js");
 var render     = require("./render.js");
 
-//TODO:  GLOBAL VARIABLE REFACTOR
-let filterBOM = "";
-function getFilterBOM() 
-{
-    return filterBOM;
-}
-
-function setFilterBOM(input) 
-{
-    filterBOM = input.toLowerCase();
-    populateBomTable();
-}
 function createCheckboxChangeHandler(checkbox, bomentry)
 {
     return function() 
@@ -44,6 +32,7 @@ function createCheckboxChangeHandler(checkbox, bomentry)
         render.drawHighlights(IsCheckboxClicked(globalData.getCurrentHighlightedRowId(), "placed"));
     };
 }
+
 function IsCheckboxClicked(bomrowid, checkboxname) 
 {
     let checkboxnum = 0;
@@ -77,7 +66,7 @@ function GenerateBOMTable()
 
 function clearBOMTable()
 {
-    bom = document.getElementById("bombody");
+    let bom = document.getElementById("bombody");
 
     while (bom.firstChild)
     {
@@ -164,14 +153,10 @@ function populateBomBody()
 {
     let bom = document.getElementById("bombody");
 
-    while (bom.firstChild)
-    {
-        bom.removeChild(bom.firstChild);
-    }
+    clearBOMTable();
 
     globalData.setHighlightHandlers([]);
     globalData.setCurrentHighlightedRowId(null);
-    let first = true;
 
     let bomtable = GenerateBOMTable();
 
@@ -179,29 +164,11 @@ function populateBomBody()
     {
         bomtable = bomtable.slice().sort(globalData.getBomSortFunction());
     }
+
     for (let i in bomtable)
     {
         let bomentry = bomtable[i];
         let references = ConvertReferenceDesignatorsToRanges(bomentry.reference.split(',')).join(',');
-
-        // remove entries that do not match filter
-        if (getFilterBOM() != "")
-        {
-            if(!entryMatches(bomentry))
-            {
-                continue;
-            }
-        }
-
-        // Hide placed parts option is set
-        if(globalData.getHidePlacedParts())
-        {
-            // Remove entries that have been placed. Check the placed parameter
-            if(globalData.readStorage( "checkbox" + "_" + "placed" + "_" + bomentry.reference ) == "true")
-            {
-                continue;
-            }
-        }
 
         let tr = document.createElement("TR");
         let td = document.createElement("TD");
@@ -246,18 +213,16 @@ function populateBomBody()
             }
         }
 
-
-
-        //INFO: The lines below add the control the columns on the bom table
         // References
         td = document.createElement("TD");
-        td.innerHTML = highlightFilter(references);
+        td.innerHTML = references;
         tr.appendChild(td);
+
         // Value
         td = document.createElement("TD");
-        td.innerHTML = highlightFilter(bomentry.value);
+        td.innerHTML = bomentry.value;
         tr.appendChild(td);
-        
+
         // Attributes
         let additionalAttributes = globalData.getAdditionalAttributes().split(",");
         for (let x of additionalAttributes)
@@ -266,7 +231,7 @@ function populateBomBody()
             if (x)
             {
                 td = document.createElement("TD");
-                td.innerHTML = highlightFilter(pcb.getAttributeValue(bomentry, x.toLowerCase()));
+                td.innerHTML =pcb.getAttributeValue(bomentry, x.toLowerCase());
                 tr.appendChild(td);
             }
         }
@@ -289,12 +254,6 @@ function populateBomBody()
              handler: handler,
              refs: references
          });
-
-        if (getFilterBOM() && first)
-        {
-            handler();
-            first = false;
-        }
     }
 }
 
@@ -337,33 +296,6 @@ function populateBomTable()
 {
     populateBomHeader();
     populateBomBody();
-}
-
-function highlightFilter(s)
-{
-    if (!getFilterBOM()) 
-    {
-        return s;
-    }
-    let parts = s.toLowerCase().split(getFilterBOM());
-    if (parts.length == 1)
-    {
-        return s;
-    }
-
-    let r = "";
-    let pos = 0;
-    for (let i in parts)
-    {
-        if (i > 0)
-        {
-            r += "<mark class=\"highlight\">" + s.substring(pos, pos + getFilterBOM().length) + "</mark>";
-            pos += getFilterBOM().length;
-        }
-        r += s.substring(pos, pos + parts[i].length);
-        pos += parts[i].length;
-    }
-    return r;
 }
 
 function populateBomHeader() 
@@ -605,8 +537,27 @@ function filterBOM_ByAttribute(part)
     return result;
 }
 
+function Filter(s)
+{
+    s = s.toLowerCase();
+    let bomBody = document.getElementById("bombody");
+
+    for (let part of bomBody.rows)
+    {
+
+        if(part.innerText.trim().toLowerCase().includes(s))
+        {
+            part.style.display = "";
+        }
+        else
+        {
+            part.style.display = "none";
+        }
+    }
+   
+}
 
 module.exports = {
-    setBomCheckboxes, populateBomTable, setFilterBOM, getFilterBOM,
-    setRemoveBOMEntries, clearBOMTable
+    setBomCheckboxes, populateBomTable, 
+    setRemoveBOMEntries, clearBOMTable, Filter
 };
