@@ -64,7 +64,7 @@ function highlightPreviousRow()
             }
         }
     }
-    render.smoothScrollToRow(globalData.getCurrentHighlightedRowId());
+    handlers_mouse.smoothScrollToRow(globalData.getCurrentHighlightedRowId());
 }
 
 function highlightNextRow()
@@ -93,7 +93,7 @@ function highlightNextRow()
             }
         }
     }
-    smoothScrollToRow(globalData.getCurrentHighlightedRowId());
+    handlers_mouse.smoothScrollToRow(globalData.getCurrentHighlightedRowId());
 }
 
 function modulesClicked(references)
@@ -106,7 +106,7 @@ function modulesClicked(references)
         {
             globalData.setLastClickedRef(ref);
             handler.handler();
-            smoothScrollToRow(globalData.getCurrentHighlightedRowId());
+            handlers_mouse.smoothScrollToRow(globalData.getCurrentHighlightedRowId());
             break;
         }
     }

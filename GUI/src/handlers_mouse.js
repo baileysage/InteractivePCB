@@ -216,5 +216,5 @@ function addMouseHandlers(div, layerdict)
 }
 
 module.exports = {
-    addMouseHandlers
+    addMouseHandlers, smoothScrollToRow
 };
