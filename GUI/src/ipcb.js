@@ -149,22 +149,6 @@ function modulesClicked(references)
     }
 }
 
-function silkscreenVisible(visible)
-{
-    if (visible)
-    {
-        globalData.GetAllCanvas().front.silk.style.display = "";
-        globalData.GetAllCanvas().back.silk.style.display = "";
-        globalData.writeStorage("silkscreenVisible", true);
-    }
-    else
-    {
-        globalData.GetAllCanvas().front.silk.style.display = "none";
-        globalData.GetAllCanvas().back.silk.style.display = "none";
-        globalData.writeStorage("silkscreenVisible", false);
-    }
-}
-
 function changeCanvasLayout(layout) 
 {
     document.getElementById("fl-btn").classList.remove("depressed");
@@ -637,12 +621,6 @@ window.onload = function(e)
     {
         globalData.setAdditionalAttributes("");
     }
-    document.getElementById("bomCheckboxes").value = globalData.getBomCheckboxes();
-    if (globalData.readStorage("silkscreenVisible") === "false")
-    {
-        document.getElementById("silkscreenCheckbox").checked = false;
-        silkscreenVisible(false);
-    }
     if (globalData.readStorage("redrawOnDrag") === "false")
     {
         document.getElementById("dragCheckbox").checked = false;
@@ -704,6 +682,6 @@ window.onresize = render.resizeAll;
 window.matchMedia("print").addListener(render.resizeAll);
 
 module.exports = {
-    changeBomLayout, setDarkMode        , silkscreenVisible , changeCanvasLayout,
+    changeBomLayout, setDarkMode        , changeCanvasLayout,
     setAdditionalAttributes, toggleLayers
 };

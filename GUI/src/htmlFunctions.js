@@ -16,17 +16,6 @@ darkModeBox.onchange = function ()
     ipcb.setDarkMode(darkModeBox.checked);
 };
 
-const silkscreenCheckbox = document.getElementById("silkscreenCheckbox");
-silkscreenCheckbox.checked=function()
-{
-    ipcb.silkscreenVisible(silkscreenCheckbox.checked);
-};
-
-silkscreenCheckbox.onchange=function()
-{
-    ipcb.silkscreenVisible(silkscreenCheckbox.checked);
-};
-
 const highlightpin1Checkbox =document.getElementById("highlightpin1Checkbox");
 highlightpin1Checkbox.onchange=function()
 {
