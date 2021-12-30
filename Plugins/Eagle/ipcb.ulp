@@ -140,20 +140,13 @@ void PrintLayer(int layerNumber, string layerName)
 {
     board(B)
     {
-        tabcount++;
-        PrintTabs();
-        printf("{\n");
-
-        tabcount++;
-        PrintTabs();
-        printf("\"name\":\"%s\",\"layerNumber\":%d,\"paths\":[\n",layerName, layerNumber);
-        tabcount++;
+        printf("{");
+        printf("\"name\":\"%s\",\"layerNumber\":%d,\"paths\":[",layerName, layerNumber);
         int once = 0;
         B.texts(T)
         {
             if(T.layer == layerNumber)
             {
-
                 T.wires(W)
                 {
                     if(once == 1)
@@ -170,7 +163,6 @@ void PrintLayer(int layerNumber, string layerName)
                     }
                     once = 1;
                 }
-
             }
         }
 
@@ -194,11 +186,8 @@ void PrintLayer(int layerNumber, string layerName)
                 once = 1;
             }
         }
-
-        printf("],\n");
-
-        PrintTabs();
-        printf("},\n");
+        printf("]");
+        printf("}");
     }
 }
 
@@ -208,146 +197,131 @@ void PrintLayer(int layerNumber, string layerName)
 */
 void GenerateSilkscreen( void )
 {
-        tabcount++;
-
-        PrintTabs();
         printf("\"layers\": [\n");
 
         board(B)
         {
+            int firstLayer = 1;
             B.layers(L)
             {
                 if(L.used)
                 {
+                    if(!firstLayer)
+                    {
+                        printf(",");
+                    }
                     PrintLayer(L.number, L.name);
+                    firstLayer = 0;
                 }
             }
         }
 
-        //PrintLayer(LAYER_TPLACE, "tplace", "F");
-        //PrintLayer(LAYER_BPLACE, "bplace", "B");
-
-        //PrintLayer(LAYER_TNAMES, "tnames", "F");
-        //PrintLayer(LAYER_BNAMES, "bnames", "B");
-        
-        //PrintLayer(LAYER_TVALUES, "tvalues", "F");
-        //PrintLayer(LAYER_BVALUES, "bvalues", "B");
-
-        //PrintLayer(LAYER_TDOCU, "tdocu", "F");
-        //PrintLayer(LAYER_BDOCU, "bdocu", "B");
-
-        PrintTabs();
-        tabcount--;
-        printf("],\n");
-
+        printf("]");
 }
 
 void PrintPads(UL_ELEMENT E)
 {
-    PrintTabs();
-    printf("\"pads\": [\n");
-    tabcount++;
+    int first = 1;
+    printf("\"pads\": [");
 
     E.package.contacts(C)
     {
-        PrintTabs();
-        printf("{\n");
-        tabcount++;
+        if (!first)
+        {   
+            printf(",");
+        }
+
+        printf("{");
 
         // Surface mount or through hole
         if(C.smd)
         {
-            PrintKeyValue_KeyString("pad_type" , "smd");
+            printf("\"pad_type\":\"smd\",");
         }
         else
         {
-            PrintKeyValue_KeyString("pad_type" , "tht");
+            printf("\"pad_type\":\"tht\",");
         }
 
         // Pin 1
         if(C.name=="1")
         {
-            PrintKeyValue_KeyString("pin1","yes");
+           printf("\"pin1\":\"yes\",");
         }
         else
         {
-            PrintKeyValue_KeyString("pin1","no");
+            printf("\"pin1\":\"no\",");
         }
 
         /* Set shape */
         if(C.smd)
         {
-            PrintKeyValue_KeyString("shape","rect");
-            PrintKeyValue_KeyReal("angle", C.smd.angle);
-            PrintKeyValue_KeyReal("x" , u2mm(C.smd.x) );
-            PrintKeyValue_KeyReal("y" , u2mm(C.smd.y) );
-            PrintKeyValue_KeyReal("dx", u2mm(C.smd.dx));
-            PrintKeyValue_KeyReal("dy", u2mm(C.smd.dy));
+            printf("\"shape\":\"rect\",");
+            printf("\"angle\":%5.5f,",C.smd.angle);
+            printf("\"x\":%5.5f,"    , u2mm(C.smd.x) );
+            printf("\"y\":%5.5f,"    , u2mm(C.smd.y) );
+            printf("\"dx\":%5.5f,"   , u2mm(C.smd.dx));
+            printf("\"dy\":%5.5f"    , u2mm(C.smd.dy));
         }
         else
         {
             if(C.pad.shape[LAYER_TOP] == PAD_SHAPE_SQUARE)
             {
-                PrintKeyValue_KeyString("shape","rect");
-                PrintKeyValue_KeyReal("angle", C.pad.angle);
-                PrintKeyValue_KeyReal("x" , u2mm(C.pad.x) );
-                PrintKeyValue_KeyReal("y" , u2mm(C.pad.y) );
-                PrintKeyValue_KeyReal("dx", u2mm(C.pad.diameter[LAYER_TOP]));
-                PrintKeyValue_KeyReal("dy", u2mm(C.pad.diameter[LAYER_TOP]));
-                PrintKeyValue_KeyReal("drill" , u2mm(C.pad.drill) );
+                printf("\"shape\":\"rect\",");
+                printf("\"angle\":%5.5f," ,C.pad.angle);
+                printf("\"x\":%5.5f,"     , u2mm(C.pad.x) );
+                printf("\"y\":%5.5f,"     , u2mm(C.pad.y) );
+                printf("\"dx\":%5.5f,"    , u2mm(C.pad.diameter[LAYER_TOP]));
+                printf("\"dy\":%5.5f,"    , u2mm(C.pad.diameter[LAYER_TOP]));
+                printf("\"drill\":%5.5f"  , u2mm(C.pad.drill) );
             }
             else if(C.pad.shape[LAYER_TOP] == PAD_SHAPE_ROUND)
             {
-                PrintKeyValue_KeyString("shape","round");
-                PrintKeyValue_KeyReal("angle", C.pad.angle);
-                PrintKeyValue_KeyReal("x" , u2mm(C.pad.x) );
-                PrintKeyValue_KeyReal("y" , u2mm(C.pad.y) );
-                PrintKeyValue_KeyReal("diameter", u2mm(C.pad.diameter[LAYER_TOP]));
-                PrintKeyValue_KeyReal("drill" , u2mm(C.pad.drill) );
+                printf("\"shape\":\"round\",");
+                printf("\"angle\":%5.5f,"      ,C.pad.angle);
+                printf("\"x\":%5.5f,"          , u2mm(C.pad.x) );
+                printf("\"y\":%5.5f,"          , u2mm(C.pad.y) );
+                printf("\"elongation\":%d,"    , C.pad.elongation );
+                printf("\"drill\":%5.5f"       , u2mm(C.pad.drill) );
             }
             else if(C.pad.shape[LAYER_TOP] == PAD_SHAPE_OCTAGON)
             {
-                PrintKeyValue_KeyString("shape","octagon");
-                PrintKeyValue_KeyReal("angle", C.pad.angle);
-                PrintKeyValue_KeyReal("x" , u2mm(C.pad.x) );
-                PrintKeyValue_KeyReal("y" , u2mm(C.pad.y) );
-                PrintKeyValue_KeyReal("diameter", u2mm(C.pad.diameter[LAYER_TOP]));
-                PrintKeyValue_KeyReal("drill" , u2mm(C.pad.drill) );
+                printf("\"shape\":\"octagon\",");
+                printf("\"angle\":%5.5f,"      ,C.pad.angle);
+                printf("\"x\":%5.5f,"          , u2mm(C.pad.x) );
+                printf("\"y\":%5.5f,"          , u2mm(C.pad.y) );
+                printf("\"elongation\":%d,"    , C.pad.elongation );
+                printf("\"drill\":%5.5f"       ,u2mm(C.pad.drill) );
             }
             else if(C.pad.shape[LAYER_TOP] == PAD_SHAPE_LONG)
             {
-                PrintKeyValue_KeyString("shape","oblong");
-                PrintKeyValue_KeyReal("angle", C.pad.angle);
-                PrintKeyValue_KeyReal("x" , u2mm(C.pad.x) );
-                PrintKeyValue_KeyReal("y" , u2mm(C.pad.y) );
-                PrintKeyValue_KeyReal("diameter", u2mm(C.pad.diameter[LAYER_TOP]));
-                PrintKeyValue_KeyReal("elongation" , C.pad.elongation );
-                PrintKeyValue_KeyReal("drill" , u2mm(C.pad.drill) );
+                printf("\"shape\":\"offset\",");
+                printf("\"angle\":%5.5f,"     ,C.pad.angle);
+                printf("\"x\":%5.5f,"         , u2mm(C.pad.x));
+                printf("\"y\":%5.5f,"         , u2mm(C.pad.y));
+                printf("\"diameter\":%5.5f,"  , u2mm(C.pad.diameter[LAYER_TOP]) );
+                printf("\"elongation\":%d,"   , C.pad.elongation);
+                printf("\"drill\":%5.5f"      ,u2mm(C.pad.drill));
             }
             else if(C.pad.shape[LAYER_TOP] == PAD_SHAPE_OFFSET)
             {
-                PrintKeyValue_KeyString("shape","offset");
-                PrintKeyValue_KeyReal("angle", C.pad.angle);
-                PrintKeyValue_KeyReal("x" , u2mm(C.pad.x) );
-                PrintKeyValue_KeyReal("y" , u2mm(C.pad.y) );
-                PrintKeyValue_KeyReal("diameter", u2mm(C.pad.diameter[LAYER_TOP]));
-                PrintKeyValue_KeyReal("elongation" , C.pad.elongation );
-                PrintKeyValue_KeyReal("drill" , u2mm(C.pad.drill) );
+                printf("\"shape\":\"offset\",");
+                printf("\"angle\":%5.5f,"     , C.pad.angle);
+                printf("\"x\":%5.5f,"         , u2mm(C.pad.x) );
+                printf("\"y\":%5.5f,"         , u2mm(C.pad.y) );
+                printf("\"diameter\":%5.5f,"  , u2mm(C.pad.diameter[LAYER_TOP]) );
+                printf("\"elongation\":%d,"   , C.pad.elongation );
+                printf("\"drill\":%5.5f"      , u2mm(C.pad.drill) );
             }
             else
             {
 
             }
         }
-        
-        tabcount--;
-        PrintTabs();
-        printf("},\n");
+        printf("}");
+        first = 0;
     }
-    tabcount--;
-    PrintTabs();
-    printf("],\n");
-    
+    printf("]");
 }
 
 
@@ -420,14 +394,13 @@ void GeneratePCBBoundingBox( void )
 
 void PrintPackageBoundingBox(UL_ELEMENT E)
 {
-     PrintTabs();
     // Print the edge_box segment to the output file
     printf("\"bounding_box\":{");
     printf("\"x0\":%5.5f,", u2mm(E.package.area.x1));
     printf("\"y0\":%5.5f,", u2mm(E.package.area.y1));
     printf("\"x1\":%5.5f,", u2mm(E.package.area.x2));
     printf("\"y1\":%5.5f" , u2mm(E.package.area.y2));
-    printf("},");
+    printf("}");
 }
 
 void GeneratePCBEdges( void )
@@ -674,35 +647,27 @@ void GenerateBoard( void )
 
 void PrintPartData()
 {
-    board(B) {
-        B.elements(E){
-            PrintTabs();
-            printf("{\n");
-            tabcount++;
-            /**************************************************************************************/
-            // Part name
-            PrintKeyValue_KeyString("name" , removeDoubleQuote(E.name));
-            /**************************************************************************************/
-            // part value
-            PrintKeyValue_KeyString("value", removeDoubleQuote(E.value));
+    int firstPart = 1;
+    board(B) 
+    {
+        B.elements(E)
+        {
+            if(!firstPart)
+            {
+                printf(",");
+            }
+            printf("{");
+            printf("\"name\":\"%s\"," , removeDoubleQuote(E.name));
+            printf("\"value\":\"%s\",", removeDoubleQuote(E.value));
 
             /**************************************************************************************/
             // package
-            PrintTabs();
-            printf("\"package\":{\n");
-            tabcount++;
+            printf("\"package\":{");
             PrintPads(E);
+            printf(",");
             PrintPackageBoundingBox(E);
-            tabcount--;
-            PrintTabs();
-            printf("},\n");
+            printf("},");
             /**********************************************************************************/
-
-
-                
-
-            /**************************************************************************************/
-            // reference name
 
             /**************************************************************************************/
             // Attributes
@@ -714,6 +679,9 @@ void PrintPartData()
                 attributeValue += removeDoubleQuote(A.value) + ";";
             }
             
+            attributeName += "footprint" + ";";
+            attributeValue += E.footprint.name + ";";
+
             // This removes the trailing ;
             if(strlen(attributeName) > 0)
             {
@@ -735,23 +703,19 @@ void PrintPartData()
             }
 
 
-            PrintTabs();
             printf("\"attributes\":{\n");
-            tabcount++;
-            PrintKeyValue_KeyString("name" , attributeName);
-            PrintKeyValue_KeyString("value" , attributeValue);
-            tabcount--;
-            PrintTabs();
-            printf("},\n");
+            printf("\"name\":\"%s\","  , attributeName);
+            printf("\"value\":\"%s\"" , attributeValue);
+            printf("},");
             /**************************************************************************************/
             // Location
             if(!E.mirror)
             {
-                PrintKeyValue_KeyString("location" , "F");
+                printf("\"location\":\"F\"");
             }
             else
             {
-                PrintKeyValue_KeyString("location" , "B");
+                printf("\"location\":\"B\"");
             }
 
             /**************************************************************************************/
@@ -761,24 +725,17 @@ void PrintPartData()
 
 
             /**************************************************************************************/
-            tabcount--;
-            PrintTabs();
-            printf("},\n");
+            printf("}");
+            firstPart = 0;
         }
     }
 }
 
 void GenerateParts( void )
 {
-    tabcount++;
-    PrintTabs();
-    printf("\"parts\":[\n");
-    tabcount++;
-    //PrintPartData();
-    tabcount--;
-    PrintTabs();
-    tabcount--;
-    printf("],\n");
+    printf("\"parts\":[");
+    PrintPartData();
+    printf("]");
 }
 
 /**************************************************************************************************/

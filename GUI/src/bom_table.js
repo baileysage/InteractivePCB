@@ -256,10 +256,6 @@ function populateBomBody()
         td = document.createElement("TD");
         td.innerHTML = highlightFilter(bomentry.value);
         tr.appendChild(td);
-        // Footprint
-        td = document.createElement("TD");
-        td.innerHTML = highlightFilter(bomentry.package);
-        tr.appendChild(td);
         
         // Attributes
         let additionalAttributes = globalData.getAdditionalAttributes().split(",");
