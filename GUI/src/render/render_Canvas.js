@@ -37,7 +37,7 @@ function recalcLayerScale(canvasdict, canvas)
 
     if (scalefactor < 0.1)
     {
-        //scalefactor = 1;
+        scalefactor = 1;
     }
 
     canvasdict.transform.s = scalefactor;

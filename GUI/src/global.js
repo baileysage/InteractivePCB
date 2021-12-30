@@ -163,7 +163,10 @@ function getLayerSplit()
 
 function destroyLayerSplit()
 {
-    layersplit.destroy();
+    if(layersplit !== null)
+    {
+        layersplit.destroy();
+    }
 }
 
 /*************************************************

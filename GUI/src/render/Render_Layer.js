@@ -17,7 +17,7 @@ class Render_Layer
         layer_front.style.zIndex   = iPCB_JSON_Layer.layerNumber;
         layer_front.style.position = "absolute";
         layer_front.style.left      = 0;
-        layer_front.style.top      = 0;
+        layer_front.style.top       = 0;
         canvas_front.appendChild(layer_front);
 
         let canvas_back           = document.getElementById("back-canvas-list");
