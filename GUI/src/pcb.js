@@ -146,7 +146,17 @@ function getAttributeValue(part, attributeToLookup)
 
 function GetLayerCanvas(layerNumber, isFront)
 {
-    return (globalData.layer_list.get(layerNumber)[globalData.render_layers].GetCanvas(isFront));
+    let layerCanvas = globalData.layer_list.get(layerNumber);
+
+    if(layerCanvas == undefined)
+    {
+        return undefined;
+    }
+    else
+    {
+        return layerCanvas[globalData.render_layers].GetCanvas(isFront);
+    }
+    
 }
 
 function OpenPcbData(pcbdata)

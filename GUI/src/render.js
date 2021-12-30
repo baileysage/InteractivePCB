@@ -57,35 +57,35 @@ function DrawSilkscreen(isViewFront, scalefactor)
 
 function DrawModule(isViewFront, layer, scalefactor, part, highlight) 
 {
-    if (highlight || globalData.getDebugMode())
-    {
-        let ctx = pcb.GetLayerCanvas("highlights", isViewFront).getContext("2d");
-        // draw bounding box
-        if (part.location == layer)
-        {
-            let color_BoundingBox = colorMap.GetBoundingBoxColor(highlight, isPlaced);
-            render_boundingbox.Rectangle(ctx, part.package.bounding_box, color_BoundingBox);
-        }
-        // draw pads
-        for (let pad of part.package.pads) 
-        {
-            /*
-                Check that part on layer should be drawn. Will draw when requested layer 
-                matches the parts layer.
-            
-              If the part is through hole it needs to be drawn on each layer
-              otherwise the part is an smd and should only be drawn on a the layer it belongs to.
-            */
-            if (    (pad.pad_type == "tht")
-                 || ((pad.pad_type == "smd") && (part.location == layer))
-            )
-            {
-                let highlightPin1 = ((pad.pin1 == "yes")  && globalData.getHighlightPin1());
-                let color_pad = colorMap.GetPadColor(highlightPin1, highlight, isPlaced);
-                DrawPad(ctx, pad, color_pad);
-            }
-        }
-    }
+//    if (highlight || globalData.getDebugMode())
+//    {
+//        let ctx = pcb.GetLayerCanvas("highlights", isViewFront).getContext("2d");
+//        // draw bounding box
+//        if (part.location == layer)
+//        {
+//            let color_BoundingBox = colorMap.GetBoundingBoxColor(highlight, isPlaced);
+//            render_boundingbox.Rectangle(ctx, part.package.bounding_box, color_BoundingBox);
+//        }
+//        // draw pads
+//        for (let pad of part.package.pads) 
+//        {
+//            /*
+//                Check that part on layer should be drawn. Will draw when requested layer 
+//                matches the parts layer.
+
+//              If the part is through hole it needs to be drawn on each layer
+//              otherwise the part is an smd and should only be drawn on a the layer it belongs to.
+//            */
+//            if (    (pad.pad_type == "tht")
+//                 || ((pad.pad_type == "smd") && (part.location == layer))
+//            )
+//            {
+//                let highlightPin1 = ((pad.pin1 == "yes")  && globalData.getHighlightPin1());
+//                let color_pad = colorMap.GetPadColor(highlightPin1, highlight, isPlaced);
+//                DrawPad(ctx, pad, color_pad);
+//            }
+//        }
+//    }
 
     // draw pads
 //    for (let pad of part.package.pads) 
@@ -190,8 +190,8 @@ function drawHighlightsOnLayer(canvasdict)
 function drawHighlights(passed) 
 {
     isPlaced=passed;
-    drawHighlightsOnLayer(globalData.GetAllCanvas().front);
-    drawHighlightsOnLayer(globalData.GetAllCanvas().back);
+    //drawHighlightsOnLayer(globalData.GetAllCanvas().front);
+    //drawHighlightsOnLayer(globalData.GetAllCanvas().back);
 }
 
 function resizeAll() 

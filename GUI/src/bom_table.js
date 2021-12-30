@@ -49,21 +49,6 @@ function IsCheckboxClicked(bomrowid, checkboxname)
     return checkbox.checked;
 }
 
-function GenerateBOMTable()
-{
-    // Get bom table with elements for the side of board the user has selected
-    let bomtableTemp = GetBOMForSideOfBoard(globalData.getCanvasLayout());
-
-    // Apply attribute filter to board
-    bomtableTemp = pcb.filterBOMTable(bomtableTemp, filterBOM_ByAttribute);
-
-    // If the parts are displayed one per line (not combined values), then the the bom table needs to be flattened. 
-    // By default the data in the json file is combined
-    let bomtable = globalData.getCombineValues() ? pcb.GetBOMCombinedValues(bomtableTemp) : bomtableTemp;
-
-    return bomtable;
-}
-
 function clearBOMTable()
 {
     let bom = document.getElementById("bombody");
@@ -73,6 +58,7 @@ function clearBOMTable()
         bom.removeChild(bom.firstChild);
     }
 }
+
 /*
     https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort
 
@@ -148,7 +134,6 @@ function ConvertReferenceDesignatorsToRanges(ReferenceDesignations)
     return rangedReferenceDesignations
 }
 
-
 function populateBomBody()
 {
     let bom = document.getElementById("bombody");
@@ -158,7 +143,7 @@ function populateBomBody()
     globalData.setHighlightHandlers([]);
     globalData.setCurrentHighlightedRowId(null);
 
-    let bomtable = GenerateBOMTable();
+    let bomtable = pcb.GetBOM();
 
     if (globalData.getBomSortFunction())
     {
@@ -321,31 +306,13 @@ function populateBomHeader()
         x2 = x2.trim()
         if (x2) 
         {
-            tr.appendChild(createColumnHeader(x2, "Checkboxes", CheckboxCompare(x2)));
+            tr.appendChild(createColumnHeader(x2, "Checkboxes"));
         }
     }
 
-    tr.appendChild(createColumnHeader("References", "References", (partA, partB) => {
-        if (partA.reference != partB.reference)
-        {
-            return partA.reference > partB.reference ? 1 : -1;
-        }
-        else
-        {
-            return 0;
-        }
-    }));
+    tr.appendChild(createColumnHeader("References", "References"));
 
-    tr.appendChild(createColumnHeader("Value", "Value", (partA, partB) => {
-        if (partA.value != partB.value)
-        {
-            return partA.value > partB.value ? 1 : -1;
-        }
-        else
-        {
-            return 0;
-        }
-    }));
+    tr.appendChild(createColumnHeader("Value", "Value"));
 
     let additionalAttributes = globalData.getAdditionalAttributes().split(",");
     // Remove null, "", undefined, and 0 values
@@ -356,185 +323,31 @@ function populateBomHeader()
         x = x.trim()
         if (x) 
         {
-            tr.appendChild(createColumnHeader(x, "Attributes", AttributeCompare(x)));
+            tr.appendChild(createColumnHeader(x, "Attributes"));
         }
     }
 
     if(globalData.getCombineValues())
     {
             //XXX: This comparison function is using positive and negative implicit
-            tr.appendChild(createColumnHeader("Quantity", "Quantity", (partA, partB) => {
-            return partA.quantity - partB.quantity;
-            }));
+            tr.appendChild(createColumnHeader("Quantity", "Quantity"));
     }
 
     bomhead.appendChild(tr);
-
 }
 
-function createColumnHeader(name, cls, comparator)
+/*
+    Creates a new column header and regenerates BOM table.
+    BOM table is recreated since a new column has been added.
+*/
+function createColumnHeader(name, cls)
 {
     let th = document.createElement("TH");
     th.innerHTML = name;
     th.classList.add(cls);
-    th.style.cursor = "pointer";
     let span = document.createElement("SPAN");
-    span.classList.add("sortmark");
-    span.classList.add("none");
     th.appendChild(span);
-    th.onclick = function()
-    {
-        if (globalData.getCurrentSortColumn() && this !== globalData.getCurrentSortColumn()) 
-        {
-            // Currently sorted by another column
-            globalData.getCurrentSortColumn().childNodes[1].classList.remove(globalData.getCurrentSortOrder());
-            globalData.getCurrentSortColumn().childNodes[1].classList.add("none");
-            globalData.setCurrentSortColumn(null);
-            globalData.setCurrentSortOrder(null);
-        }
-
-        if (globalData.getCurrentSortColumn() && this === globalData.getCurrentSortColumn()) 
-        {
-            // Already sorted by this column
-            if (globalData.getCurrentSortOrder() == "asc") 
-            {
-                // Sort by this column, descending order
-                globalData.setBomSortFunction(function(a, b) 
-                {
-                    return -comparator(a, b);
-                });
-                globalData.getCurrentSortColumn().childNodes[1].classList.remove("asc");
-                globalData.getCurrentSortColumn().childNodes[1].classList.add("desc");
-                globalData.setCurrentSortOrder("desc");
-            } 
-            else 
-            {
-                // Unsort
-                globalData.setBomSortFunction(null);
-                globalData.getCurrentSortColumn().childNodes[1].classList.remove("desc");
-                globalData.getCurrentSortColumn().childNodes[1].classList.add("none");
-                globalData.setCurrentSortColumn(null);
-                globalData.setCurrentSortOrder(null);
-            }
-        }
-        else
-        {
-            // Sort by this column, ascending order
-            globalData.setBomSortFunction(comparator);
-            globalData.setCurrentSortColumn(this);
-            globalData.getCurrentSortColumn().childNodes[1].classList.remove("none");
-            globalData.getCurrentSortColumn().childNodes[1].classList.add("asc");
-            globalData.setCurrentSortOrder("asc");
-        }
-        bomTable.populateBomBody();
-    }
     return th;
-}
-
-// Describes how to sort checkboxes
-function CheckboxCompare(stringName)
-{
-    return (partA, partB) => {
-        if (partA.checkboxes.get(stringName) && !partB.checkboxes.get(stringName)) 
-        {
-            return  1;
-        }
-        else if (!partA.checkboxes.get(stringName) && partB.checkboxes.get(stringName)) 
-        {
-            return -1;
-        } 
-        else
-        {
-            return 0;
-        }
-    }
-}
-
-// Describes hoe to sort by attributes
-function AttributeCompare(stringName)
-{
-    return (partA, partB) => {
-        if (partA.attributes.get(stringName) != partB.attributes.get(stringName))
-        {
-            return  partA.attributes.get(stringName) > partB.attributes.get(stringName) ? 1 : -1;
-        }
-        else
-        {
-            return 0;
-        }
-    }
-}
-
-
-////////////////////////////////////////////////////////////////////////////////
-// Filter functions are defined here. These let the application filter 
-// elements out of the complete bom. 
-//
-// The filtering function should return true if the part should be filtered out
-// otherwise it returns false
-////////////////////////////////////////////////////////////////////////////////
-function GetBOMForSideOfBoard(location)
-{
-    let result = pcb.GetBOM();
-    switch (location)
-    {
-    case "F":
-        result = pcb.filterBOMTable(result, filterBOM_Front);
-        break;
-    case "B":
-        result = pcb.filterBOMTable(result, filterBOM_Back);
-        break;
-    default:
-        break;
-    }
-    return result;
-}
-
-function filterBOM_Front(part)
-{
-    let result = true;
-    if(part.location == "F")
-    {
-        result = false;
-    }
-    return result;
-}
-
-function filterBOM_Back(part)
-{
-    let result = true;
-    if(part.location == "B")
-    {
-        result = false;
-    }
-    return result;
-}
-
-function filterBOM_ByAttribute(part)
-{
-    let result = false;
-    let splitFilterString = globalData.getRemoveBOMEntries().split(",");
-    // Remove null, "", undefined, and 0 values
-    splitFilterString    = splitFilterString.filter(function(e){return e});
-
-    if(splitFilterString.length > 0 )
-    {
-        for(let i of splitFilterString)
-        {
-            // removing beginning and trailing whitespace
-            i = i.trim()
-            if(part.attributes.has(i))
-            {
-                // Id the value is an empty string then dont filter out the entry. 
-                // if the value is anything then filter out the bom entry
-                if(part.attributes.get(i) != "")
-                {
-                    result = true;
-                }
-            }
-        }
-    }
-    return result;
 }
 
 function Filter(s)
@@ -544,7 +357,6 @@ function Filter(s)
 
     for (let part of bomBody.rows)
     {
-
         if(part.innerText.trim().toLowerCase().includes(s))
         {
             part.style.display = "";
@@ -554,10 +366,9 @@ function Filter(s)
             part.style.display = "none";
         }
     }
-   
 }
 
 module.exports = {
-    setBomCheckboxes, populateBomTable, 
+    setBomCheckboxes, populateBomTable,
     setRemoveBOMEntries, clearBOMTable, Filter
 };
