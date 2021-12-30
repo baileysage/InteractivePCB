@@ -248,19 +248,6 @@ document.onkeydown = function(e)
 {
     switch (e.key)
     {
-    case "n":
-        if (document.activeElement.type == "text")
-        {
-            return;
-        }
-        if (globalData.getCurrentHighlightedRowId() !== null)
-        {
-            // XXX: Why was the following line in the software
-            //checkBomCheckbox(globalData.getCurrentHighlightedRowId(), "placed");
-            highlightNextRow();
-            e.preventDefault();
-        }
-        break;
     case "ArrowUp":
         highlightPreviousRow();
         e.preventDefault();
