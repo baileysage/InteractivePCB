@@ -569,8 +569,9 @@ window.onload = function(e)
     globalData.setBomCheckboxes(globalData.readStorage("bomCheckboxes"));
     if (globalData.getBomCheckboxes() === null)
     {
-        globalData.setBomCheckboxes("Placed");
+        globalData.setBomCheckboxes("");
     }
+
     globalData.setRemoveBOMEntries(globalData.readStorage("removeBOMEntries"));
     if (globalData.getRemoveBOMEntries() === null)
     {
