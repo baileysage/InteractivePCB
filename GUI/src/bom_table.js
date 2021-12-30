@@ -1,3 +1,4 @@
+"use strict";
 var globalData = require("./global.js");
 var pcb        = require("./pcb.js");
 var render     = require("./render.js");
@@ -69,7 +70,7 @@ function GenerateBOMTable()
 
     // If the parts are displayed one per line (not combined values), then the the bom table needs to be flattened. 
     // By default the data in the json file is combined
-    bomtable = globalData.getCombineValues() ? pcb.GetBOMCombinedValues(bomtableTemp) : bomtableTemp;
+    let bomtable = globalData.getCombineValues() ? pcb.GetBOMCombinedValues(bomtableTemp) : bomtableTemp;
 
     return bomtable;
 }
@@ -161,7 +162,7 @@ function ConvertReferenceDesignatorsToRanges(ReferenceDesignations)
 
 function populateBomBody()
 {
-    bom = document.getElementById("bombody");
+    let bom = document.getElementById("bombody");
 
     while (bom.firstChild)
     {
@@ -172,7 +173,7 @@ function populateBomBody()
     globalData.setCurrentHighlightedRowId(null);
     let first = true;
 
-    bomtable = GenerateBOMTable();
+    let bomtable = GenerateBOMTable();
 
     if (globalData.getBomSortFunction())
     {
@@ -367,6 +368,7 @@ function highlightFilter(s)
 
 function populateBomHeader() 
 {
+    bomhead   = document.getElementById("bomhead");
     while (bomhead.firstChild)
     {
         bomhead.removeChild(bomhead.firstChild);

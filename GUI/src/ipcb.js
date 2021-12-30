@@ -1,6 +1,8 @@
 /* DOM manipulation and misc code */
 
 "use strict";
+
+
 var Split      = require("split.js");
 var globalData = require("./global.js");
 var render     = require("./render.js");
@@ -14,16 +16,9 @@ var PCB_Trace = require("./PCB/PCB_Trace.js").PCB_Trace;
 var PCB_Layer = require("./PCB/PCB_Layer.js").PCB_Layer;
 
 var Render_Layer = require("./render/Render_Layer.js").Render_Layer;
-
+var Render_PCB   = require("./render/Render_PCB.js");
 var version           = require("./version.js");
 
-//TODO: GLOBAL VARIABLES
-let layerBody  = undefined;
-let layerHead  = undefined;
-let bomhead    = undefined;
-
-let bom        = undefined;
-let bomtable   = undefined;
 
 
 function setDarkMode(value)
@@ -38,8 +33,8 @@ function setDarkMode(value)
         topmostdiv.classList.remove("dark");
     }
     globalData.writeStorage("darkmode", value);
-    render.drawCanvas(globalData.GetAllCanvas().front);
-    render.drawCanvas(globalData.GetAllCanvas().back);
+
+    Render_PCB.Render_PCB();
 }
 
 function entryMatches(part)
@@ -586,15 +581,17 @@ window.onload = function(e)
     // This function makes so that the user data for the pcb is converted to our internal structure
     pcb.OpenPcbData(pcbdata)
 
-    let versionNumberHTML = document.getElementById("softwareVersion");
+    let versionNumberHTML       = document.getElementById("softwareVersion");
     versionNumberHTML.innerHTML = version.GetVersionString();
     console.log(version.GetVersionString())
 
+    /* Create trace objects from JSON file */
     for(let trace of pcbdata.board.traces)
     {
         globalData.pcb_traces.push(new PCB_Trace(trace))
     }
 
+    /* Create layer objects from JSON file */
     for(let layer of pcbdata.board.layers)
     {
         globalData.layer_list.set(layer.layerNumber, [new PCB_Layer(layer), new Render_Layer(layer)])
@@ -610,11 +607,7 @@ window.onload = function(e)
     // Set up mouse event handlers
     handlers_mouse.addMouseHandlers(document.getElementById("frontcanvas"), globalData.GetAllCanvas().front);
     handlers_mouse.addMouseHandlers(document.getElementById("backcanvas"), globalData.GetAllCanvas().back);
-
-    bom = document.getElementById("bombody");
-    layerBody = document.getElementById("layerbody");
-    layerHead = document.getElementById("layerhead");
-    bomhead = document.getElementById("bomhead");
+    
     globalData.setBomLayout(globalData.readStorage("bomlayout"));
     if (!globalData.getBomLayout())
     {
@@ -669,8 +662,7 @@ window.onload = function(e)
     {
         document.getElementById("highlightpin1Checkbox").checked = true;
         globalData.setHighlightPin1(true);
-        render.drawCanvas(globalData.GetAllCanvas().front);
-        render.drawCanvas(globalData.GetAllCanvas().back);
+        Render_PCB.Render_PCB();
     }
     // If this is true then combine parts and display quantity
     if (globalData.readStorage("combineValues") === "true")

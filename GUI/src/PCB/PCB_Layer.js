@@ -10,6 +10,7 @@ var Segment_Via_Octagon = require("./Segment_Via_Octagon.js").Segment_Via_Octago
 var Segment_Polygon = require("./Segment_Polygon.js").Segment_Polygon;
 
 var pcb                = require("../pcb.js");
+
 class PCB_Layer
 {
     constructor(iPCB_JSON_Layer)

@@ -61,7 +61,6 @@ class PCB_Trace
             
         }
     }
-
 }
 
 module.exports = {
