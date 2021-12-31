@@ -195,10 +195,11 @@ function addMouseHandlers(div, layerdict)
         handleMouseUp(e, layerdict);
     };
     
-    div.onmouseout = function(e) 
-    {
-        handleMouseUp(e, layerdict);
-    };
+    // TODO: Needed if wanting mouse move over part in bom and not click behavior
+    //div.onmouseout = function(e) 
+    //{
+    //    handleMouseUp(e, layerdict);
+    //};
 
     div.onwheel = function(e) 
     {
