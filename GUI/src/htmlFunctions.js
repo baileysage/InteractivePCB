@@ -126,7 +126,7 @@ fb_btn.onclick=function()
 const fullscreen_btn = document.getElementById("fullscreen-btn");
 fullscreen_btn.onclick=function()
 {
-    ipcb.toggleFullScreen("FB");
+    ipcb.toggleFullScreen();
 };
 
 const bl_btn = document.getElementById("bl-btn");

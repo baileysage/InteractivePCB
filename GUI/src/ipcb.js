@@ -260,6 +260,9 @@ document.onkeydown = function(e)
         highlightNextRow();
         e.preventDefault();
         break;
+     case "F11":
+         e.preventDefault();
+        break;
     default:
         break;
     }
@@ -569,11 +572,12 @@ function changeBomLayout(layout)
     changeCanvasLayout(globalData.getCanvasLayout());
 }
 
+
+// TODO: Remove global variable. Used to test feature.
 document.getElementById("fullscreen-btn").classList.remove("depressed");
 let isFullscreen = false;
-function toggleFullScreen ()
+function toggleFullScreen()
 {
-
     if(isFullscreen)
     {
         document.getElementById("fullscreen-btn").classList.remove("depressed");
