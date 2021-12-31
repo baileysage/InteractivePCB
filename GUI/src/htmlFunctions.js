@@ -161,3 +161,9 @@ lay_btn.onclick=function()
 {
     ipcb.toggleLayers();
 };
+
+const fullscreen_btn = document.getElementById("fullscreen-btn");
+fullscreen_btn.onclick=function()
+{
+    ipcb.toggleFullScreen();
+};

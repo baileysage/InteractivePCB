@@ -7,7 +7,7 @@ var render     = require("./render.js");
 var pcb        = require("./pcb.js");
 var handlers_mouse    = require("./handlers_mouse.js");
 var version           = require("./version.js");
-
+var Fullscreen        = require("./fullscreen.js");
 
 //TODO: GLOBAL VARIABLES
 let layerBody = undefined;
@@ -1301,6 +1301,9 @@ document.onkeydown = function(e)
         highlightNextRow();
         e.preventDefault();
         break;
+    case "F11":
+         e.preventDefault();
+        break;
     default:
         break;
     }
@@ -1342,6 +1345,27 @@ document.onkeydown = function(e)
         }
     }
 };
+
+
+// TODO: Remove global variable. Used to test feature.
+document.getElementById("fullscreen-btn").classList.remove("depressed");
+let isFullscreen = false;
+function toggleFullScreen()
+{
+    if(isFullscreen)
+    {
+        document.getElementById("fullscreen-btn").classList.remove("depressed");
+        isFullscreen = false;
+        Fullscreen.closeFullscreen();
+    }
+    else
+    {
+        document.getElementById("fullscreen-btn").classList.add("depressed");
+        isFullscreen = true;
+        Fullscreen.openFullscreen();
+    }
+}
+
 
 //XXX: I would like this to be in the html functions js file. But this function needs to be 
 //     placed here, otherwise the application rendering becomes very very weird.
@@ -1469,5 +1493,5 @@ module.exports = {
     setDarkMode        , silkscreenVisible      , changeBomLayout, changeCanvasLayout,
     setBomCheckboxes   , populateBomTable       , setFilterBOM   , getFilterBOM      ,
     setFilterLayer     , getFilterLayer         , setRemoveBOMEntries, setAdditionalAttributes,
-    toggleLayers
+    toggleLayers, toggleFullScreen
 };
