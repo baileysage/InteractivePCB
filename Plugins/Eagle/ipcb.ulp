@@ -2,9 +2,9 @@
 /***************************************************************************************************
                                          USAGE DECLERATION
 ***************************************************************************************************/
-#usage "en: Interactive BOM Data Generator ULP\n"
+#usage "en: Interactive PCB Data Generator ULP\n"
            "Implements a generator that extracts needed data from a board file \n"
-           "and creates the JavaScript JSON variable that is needed for interactive BOM \n"
+           "and creates the JavaScript JSON variable that is needed for interactive PCB \n"
            "to function\n\n"
            "Usage: RUN ipcb.ulp\n"
            "Author: Sean Alling"
