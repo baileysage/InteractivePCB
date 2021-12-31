@@ -123,6 +123,12 @@ fb_btn.onclick=function()
     ipcb.changeCanvasLayout("FB");
 };
 
+const fullscreen_btn = document.getElementById("fullscreen-btn");
+fullscreen_btn.onclick=function()
+{
+    ipcb.toggleFullScreen("FB");
+};
+
 const bl_btn = document.getElementById("bl-btn");
 bl_btn.onclick=function()
 {

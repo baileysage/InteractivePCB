@@ -20,6 +20,7 @@ var Render_Layer = require("./render/Render_Layer.js").Render_Layer;
 var Render_PCB   = require("./render/Render_PCB.js");
 var version           = require("./version.js");
 
+var Fullscreen = require("./fullscreen.js");
 
 
 function setDarkMode(value)
@@ -568,6 +569,24 @@ function changeBomLayout(layout)
     changeCanvasLayout(globalData.getCanvasLayout());
 }
 
+document.getElementById("fullscreen-btn").classList.remove("depressed");
+let isFullscreen = false;
+function toggleFullScreen ()
+{
+
+    if(isFullscreen)
+    {
+        document.getElementById("fullscreen-btn").classList.remove("depressed");
+        isFullscreen = false;
+        Fullscreen.closeFullscreen();
+    }
+    else
+    {
+        document.getElementById("fullscreen-btn").classList.add("depressed");
+        isFullscreen = true;
+        Fullscreen.openFullscreen();
+    }
+}
 
 //XXX: I would like this to be in the html functions js file. But this function needs to be 
 //     placed here, otherwise the application rendering becomes very very weird.
@@ -703,5 +722,5 @@ window.matchMedia("print").addListener(render.resizeAll);
 
 module.exports = {
     changeBomLayout, setDarkMode        , changeCanvasLayout,
-    setAdditionalAttributes, toggleLayers
+    setAdditionalAttributes, toggleLayers, toggleFullScreen
 };
