@@ -308,16 +308,17 @@ let mainLayout = "";
 document.getElementById("lay-btn").classList.add("depressed");
 function toggleLayers()
 {
-        if (layerVisable)
-        {
-            layerVisable = false;
-            document.getElementById("lay-btn").classList.remove("depressed");
-        }
-        else
-        {
-            layerVisable = true;
-        }
-        changeBomLayout(mainLayout);
+    if (layerVisable)
+    {
+        layerVisable = false;
+        document.getElementById("lay-btn").classList.remove("depressed");
+    }
+    else
+    {
+        layerVisable = true;
+        document.getElementById("lay-btn").classList.add("depressed");
+    }
+    changeBomLayout(mainLayout);
 }
 
 
@@ -406,6 +407,15 @@ function changeBomLayout(layout)
         {
             globalData.setLayerSplit(Split(["#datadiv", "#layerdiv"], {
                 sizes: [80, 20],
+                onDragEnd: render.resizeAll,
+                gutterSize: 5,
+                cursor: "col-resize"
+            }));
+        }
+        else
+        {
+            globalData.setLayerSplit(Split(["#datadiv", "#layerdiv"], {
+                sizes: [99, 0.1],
                 onDragEnd: render.resizeAll,
                 gutterSize: 5,
                 cursor: "col-resize"
