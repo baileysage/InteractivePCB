@@ -74,6 +74,13 @@ clearFilterBOM.onclick=function()
     bomTable.Filter(filterBOM.value);
 };
 
+const removeBOMEntries = document.getElementById("removeBOMEntries");
+removeBOMEntries.oninput=function()
+{
+    bomTable.FilterByAttribute(removeBOMEntries.value);
+};
+
+
 /* Layer Table FIlter */
 const filterLayer = document.getElementById("layer-filter");
 filterLayer.oninput=function()
@@ -96,12 +103,6 @@ const bomCheckboxes = document.getElementById("bomCheckboxes");
 bomCheckboxes.oninput=function()
 {
     bomTable.setBomCheckboxes(bomCheckboxes.value);
-};
-
-const removeBOMEntries = document.getElementById("removeBOMEntries");
-removeBOMEntries.oninput=function()
-{
-    ipcb.setRemoveBOMEntries(removeBOMEntries.value);
 };
 
 const additionalAttributes = document.getElementById("additionalAttributes");

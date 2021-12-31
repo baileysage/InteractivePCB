@@ -357,6 +357,8 @@ function Filter(s)
 
     for (let part of bomBody.rows)
     {
+        // This is searching for the string across the entire rows 
+        // text.
         if(part.innerText.trim().toLowerCase().includes(s))
         {
             part.style.display = "";
@@ -368,7 +370,28 @@ function Filter(s)
     }
 }
 
+function FilterByAttribute(s)
+{
+    s = s.toLowerCase();
+    let bomBody = document.getElementById("bombody");
+
+    if(s != "")
+    {
+        for (let part of bomBody.rows)
+        {
+            if(part.innerText.trim().toLowerCase().includes(s))
+            {
+                part.style.display = "none";
+            }
+            else
+            {
+                part.style.display = "";
+            }
+        }
+    }
+}
+
 module.exports = {
     setBomCheckboxes, populateBomTable,
-    setRemoveBOMEntries, clearBOMTable, Filter
+    setRemoveBOMEntries, clearBOMTable, Filter, FilterByAttribute
 };
