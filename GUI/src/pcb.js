@@ -30,7 +30,7 @@ function Part(value, footprint, reference, location, attributes, checkboxes)
 {
     this.quantity   = 1;
     this.value      = value;
-    this.foorptint  = footprint;
+    this.footprint  = footprint;
     this.reference  = reference;
     this.location   = location;
     this.attributes = attributes;

@@ -729,6 +729,9 @@ void PrintPartData()
                 attributeName += A.name + ";";
                 attributeValue += A.value + ";";
             }
+
+            attributeName += "footprint" + ";";
+            attributeValue += E.footprint.name + ";";
             
             // This removes the trailing ;
             if(strlen(attributeName) > 0)
@@ -749,6 +752,9 @@ void PrintPartData()
             {
                 attributeValue[0] = 0;
             }
+
+
+
 
 
             PrintTabs();

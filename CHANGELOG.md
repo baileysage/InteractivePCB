@@ -1,7 +1,52 @@
+
 # Changelog
 
+## Version 2.3
 
-## Version 2.0-RC2
+### Fixed 
+- Issue #68 (fe7b150c378e8fc68e62523c5763b038625774e2): BOM part filtering uses attribute value instead of attribute key for filtering.
+- Issue #69 (fe7b150c378e8fc68e62523c5763b038625774e2): Adding a comma separate string to "remove BOM entry" will remove matching values from BOM table.
+- Issue #80 (30cee24f708bb7f8967c7249528ed3e62a4e8461): Draw/Redraw canvas only after clicking BOM element.
+
+### Added
+- Issue #66 (3f709a815c58171d9600805478cb402bf578ffdc): Created button to toggle layer table visibility.
+- Issue #78 (58147003ff3570bae0577ef1292cd2d83ee6be26): Created button to toggle full screen mode.
+
+### Changed
+- Issue #67 (5ae172ed48bec65cc4d4b0daf2130b6fb1211b82): Removed footprint as required BOM column. 
+- Modified layer split logic to better support toggling BOM, BCB, and layer tables.
+
+## Version 2.2.1
+
+### Fixed 
+- EagleCAD ULP outputs company name and revision to JSON file (Issue #60).
+- Displaying empty string if company name, pcb revision, date, or project name are undefined (Issue #60).
+
+## Version 2.2
+
+### Fixed
+- Fixed issue #56, regenerated all example PCB JSON files. 
+- Resolved PCB not auto re-rendering when wither bounding box debug or highlight pin 1 options were selected/unselected.
+
+### Added
+- Version number now displayed as top entry under settings tab(Issue #55).
+
+### Changed
+- If requested layer numerical value is greater than or equal to 16, then black will be used for the color. This resolves an issue where program would error out and stop rendering since requested color was out of bounds.
+
+
+## Version 2.1
+### Added
+- Added user ability to load new pcbdata.json file at runtime.
+- Formalized pcbdata.json file using eBNF.
+
+### Changed
+- All references to iBOM now changed to iPCB. 
+- 
+### Removed
+
+
+## Version 2.0
 ### Added
 - Integrated make based build
 ## Changed
