@@ -17,7 +17,6 @@ var PCB_Layer = require("./PCB/PCB_Layer.js").PCB_Layer;
 var PCB_Part  = require("./PCB/PCB_Part.js").PCB_Part;
 
 var Render_Layer = require("./render/Render_Layer.js").Render_Layer;
-var Render_PCB   = require("./render/Render_PCB.js");
 var version           = require("./version.js");
 
 var Fullscreen = require("./fullscreen.js");
@@ -36,10 +35,10 @@ function setDarkMode(value)
     }
     globalData.writeStorage("darkmode", value);
 
-    Render_PCB.Render_PCB();
+    render.RenderPCB(globalData.GetAllCanvas().front);
+    render.RenderPCB(globalData.GetAllCanvas().back);
 }
 
-////////////////////////////////////////////////////////////////////////////////
 function highlightPreviousRow()
 {
     if (!globalData.getCurrentHighlightedRowId())
@@ -597,8 +596,10 @@ function toggleFullScreen()
 window.onload = function(e)
 {
     console.time("on load");
-    // This function makes so that the user data for the pcb is converted to our internal structure
-    pcb.OpenPcbData(pcbdata)
+
+    pcb.CreateBOM(pcbdata);
+    let metadata = Metadata.GetInstance();
+    metadata.Set(pcbdata.metadata);
 
     let versionNumberHTML       = document.getElementById("softwareVersion");
     versionNumberHTML.innerHTML = version.GetVersionString();
@@ -683,7 +684,8 @@ window.onload = function(e)
     {
         document.getElementById("highlightpin1Checkbox").checked = true;
         globalData.setHighlightPin1(true);
-        Render_PCB.Render_PCB();
+        render.RenderPCB(globalData.GetAllCanvas().front);
+        render.RenderPCB(globalData.GetAllCanvas().back);
     }
     // If this is true then combine parts and display quantity
     if (globalData.readStorage("combineValues") === "true")

@@ -20,8 +20,8 @@ const highlightpin1Checkbox =document.getElementById("highlightpin1Checkbox");
 highlightpin1Checkbox.onchange=function()
 {
     globalData.setHighlightPin1(highlightpin1Checkbox.checked);
-    render.drawCanvas(globalData.GetAllCanvas().front);
-    render.drawCanvas(globalData.GetAllCanvas().back);
+    render.RenderPCB(globalData.GetAllCanvas().front);
+    render.RenderPCB(globalData.GetAllCanvas().back);
 };
 
 const dragCheckbox = document.getElementById("dragCheckbox");
@@ -54,8 +54,8 @@ const debugModeBox = document.getElementById("debugMode");
 debugModeBox.onchange=function()
 {
     globalData.setDebugMode(debugModeBox.checked);
-    render.drawCanvas(globalData.GetAllCanvas().front);
-    render.drawCanvas(globalData.GetAllCanvas().back);
+    render.RenderPCB(globalData.GetAllCanvas().front);
+    render.RenderPCB(globalData.GetAllCanvas().back);
 };
 
 

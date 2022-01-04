@@ -108,11 +108,11 @@ function handleMouseUp(e, layerdict)
         layerdict.transform.panx = 0;
         layerdict.transform.pany = 0;
         layerdict.transform.zoom = 1;
-        render.drawCanvas(layerdict);
+        render.RenderPCB(layerdict);
     } 
     else if (!globalData.getRedrawOnDrag()) 
     {
-        render.drawCanvas(layerdict);
+        render.RenderPCB(layerdict);
     }
     layerdict.transform.mousedown = false;
 }
@@ -134,7 +134,7 @@ function handleMouseMove(e, layerdict)
     
     if (globalData.getRedrawOnDrag()) 
     {
-        render.drawCanvas(layerdict);
+        render.RenderPCB(layerdict);
     }
 }
 
@@ -169,7 +169,7 @@ function handleMouseWheel(e, layerdict)
     var zoomd = (1 - m) / t.zoom;
     t.panx += 2 * e.offsetX * zoomd;
     t.pany += 2 * e.offsetY * zoomd;
-    render.drawCanvas(layerdict);
+    render.RenderPCB(layerdict);
     render.drawHighlights();
 }
 

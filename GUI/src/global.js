@@ -13,7 +13,7 @@ let layer_list = new Map();
               Board Rotation                    
 *************************************************/
 let storage = undefined;
-const storagePrefix = "INTERACTIVE_PCB__" + pcbdata.metadata.title + "__" + pcbdata.metadata.revision + "__"
+const storagePrefix = "INTERACTIVE_PCB__"
 
 function initStorage ()
 {

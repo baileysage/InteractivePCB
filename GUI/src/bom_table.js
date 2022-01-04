@@ -20,8 +20,8 @@ function createCheckboxChangeHandler(checkbox, bomentry)
         // Save currently highlited row
         let rowid = globalData.getCurrentHighlightedRowId();
         // Redraw the canvas
-        render.drawCanvas(globalData.GetAllCanvas().front);
-        render.drawCanvas(globalData.GetAllCanvas().back);
+        render.RenderPCB(globalData.GetAllCanvas().front);
+        render.RenderPCB(globalData.GetAllCanvas().back);
         // Redraw the BOM table
         populateBomTable();
         // Render current row so its highlighted

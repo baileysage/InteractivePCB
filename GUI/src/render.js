@@ -3,22 +3,7 @@
 "use strict";
 
 var globalData         = require("./global.js");
-
-var render_silkscreen  = require("./render/render_silkscreen.js");
 var render_canvas      = require("./render/render_Canvas.js");
-var render_boundingbox = require("./render/render_boundingbox.js");
-var pcb                = require("./pcb.js");
-var colorMap           = require("./colormap.js");
-
-
-//REMOVE: Using to test alternate placed coloring
-let isPlaced = false;
-
-
-function DrawPad(ctx, pad, color) 
-{
-
-}
 
 function DrawTraces(isViewFront, scalefactor)
 {
@@ -28,7 +13,7 @@ function DrawTraces(isViewFront, scalefactor)
     }
 }
 
-function DrawSilkscreen(isViewFront, scalefactor)
+function DrawLayers(isViewFront, scalefactor)
 {
     for (let layer of globalData.layer_list)
     {
@@ -44,14 +29,24 @@ function DrawModules(isViewFront, scalefactor)
     }
 }
 
-function drawCanvas(canvasdict)
+function RenderPCB(canvasdict)
 {
     render_canvas.RedrawCanvas(canvasdict);
     let isViewFront = (canvasdict.layer === "F");
-    DrawModules   (isViewFront, canvasdict.transform.s);
-    DrawTraces    (isViewFront, canvasdict.transform.s);
-    // Draw last so that text is not erased when drawing polygons.
-    DrawSilkscreen(isViewFront, canvasdict.transform.s);
+    
+    /* 
+        Renders entire PCB for specified view
+        Rendering occurs in three steps
+            1. Modules
+            2. Traces
+            3. Layers
+
+        Step 3 essentially renders items on layers not rendered in 1 or 2. 
+        This could be silkscreen, cutouts, board edge, etc...
+    */
+    DrawModules(isViewFront, canvasdict.transform.s);
+    DrawTraces (isViewFront, canvasdict.transform.s);
+    DrawLayers (isViewFront, canvasdict.transform.s);
 }
 
 function ClearCanvas(canvasdict)
@@ -112,7 +107,6 @@ function drawHighlightsOnLayer(canvasdict)
 
 function drawHighlights(passed) 
 {
-    isPlaced=passed;
     //drawHighlightsOnLayer(globalData.GetAllCanvas().front);
     //drawHighlightsOnLayer(globalData.GetAllCanvas().back);
 }
@@ -121,8 +115,8 @@ function resizeAll()
 {
     render_canvas.ResizeCanvas(globalData.GetAllCanvas().front);
     render_canvas.ResizeCanvas(globalData.GetAllCanvas().back);
-    drawCanvas(globalData.GetAllCanvas().front);
-    drawCanvas(globalData.GetAllCanvas().back);
+    RenderPCB(globalData.GetAllCanvas().front);
+    RenderPCB(globalData.GetAllCanvas().back);
 }
 
 function SetBoardRotation(value) 
@@ -144,5 +138,5 @@ function SetBoardRotation(value)
 }
 
 module.exports = {
-    initRender, resizeAll, drawCanvas, drawHighlights, RotateVector, SetBoardRotation, ClearCanvas
+    initRender, resizeAll, RenderPCB, drawHighlights, RotateVector, SetBoardRotation, ClearCanvas
 };
