@@ -2,7 +2,8 @@
 
 var Point        = require("../render/point.js").Point;
 var BoundingBox  = require("../BoundingBox.js").BoundingBox;
-var Package_Pad  = require("./Package_Pad.js").Package_Pad;
+
+var Package_Pad_Rectangle  = require("./Package_Pad_Rectangle.js").Package_Pad_Rectangle;
 
 
 
@@ -18,13 +19,35 @@ class Package
 
         for(let pad of iPCB_JSON_Package.pads)
         {
-            this.pads.push(new Package_Pad(pad));
+            if (pad.shape == "rect") 
+            {
+                this.pads.push(new Package_Pad_Rectangle(pad));
+            }
+            else if (pad.shape == "oblong") 
+            {
+                
+            }
+            else if (pad.shape == "round") 
+            {
+                
+            }
+            else if (pad.shape == "octagon") 
+            {
+                
+            }
+            else
+            {
+                console.log("ERROR: Unsupported pad type ", pad.shape);
+            }
         }
     }
 
     Render(isViewFront, scalefactor)
     {
-        
+        for (let pad of this.pads)
+        {
+            pad.Render(isViewFront, scalefactor);
+        }
     }
 }
 

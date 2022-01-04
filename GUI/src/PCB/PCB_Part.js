@@ -1,6 +1,8 @@
 "use strict";
 
 var Package  = require("./Package.js").Package;
+var pcb                = require("../pcb.js");
+
 
 class PCB_Part
 {
@@ -11,7 +13,6 @@ class PCB_Part
         this.package     = new Package(iPCB_JSON_Part.package);
         this.attributes  = new Map();
         this.location    = iPCB_JSON_Part.location;
-
 
         // Iterate over all attributes and add the, to attribute map.
 
@@ -28,7 +29,8 @@ class PCB_Part
 
     Render(isViewFront, scalefactor)
     {
-        
+        let ctx = pcb.GetLayerCanvas(1, isViewFront).getContext("2d")
+        this.package.Render(ctx, scalefactor);
     }
 }
 

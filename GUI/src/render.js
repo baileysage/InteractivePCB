@@ -3,7 +3,7 @@
 "use strict";
 
 var globalData         = require("./global.js");
-var render_pads        = require("./render/render_pad.js");
+
 var render_silkscreen  = require("./render/render_silkscreen.js");
 var render_canvas      = require("./render/render_Canvas.js");
 var render_boundingbox = require("./render/render_boundingbox.js");
@@ -17,26 +17,7 @@ let isPlaced = false;
 
 function DrawPad(ctx, pad, color) 
 {
-    if (pad.shape == "rect") 
-    {
-        render_pads.Rectangle(ctx, pad, color);
-    }
-    else if (pad.shape == "oblong") 
-    {
-        render_pads.Oblong(ctx, pad, color);
-    }
-    else if (pad.shape == "round") 
-    {
-        render_pads.Round(ctx, pad, color);
-    }
-    else if (pad.shape == "octagon") 
-    {
-        render_pads.Octagon(ctx, pad, color);
-    }
-    else
-    {
-        console.log("ERROR: Unsupported pad type ", pad.shape);
-    }
+
 }
 
 function DrawTraces(isViewFront, scalefactor)
@@ -55,69 +36,11 @@ function DrawSilkscreen(isViewFront, scalefactor)
     }
 }
 
-function DrawModule(isViewFront, layer, scalefactor, part, highlight) 
+function DrawModules(isViewFront, scalefactor)
 {
-//    if (highlight || globalData.getDebugMode())
-//    {
-//        let ctx = pcb.GetLayerCanvas("highlights", isViewFront).getContext("2d");
-//        // draw bounding box
-//        if (part.location == layer)
-//        {
-//            let color_BoundingBox = colorMap.GetBoundingBoxColor(highlight, isPlaced);
-//            render_boundingbox.Rectangle(ctx, part.package.bounding_box, color_BoundingBox);
-//        }
-//        // draw pads
-//        for (let pad of part.package.pads) 
-//        {
-//            /*
-//                Check that part on layer should be drawn. Will draw when requested layer 
-//                matches the parts layer.
-
-//              If the part is through hole it needs to be drawn on each layer
-//              otherwise the part is an smd and should only be drawn on a the layer it belongs to.
-//            */
-//            if (    (pad.pad_type == "tht")
-//                 || ((pad.pad_type == "smd") && (part.location == layer))
-//            )
-//            {
-//                let highlightPin1 = ((pad.pin1 == "yes")  && globalData.getHighlightPin1());
-//                let color_pad = colorMap.GetPadColor(highlightPin1, highlight, isPlaced);
-//                DrawPad(ctx, pad, color_pad);
-//            }
-//        }
-//    }
-
-    // draw pads
-//    for (let pad of part.package.pads) 
-//    {
-//        /*
-//            Check that part on layer should be drawn. Will draw when requested layer 
-//            matches the parts layer.
-        
-//          If the part is through hole it needs to be drawn on each layer
-//          otherwise the part is an smd and should only be drawn on a the layer it belongs to.
-//        */
-//        if (    (pad.pad_type == "tht")
-//             || ((pad.pad_type == "smd") && (part.location == layer))
-//        )
-//        {
-//            let highlightPin1 = ((pad.pin1 == "yes")  && globalData.getHighlightPin1());
-//            let color_pad = colorMap.GetPadColor(highlightPin1, false, isPlaced);
-//            let ctx = pcb.GetLayerCanvas("Pads", isViewFront).getContext("2d");
-//            DrawPad(ctx, pad, color_pad);
-//        }
-//    }
-}
-
-function DrawModules(isViewFront, layer, scalefactor, highlightedRefs)
-{
-    for (let part of pcbdata.parts) 
+    for (let part of globalData.pcb_parts)
     {
-        let highlight = highlightedRefs.includes(part.name);
-        if (highlightedRefs.length == 0 || highlight) 
-        {
-            DrawModule(isViewFront, layer, scalefactor, part, highlight);
-        }
+        part.Render(isViewFront, scalefactor);
     }
 }
 
@@ -125,7 +48,7 @@ function drawCanvas(canvasdict)
 {
     render_canvas.RedrawCanvas(canvasdict);
     let isViewFront = (canvasdict.layer === "F");
-    DrawModules   (isViewFront, canvasdict.layer, canvasdict.transform.s, []);
+    DrawModules   (isViewFront, canvasdict.transform.s);
     DrawTraces    (isViewFront, canvasdict.transform.s);
     // Draw last so that text is not erased when drawing polygons.
     DrawSilkscreen(isViewFront, canvasdict.transform.s);
