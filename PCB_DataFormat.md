@@ -66,7 +66,15 @@ Generated JSON is validated using [JSON Formatter & Validator](https://jsonforma
 
 
     <PADS> ::= <PAD> | <PAD> "," <PADS>
-    <PAD>  ::= "{" "\"pad_type\":" <PAD_TYPE> "," "\"pin1\":" <PAD_PIN_ONE> "," "\"shape\":" <PAD_SHAPE> "," "\"angle\":" <REAL_NUMBER> "," "\"x\":" <REAL_NUMBER> "," "\"y\":" <REAL_NUMBER> "," "\"dx\":" <REAL_NUMBER> "," "\"dy\":" <REAL_NUMBER> "}"
+    <PAD>  ::= <PAD_RECTANGLE> | <PAD_OBLONG> | <PAD_ROUND> | <PAD_OCTAGON> | <PAD_OFFSET>
+
+    <PAD_RECTANGLE> ::= "{" "\"pad_type\":" <PAD_TYPE> "," "\"pin1\":" <PAD_PIN_ONE> "," "\"shape\":" "\"rect\""    "," "\"angle\":" <REAL_NUMBER> "," "\"x\":" <REAL_NUMBER> "," "\"y\":" <REAL_NUMBER> "," "\"dx\":" <REAL_NUMBER> "," "\"dy\":" <REAL_NUMBER> "," "\"drill\":" <REAL_NUMBER> "}"
+    <PAD_OBLONG>    ::= "{" "\"pad_type\":" <PAD_TYPE> "," "\"pin1\":" <PAD_PIN_ONE> "," "\"shape\":" "\"oblong\""  "," "\"angle\":" <REAL_NUMBER> "," "\"x\":" <REAL_NUMBER> "," "\"y\":" <REAL_NUMBER> "," "\"diameter\":" <REAL_NUMBER> "," "\"elongation\":" <REAL_NUMBER> "," "\"drill\":" <REAL_NUMBER> "}"
+    <PAD_ROUND>     ::= "{" "\"pad_type\":" <PAD_TYPE> "," "\"pin1\":" <PAD_PIN_ONE> "," "\"shape\":" "\"round\""   "," "\"angle\":" <REAL_NUMBER> "," "\"x\":" <REAL_NUMBER> "," "\"y\":" <REAL_NUMBER> "," "\"diameter\":" <REAL_NUMBER> "," "\"drill\":" <REAL_NUMBER>"}"
+    <PAD_OCTAGON>   ::= "{" "\"pad_type\":" <PAD_TYPE> "," "\"pin1\":" <PAD_PIN_ONE> "," "\"shape\":" "\"round\""   "," "\"angle\":" <REAL_NUMBER> "," "\"x\":" <REAL_NUMBER> "," "\"y\":" <REAL_NUMBER> "," "\"diameter\":" <REAL_NUMBER> "," "\"drill\":" <REAL_NUMBER>"}"
+    <PAD_OFFSET>    ::= "{" "\"pad_type\":" <PAD_TYPE> "," "\"pin1\":" <PAD_PIN_ONE> "," "\"shape\":" "\"oblong\""  "," "\"angle\":" <REAL_NUMBER> "," "\"x\":" <REAL_NUMBER> "," "\"y\":" <REAL_NUMBER> "," "\"diameter\":" <REAL_NUMBER> "," "\"elongation\":" <REAL_NUMBER> "," "\"drill\":" <REAL_NUMBER> "}"
+
+    
 
     <PAD_TYPE>    ::= "\"smd\""  | "\"tht\""
     <PAD_PIN_ONE> ::= "\"yes\""  | "\"no\""
