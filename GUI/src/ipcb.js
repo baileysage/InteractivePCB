@@ -613,7 +613,7 @@ window.onload = function(e)
     /* Create layer objects from JSON file */
     for(let layer of pcbdata.board.layers)
     {
-        globalData.layer_list.set(layer.layerNumber, [new PCB_Layer(layer), new Render_Layer(layer)])
+        globalData.layer_list.set(layer.name, [new PCB_Layer(layer), new Render_Layer(layer)])
     }
 
     /* Create layer objects from JSON file */

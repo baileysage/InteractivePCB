@@ -8,7 +8,7 @@ class Segment
         
     }
 
-    Render(guiContext, lineWidth, color)
+    Render(guiContext, scalefactor)
     {
 
     }

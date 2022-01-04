@@ -4,6 +4,9 @@ var Point        = require("../render/point.js").Point;
 var BoundingBox  = require("../BoundingBox.js").BoundingBox;
 
 var Package_Pad_Rectangle  = require("./Package_Pad_Rectangle.js").Package_Pad_Rectangle;
+var Package_Pad_Oblong     = require("./Package_Pad_Oblong.js").Package_Pad_Oblong;
+var Package_Pad_Round      = require("./Package_Pad_Round.js").Package_Pad_Round;
+var Package_Pad_Octagon    = require("./Package_Pad_Octagon.js").Package_Pad_Octagon;
 
 
 
@@ -25,15 +28,15 @@ class Package
             }
             else if (pad.shape == "oblong") 
             {
-                
+                this.pads.push(new Package_Pad_Oblong(pad));
             }
             else if (pad.shape == "round") 
             {
-                
+                this.pads.push(new Package_Pad_Round(pad));
             }
             else if (pad.shape == "octagon") 
             {
-                
+                this.pads.push(new Package_Pad_Octagon(pad));
             }
             else
             {
@@ -42,11 +45,11 @@ class Package
         }
     }
 
-    Render(isViewFront, scalefactor)
+    Render(isViewFront, location, scalefactor)
     {
         for (let pad of this.pads)
         {
-            pad.Render(isViewFront, scalefactor);
+            pad.Render(isViewFront, location, scalefactor);
         }
     }
 }

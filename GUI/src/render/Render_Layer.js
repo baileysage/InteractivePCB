@@ -1,29 +1,30 @@
 "use strict";
 
+let layerZNumber = 0;
 
 class Render_Layer
 {
     // Render should take as an argument the model not the raw JSON data
-    constructor(iPCB_JSON_Layer)
+    constructor(iPCB_JSON_Layer, layerNumber)
     {
         this.visible_front = true;
         this.visible_back  = true;
         this.front_id      = "layer_front_" + iPCB_JSON_Layer.name;
         this.back_id       = "layer_rear_"  + iPCB_JSON_Layer.name;
 
-        let canvas_front = document.getElementById("front-canvas-list");
-        let layer_front   = document.createElement("canvas");
+        let canvas_front           = document.getElementById("front-canvas-list");
+        let layer_front            = document.createElement("canvas");
         layer_front.id             = this.front_id;
-        layer_front.style.zIndex   = iPCB_JSON_Layer.layerNumber;
+        layer_front.style.zIndex   = layerZNumber;
         layer_front.style.position = "absolute";
-        layer_front.style.left      = 0;
-        layer_front.style.top       = 0;
+        layer_front.style.left     = 0;
+        layer_front.style.top      = 0;
         canvas_front.appendChild(layer_front);
 
         let canvas_back           = document.getElementById("back-canvas-list");
         let layer_back            = document.createElement("canvas");
         layer_back.id             = this.back_id;
-        layer_back.style.zIndex   = iPCB_JSON_Layer.layerNumber;
+        layer_back.style.zIndex   = layerZNumber;
         layer_back.style.position = "absolute";
         layer_back.style.left     = 0;
         layer_back.style.top      = 0;
@@ -32,6 +33,9 @@ class Render_Layer
 
         this.canvas_front = document.getElementById(this.front_id);
         this.canvas_back  = document.getElementById(this.back_id);
+
+
+        layerZNumber = layerZNumber + 1;
     }
 
     SetVisibility(isFront, visibility)

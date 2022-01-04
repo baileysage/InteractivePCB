@@ -15,12 +15,12 @@ function createLayerCheckboxChangeHandler(layer, isFront)
         {
             if(globalData.readStorage( "checkbox_layer_front_" + layer.name + "_visible" ) == "true")
             {
-                globalData.layer_list.get(layer.layerNumber)[globalData.render_layers].SetVisibility(isFront,false);
+                globalData.layer_list.get(layer.name)[globalData.render_layers].SetVisibility(isFront,false);
                 globalData.writeStorage("checkbox_layer_front_" + layer.name + "_visible", "false");
             }
             else
             {
-                globalData.layer_list.get(layer.layerNumber)[globalData.render_layers].SetVisibility(isFront,true);
+                globalData.layer_list.get(layer.name)[globalData.render_layers].SetVisibility(isFront,true);
                 globalData.writeStorage("checkbox_layer_front_" + layer.name + "_visible", "true");
             }
         }
@@ -28,12 +28,12 @@ function createLayerCheckboxChangeHandler(layer, isFront)
         {
             if(globalData.readStorage( "checkbox_layer_back_" + layer.name + "_visible" ) == "true")
             {
-                globalData.layer_list.get(layer.layerNumber)[globalData.render_layers].SetVisibility(isFront,false);
+                globalData.layer_list.get(layer.name)[globalData.render_layers].SetVisibility(isFront,false);
                 globalData.writeStorage("checkbox_layer_back_" + layer.name + "_visible", "false");
             }
             else
             {
-                globalData.layer_list.get(layer.layerNumber)[globalData.render_layers].SetVisibility(isFront,true);
+                globalData.layer_list.get(layer.name)[globalData.render_layers].SetVisibility(isFront,true);
                 globalData.writeStorage("checkbox_layer_back_" + layer.name + "_visible", "true");
             }
         }

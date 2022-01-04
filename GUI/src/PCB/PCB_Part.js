@@ -1,8 +1,6 @@
 "use strict";
 
 var Package  = require("./Package.js").Package;
-var pcb                = require("../pcb.js");
-
 
 class PCB_Part
 {
@@ -29,8 +27,7 @@ class PCB_Part
 
     Render(isViewFront, scalefactor)
     {
-        let ctx = pcb.GetLayerCanvas(1, isViewFront).getContext("2d")
-        this.package.Render(ctx, scalefactor);
+        this.package.Render(isViewFront, this.location, scalefactor);
     }
 }
 
