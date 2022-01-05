@@ -1,3 +1,5 @@
+"use strict";
+
 var globalData        = require("./global.js");
 
 var traceColorMap = 
@@ -20,7 +22,33 @@ var traceColorMap =
     ["#006699C8" , "#006699C8"],
     ["#3232C8B4" , "#3232C8B4"],
 ];
-var traceColor_Default     = ["#878787", "#878787"]   ;
+
+
+var ColorMap = new Map(
+[ 
+    // Light Mode, Dark Mode
+    ["Top"    ,["#C83232B4" , "#C83232B4"]],
+    ["Route2" ,["#CC6600C8" , "#CC6600C8"]],
+    ["Route3" ,["#CC9900C8" , "#CC9900C8"]],
+    ["Route4" ,["#336600C8" , "#336600C8"]],
+    ["Route5" ,["#666633C8" , "#666633C8"]],
+    ["Route6" ,["#FFCC33C8" , "#FFCC33C8"]],
+    ["Route7" ,["#669900C8" , "#669900C8"]],
+    ["Route8" ,["#999966C8" , "#999966C8"]],
+    ["Route9" ,["#99CC99C8" , "#99CC99C8"]],
+    ["Route10",["#669999C8" , "#669999C8"]],
+    ["Route11",["#33CC99C8" , "#33CC99C8"]],
+    ["Route12",["#669966C8" , "#669966C8"]],
+    ["Route13",["#336666C8" , "#336666C8"]],
+    ["Route14",["#009966C8" , "#009966C8"]],
+    ["Route15",["#006699C8" , "#006699C8"]],
+    ["Bottom" ,["#3232C8B4" , "#3232C8B4"]],
+    ["Default",["#878787"   , "#878787"]]
+]);
+
+
+
+var traceColor_Default     =    ["#878787", "#878787"];
 //                         Light Mode, Dark Mode
 var padColor_Default     = ["#878787", "#878787"]   ;
 var padColor_Pin1        = ["#ffb629", "#ffb629"]   ;
@@ -32,8 +60,6 @@ var boundingBoxColor_Default   = ["#878787", "#878787"];
 var boundingBoxColor_Placed    = ["#40D040", "#40D040"];
 var boundingBoxColor_Highlited = ["#D04040", "#D04040"];
 var boundingBoxColor_Debug     = ["#2977ff", "#2977ff"];
-
-
 
 var drillColor    = ["#CCCCCC", "#CCCCCC"];
 var viaColor      = ["#000000", "#000000"];
@@ -54,14 +80,16 @@ function GetColorPalette()
 
 function GetTraceColor(traceLayer)
 {
-    if (isNaN(traceLayer) || (typeof traceLayer !== 'number') || (traceLayer >= traceColorMap.length))
+    let traceColorMap = ColorMap.get(traceLayer)
+    if (traceColorMap == undefined)
     {
         //console.log("WARNING: Invalid trace layer number, using default.");
         return traceColor_Default;
     }
     else
     {
-        return traceColorMap[traceLayer][GetColorPalette()];
+        console.log(traceLayer)
+        return traceColorMap[GetColorPalette()];
     }
     
 }

@@ -56,9 +56,8 @@ class PCB_Trace
     {
         for(let segment of this.segments)
         {
-            let ctx = pcb.GetLayerCanvas(segment.layer, isViewFront).getContext("2d")
+            let ctx = pcb.GetLayerCanvas(segment.layer, isViewFront).getContext("2d");
             segment.Render(ctx, scalefactor);
-            
         }
     }
 }
