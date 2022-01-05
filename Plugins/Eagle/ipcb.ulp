@@ -63,6 +63,57 @@ void  PrintTabs(void)
     }
 }
 
+// Eagle color codes are ARGB
+// iPCB expects them in RGBA.
+char hex_characters[]={'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
+string PalletColorToHTMLString(int colorCode_ARGB)
+{
+    int A = ((colorCode_ARGB >> 24) & 0xFF);
+    int R = ((colorCode_ARGB >> 16) & 0xFF);
+    int G = ((colorCode_ARGB >>  8) & 0xFF);
+    int B = ((colorCode_ARGB >>  0) & 0xFF);
+
+    string str="#";
+    str += hex_characters[(R>>4) & 0xF];
+    str += hex_characters[(R>>0) & 0xF];
+    str += hex_characters[(G>>4) & 0xF];
+    str += hex_characters[(G>>0) & 0xF];
+    str += hex_characters[(B>>4) & 0xF];
+    str += hex_characters[(B>>0) & 0xF];
+    str += hex_characters[(A>>4) & 0xF];
+    str += hex_characters[(A>>0) & 0xF];
+
+
+    return str;
+}
+
+void PrintConfiguration()
+{
+     printf("\"configuration\": [");
+
+    board(B)
+    {
+        int firstLayer = 1;
+        B.layers(L)
+        {
+            if(L.used)
+            {
+                if(!firstLayer)
+                {
+                    printf(",");
+                }
+                printf( "{\"category\":\"%s\",\"name\":\"%s\",\"value\":\"%s\"}"
+                        ,"color"
+                        ,L.name
+                        ,PalletColorToHTMLString(palette(L.color))
+                      );
+                firstLayer = 0;
+            }
+        }
+    }
+    printf("]");
+}
+
 void PrintKeyValue_KeyReal(string key, real value)
 {
     PrintTabs();
@@ -756,5 +807,7 @@ output(outputFileName,"wt")
     GenerateMetadata();
     GenerateBoard();
     GenerateParts();
+    printf(",");
+    PrintConfiguration();
     printf("}");
 }

@@ -5,24 +5,6 @@ var globalData        = require("./global.js");
 var ColorMap = new Map(
 [ 
     // Light Mode, Dark Mode
-    ["Top"                    ,["#C83232B4" , "#C83232B4"]],
-    ["Route2"                 ,["#CC6600C8" , "#CC6600C8"]],
-    ["Route3"                 ,["#CC9900C8" , "#CC9900C8"]],
-    ["Route4"                 ,["#336600C8" , "#336600C8"]],
-    ["Route5"                 ,["#666633C8" , "#666633C8"]],
-    ["Route6"                 ,["#FFCC33C8" , "#FFCC33C8"]],
-    ["Route7"                 ,["#669900C8" , "#669900C8"]],
-    ["Route8"                 ,["#999966C8" , "#999966C8"]],
-    ["Route9"                 ,["#99CC99C8" , "#99CC99C8"]],
-    ["Route10"                ,["#669999C8" , "#669999C8"]],
-    ["Route11"                ,["#33CC99C8" , "#33CC99C8"]],
-    ["Route12"                ,["#669966C8" , "#669966C8"]],
-    ["Route13"                ,["#336666C8" , "#336666C8"]],
-    ["Route14"                ,["#009966C8" , "#009966C8"]],
-    ["Route15"                ,["#006699C8" , "#006699C8"]],
-    ["Bottom"                 ,["#3232C8B4" , "#3232C8B4"]],
-    ["Pads"                   ,["#878787"   , "#878787"]],
-    ["Vias"                   ,["#000000"   , "#000000"]],
     ["Drill"                  ,["#CCCCCC"   , "#CCCCCC"]],
     ["BboundingBox_Default"   ,["#878787"   , "#878787"]],
     ["BboundingBox_Placed"    ,["#40D040"   , "#40D040"]],
@@ -34,6 +16,13 @@ var ColorMap = new Map(
     ["Pad_IsPlaced"           ,["#40D040"   , "#40D040"]],
     ["Default"                ,["#878787"   , "#878787"]]
 ]);
+
+
+
+function SetColor(colorName, colorCode)
+{
+    ColorMap.set(colorName, [colorCode, colorCode]);
+}
 
 /*
     Currently 2 supported color palette. 
@@ -58,7 +47,6 @@ function GetTraceColor(traceLayer)
         return traceColorMap[GetColorPalette()];
     }
 }
-
 
 
 function GetBoundingBoxColor(isHighlited, isPlaced)
@@ -146,5 +134,5 @@ function GetDrillColor()
 
 module.exports = {
     GetTraceColor, GetBoundingBoxColor, GetPadColor,
-    GetViaColor, GetDrillColor
+    GetViaColor, GetDrillColor, SetColor
 };

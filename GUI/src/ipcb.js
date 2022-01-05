@@ -20,7 +20,7 @@ var Render_Layer = require("./render/Render_Layer.js").Render_Layer;
 var version           = require("./version.js");
 
 var Fullscreen = require("./fullscreen.js");
-
+var colorMap        = require("./colormap.js");
 
 function setDarkMode(value)
 {
@@ -621,6 +621,19 @@ window.onload = function(e)
     for(let part of pcbdata.parts)
     {
         globalData.pcb_parts.push(new PCB_Part(part))
+    }
+
+    for(let config of pcbdata.configuration)
+    {
+        if(config.category=="color")
+        {
+            console.log(config.name, config.value)
+            colorMap.SetColor(config.name, config.value);
+        }
+        else
+        {
+            console.log("Warning: Unsupported parameter ", config.category, config.name);
+        }
     }
 
 
