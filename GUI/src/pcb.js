@@ -6,7 +6,6 @@
 
 "use strict";
 var Part     = require("./Part.js");
-var Metadata = require("./Metadata.js").Metadata;
 var globalData = require("./global.js");
 
 

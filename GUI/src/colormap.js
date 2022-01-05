@@ -3,19 +3,19 @@
 var globalData        = require("./global.js");
 
 var ColorMap = new Map(
-[ 
-    // Light Mode, Dark Mode
-    ["Drill"                  ,["#CCCCCC"   , "#CCCCCC"]],
-    ["BboundingBox_Default"   ,["#878787"   , "#878787"]],
-    ["BboundingBox_Placed"    ,["#40D040"   , "#40D040"]],
-    ["BboundingBox_Highlited" ,["#D04040"   , "#D04040"]],
-    ["BboundingBox_Debug"     ,["#2977ff"   , "#2977ff"]],
-    ["Pad_Default"            ,["#878787"   , "#878787"]],
-    ["Pad_Pin1"               ,["#ffb629"   , "#ffb629"]],
-    ["Pad_IsHighlited"        ,["#D04040"   , "#D04040"]],
-    ["Pad_IsPlaced"           ,["#40D040"   , "#40D040"]],
-    ["Default"                ,["#878787"   , "#878787"]]
-]);
+    [
+        // Light Mode, Dark Mode
+        ["Drill"                  ,["#CCCCCC"   , "#CCCCCC"]],
+        ["BboundingBox_Default"   ,["#878787"   , "#878787"]],
+        ["BboundingBox_Placed"    ,["#40D040"   , "#40D040"]],
+        ["BboundingBox_Highlited" ,["#D04040"   , "#D04040"]],
+        ["BboundingBox_Debug"     ,["#2977ff"   , "#2977ff"]],
+        ["Pad_Default"            ,["#878787"   , "#878787"]],
+        ["Pad_Pin1"               ,["#ffb629"   , "#ffb629"]],
+        ["Pad_IsHighlited"        ,["#D04040"   , "#D04040"]],
+        ["Pad_IsPlaced"           ,["#40D040"   , "#40D040"]],
+        ["Default"                ,["#878787"   , "#878787"]]
+    ]);
 
 
 
@@ -36,7 +36,7 @@ function GetColorPalette()
 
 function GetTraceColor(traceLayer)
 {
-    let traceColorMap = ColorMap.get(traceLayer)
+    let traceColorMap = ColorMap.get(traceLayer);
     if (traceColorMap == undefined)
     {
         //console.log("WARNING: Invalid trace layer number, using default.");
@@ -54,27 +54,27 @@ function GetBoundingBoxColor(isHighlited, isPlaced)
     // Order of color selection.
     if (isPlaced) 
     {
-        let traceColorMap = ColorMap.get("BboundingBox_Placed")
+        let traceColorMap = ColorMap.get("BboundingBox_Placed");
         return traceColorMap[GetColorPalette()];
     }
     // Highlighted and not placed
     else if(isHighlited)
     {
-        let traceColorMap = ColorMap.get("BboundingBox_Highlited")
+        let traceColorMap = ColorMap.get("BboundingBox_Highlited");
         return traceColorMap[GetColorPalette()];
     }
-    /* 
+    /*
         If debug mode is enabled then force drawing a bounding box
       not highlighted,  not placed, and debug mode active
     */
     else if(globalData.getDebugMode())
     {
-        let traceColorMap = ColorMap.get("BboundingBox_Debug")
+        let traceColorMap = ColorMap.get("BboundingBox_Debug");
         return traceColorMap[GetColorPalette()];
     }
     else
     {
-        let traceColorMap = ColorMap.get("BboundingBox_Default")
+        let traceColorMap = ColorMap.get("BboundingBox_Default");
         return traceColorMap[GetColorPalette()];
     }
 }
@@ -110,7 +110,7 @@ function GetViaColor()
     if (traceColorMap == undefined)
     {
         //console.log("WARNING: Invalid trace layer number, using default.");
-       return ColorMap.get("Default")[GetColorPalette()];
+        return ColorMap.get("Default")[GetColorPalette()];
     }
     else
     {

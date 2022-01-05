@@ -49,9 +49,9 @@ function RenderPCB(canvasdict)
     DrawLayers (isViewFront, canvasdict.transform.s);
 }
 
-function ClearCanvas(canvasdict)
+function ClearCanvas()
 {
-   initRender();
+    initRender();
 }
 
 function RotateVector(v, angle)
@@ -105,7 +105,7 @@ function drawHighlightsOnLayer(canvasdict)
     DrawModules   (isViewFront, canvasdict.layer, canvasdict.transform.s, globalData.getHighlightedRefs());
 }
 
-function drawHighlights(passed) 
+function drawHighlights() 
 {
     //drawHighlightsOnLayer(globalData.GetAllCanvas().front);
     //drawHighlightsOnLayer(globalData.GetAllCanvas().back);

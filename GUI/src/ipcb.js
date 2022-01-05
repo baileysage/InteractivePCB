@@ -8,8 +8,8 @@ var globalData        = require("./global.js");
 var render            = require("./render.js");
 var pcb               = require("./pcb.js");
 var handlers_mouse    = require("./handlers_mouse.js");
-var layerTable        = require("./layer_table.js")
-var bomTable          = require("./bom_table.js")
+var layerTable        = require("./layer_table.js");
+var bomTable          = require("./bom_table.js");
 var Metadata          = require("./Metadata.js").Metadata;
 
 var PCB_Trace = require("./PCB/PCB_Trace.js").PCB_Trace;
@@ -163,7 +163,7 @@ function populateMetadata()
     }
     else
     {
-        document.getElementById("revision").innerHTML = "Revision: " + metadata.revision.toString();;
+        document.getElementById("revision").innerHTML = "Revision: " + metadata.revision.toString();
     }
 
     if(metadata.company == undefined)
@@ -177,20 +177,20 @@ function populateMetadata()
 
     if(metadata.project_name == undefined)
     {
-         document.getElementById("title").innerHTML = "";
+        document.getElementById("title").innerHTML = "";
     }
     else
     {
-         document.getElementById("title").innerHTML = metadata.project_name;
+        document.getElementById("title").innerHTML = metadata.project_name;
     }
 
     if(metadata.date == undefined)
     {
-         document.getElementById("filedate").innerHTML = "";
+        document.getElementById("filedate").innerHTML = "";
     }
     else
     {
-         document.getElementById("filedate").innerHTML = metadata.date;
+        document.getElementById("filedate").innerHTML = metadata.date;
     }
 }
 
@@ -259,7 +259,7 @@ document.onkeydown = function(e)
         highlightNextRow();
         e.preventDefault();
         break;
-     case "F11":
+    case "F11":
          e.preventDefault();
         break;
     default:
@@ -603,31 +603,31 @@ window.onload = function(e)
 
     let versionNumberHTML       = document.getElementById("softwareVersion");
     versionNumberHTML.innerHTML = version.GetVersionString();
-    console.log(version.GetVersionString())
+    console.log(version.GetVersionString());
 
     /* Create trace objects from JSON file */
     for(let trace of pcbdata.board.traces)
     {
-        globalData.pcb_traces.push(new PCB_Trace(trace))
+        globalData.pcb_traces.push(new PCB_Trace(trace));
     }
 
     /* Create layer objects from JSON file */
     for(let layer of pcbdata.board.layers)
     {
-        globalData.layer_list.set(layer.name, [new PCB_Layer(layer), new Render_Layer(layer)])
+        globalData.layer_list.set(layer.name, [new PCB_Layer(layer), new Render_Layer(layer)]);
     }
 
     /* Create layer objects from JSON file */
     for(let part of pcbdata.parts)
     {
-        globalData.pcb_parts.push(new PCB_Part(part))
+        globalData.pcb_parts.push(new PCB_Part(part));
     }
 
     for(let config of pcbdata.configuration)
     {
         if(config.category=="color")
         {
-            console.log(config.name, config.value)
+            console.log(config.name, config.value);
             colorMap.SetColor(config.name, config.value);
         }
         else

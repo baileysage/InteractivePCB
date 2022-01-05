@@ -28,7 +28,8 @@ Build/build.stamp: Build/index.js Build/index.css Build/iPCB.html
 	touch $@
 
 Build/index.js_pretty: $(JS_DEPS)/.stamp $(JS_SRCS) Build/pcbdata.json index.css | Build
-	$(BROWSERIFY) ./src/ipcb.js ./src/render.js ./src/htmlFunctions.js ./src/pcb.js ./src/colormap.js --debug --outfile $@ 
+	@#$(BROWSERIFY) ./src/ipcb.js ./src/render.js ./src/htmlFunctions.js ./src/pcb.js ./src/colormap.js --debug --outfile $@ -t eslintify
+	$(BROWSERIFY) ./src/ipcb.js ./src/render.js ./src/htmlFunctions.js ./src/pcb.js ./src/colormap.js --debug --outfile $@
 
 Build/index.js: Build/index.js_pretty | Build
 	cp $< $@
