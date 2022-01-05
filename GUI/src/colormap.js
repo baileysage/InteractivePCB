@@ -2,71 +2,38 @@
 
 var globalData        = require("./global.js");
 
-var traceColorMap = 
-[ 
-    // Light Mode, Dark Mode
-    ["#C83232B4" , "#C83232B4"],
-    ["#CC6600C8" , "#CC6600C8"],
-    ["#CC9900C8" , "#CC9900C8"],
-    ["#336600C8" , "#336600C8"],
-    ["#666633C8" , "#666633C8"],
-    ["#FFCC33C8" , "#FFCC33C8"],
-    ["#669900C8" , "#669900C8"],
-    ["#999966C8" , "#999966C8"],
-    ["#99CC99C8" , "#99CC99C8"],
-    ["#669999C8" , "#669999C8"],
-    ["#33CC99C8" , "#33CC99C8"],
-    ["#669966C8" , "#669966C8"],
-    ["#336666C8" , "#336666C8"],
-    ["#009966C8" , "#009966C8"],
-    ["#006699C8" , "#006699C8"],
-    ["#3232C8B4" , "#3232C8B4"],
-];
-
-
 var ColorMap = new Map(
 [ 
     // Light Mode, Dark Mode
-    ["Top"    ,["#C83232B4" , "#C83232B4"]],
-    ["Route2" ,["#CC6600C8" , "#CC6600C8"]],
-    ["Route3" ,["#CC9900C8" , "#CC9900C8"]],
-    ["Route4" ,["#336600C8" , "#336600C8"]],
-    ["Route5" ,["#666633C8" , "#666633C8"]],
-    ["Route6" ,["#FFCC33C8" , "#FFCC33C8"]],
-    ["Route7" ,["#669900C8" , "#669900C8"]],
-    ["Route8" ,["#999966C8" , "#999966C8"]],
-    ["Route9" ,["#99CC99C8" , "#99CC99C8"]],
-    ["Route10",["#669999C8" , "#669999C8"]],
-    ["Route11",["#33CC99C8" , "#33CC99C8"]],
-    ["Route12",["#669966C8" , "#669966C8"]],
-    ["Route13",["#336666C8" , "#336666C8"]],
-    ["Route14",["#009966C8" , "#009966C8"]],
-    ["Route15",["#006699C8" , "#006699C8"]],
-    ["Bottom" ,["#3232C8B4" , "#3232C8B4"]],
-    ["Default",["#878787"   , "#878787"]]
+    ["Top"                    ,["#C83232B4" , "#C83232B4"]],
+    ["Route2"                 ,["#CC6600C8" , "#CC6600C8"]],
+    ["Route3"                 ,["#CC9900C8" , "#CC9900C8"]],
+    ["Route4"                 ,["#336600C8" , "#336600C8"]],
+    ["Route5"                 ,["#666633C8" , "#666633C8"]],
+    ["Route6"                 ,["#FFCC33C8" , "#FFCC33C8"]],
+    ["Route7"                 ,["#669900C8" , "#669900C8"]],
+    ["Route8"                 ,["#999966C8" , "#999966C8"]],
+    ["Route9"                 ,["#99CC99C8" , "#99CC99C8"]],
+    ["Route10"                ,["#669999C8" , "#669999C8"]],
+    ["Route11"                ,["#33CC99C8" , "#33CC99C8"]],
+    ["Route12"                ,["#669966C8" , "#669966C8"]],
+    ["Route13"                ,["#336666C8" , "#336666C8"]],
+    ["Route14"                ,["#009966C8" , "#009966C8"]],
+    ["Route15"                ,["#006699C8" , "#006699C8"]],
+    ["Bottom"                 ,["#3232C8B4" , "#3232C8B4"]],
+    ["Pads"                   ,["#878787"   , "#878787"]],
+    ["Vias"                   ,["#000000"   , "#000000"]],
+    ["Drill"                  ,["#CCCCCC"   , "#CCCCCC"]],
+    ["BboundingBox_Default"   ,["#878787"   , "#878787"]],
+    ["BboundingBox_Placed"    ,["#40D040"   , "#40D040"]],
+    ["BboundingBox_Highlited" ,["#D04040"   , "#D04040"]],
+    ["BboundingBox_Debug"     ,["#2977ff"   , "#2977ff"]],
+    ["Pad_Default"            ,["#878787"   , "#878787"]],
+    ["Pad_Pin1"               ,["#ffb629"   , "#ffb629"]],
+    ["Pad_IsHighlited"        ,["#D04040"   , "#D04040"]],
+    ["Pad_IsPlaced"           ,["#40D040"   , "#40D040"]],
+    ["Default"                ,["#878787"   , "#878787"]]
 ]);
-
-
-
-var traceColor_Default     =    ["#878787", "#878787"];
-//                         Light Mode, Dark Mode
-var padColor_Default     = ["#878787", "#878787"]   ;
-var padColor_Pin1        = ["#ffb629", "#ffb629"]   ;
-var padColor_IsHighlited = ["#D04040", "#D04040"]   ;
-var padColor_IsPlaced    = ["#40D040", "#40D040"];
-
-//                               Light Mode, Dark Mode
-var boundingBoxColor_Default   = ["#878787", "#878787"];
-var boundingBoxColor_Placed    = ["#40D040", "#40D040"];
-var boundingBoxColor_Highlited = ["#D04040", "#D04040"];
-var boundingBoxColor_Debug     = ["#2977ff", "#2977ff"];
-
-var drillColor    = ["#CCCCCC", "#CCCCCC"];
-var viaColor      = ["#000000", "#000000"];
-
-//                 Light Mode, Dark Mode
-var pcbEdgeColor = ["#000000FF","#FFFFFFFF"];
-
 
 /*
     Currently 2 supported color palette. 
@@ -84,31 +51,29 @@ function GetTraceColor(traceLayer)
     if (traceColorMap == undefined)
     {
         //console.log("WARNING: Invalid trace layer number, using default.");
-        return traceColor_Default;
+        return ColorMap.get("Default")[GetColorPalette()];
     }
     else
     {
-        console.log(traceLayer)
         return traceColorMap[GetColorPalette()];
     }
-    
 }
 
 
 
 function GetBoundingBoxColor(isHighlited, isPlaced)
 {
-    let result = boundingBoxColor_Default;
-
     // Order of color selection.
     if (isPlaced) 
     {
-        result     = boundingBoxColor_Placed[GetColorPalette()];
+        let traceColorMap = ColorMap.get("BboundingBox_Placed")
+        return traceColorMap[GetColorPalette()];
     }
     // Highlighted and not placed
     else if(isHighlited)
     {
-        result     = boundingBoxColor_Highlited[GetColorPalette()];
+        let traceColorMap = ColorMap.get("BboundingBox_Highlited")
+        return traceColorMap[GetColorPalette()];
     }
     /* 
         If debug mode is enabled then force drawing a bounding box
@@ -116,55 +81,70 @@ function GetBoundingBoxColor(isHighlited, isPlaced)
     */
     else if(globalData.getDebugMode())
     {
-        result = boundingBoxColor_Debug[GetColorPalette()];
+        let traceColorMap = ColorMap.get("BboundingBox_Debug")
+        return traceColorMap[GetColorPalette()];
     }
     else
     {
-        result = boundingBoxColor_Default[GetColorPalette()];
+        let traceColorMap = ColorMap.get("BboundingBox_Default")
+        return traceColorMap[GetColorPalette()];
     }
-    return result;
 }
 
 
 function GetPadColor(isPin1, isHighlited, isPlaced)
 {
-    let result = padColor_Default;
-
     if(isPin1)
     {
-        result = padColor_Pin1[GetColorPalette()];
+        let traceColorMap = ColorMap.get("Pad_Pin1");
+        return traceColorMap[GetColorPalette()];
     }
     else if(isPlaced && isHighlited)
     {
-        result = padColor_IsPlaced[GetColorPalette()];
+        let traceColorMap = ColorMap.get("Pad_IsPlaced");
+        return traceColorMap[GetColorPalette()];
     }
     else if(isHighlited)
     {
-        result = padColor_IsHighlited[GetColorPalette()];
+        let traceColorMap = ColorMap.get("Pad_IsHighlited");
+        return traceColorMap[GetColorPalette()];
     }
     else
     {
-        result = padColor_Default[GetColorPalette()];
+        let traceColorMap = ColorMap.get("Pad_Default");
+        return traceColorMap[GetColorPalette()];
     }
-    return result;
-}
-
-function GetPCBEdgeColor()
-{
-    return pcbEdgeColor[GetColorPalette()];
 }
 
 function GetViaColor()
 {
-    return viaColor[GetColorPalette()];
+    let traceColorMap = ColorMap.get("Vias");
+    if (traceColorMap == undefined)
+    {
+        //console.log("WARNING: Invalid trace layer number, using default.");
+       return ColorMap.get("Default")[GetColorPalette()];
+    }
+    else
+    {
+        return traceColorMap[GetColorPalette()];
+    }
 }
 
 function GetDrillColor()
 {
-    return drillColor[GetColorPalette()];
+    let traceColorMap = ColorMap.get("Drill");
+    if (traceColorMap == undefined)
+    {
+        //console.log("WARNING: Invalid trace layer number, using default.");
+        return ColorMap.get("Default")[GetColorPalette()];
+    }
+    else
+    {
+        return traceColorMap[GetColorPalette()];
+    }
 }
 
 module.exports = {
-    GetTraceColor, GetBoundingBoxColor, GetPadColor, GetPCBEdgeColor,
+    GetTraceColor, GetBoundingBoxColor, GetPadColor,
     GetViaColor, GetDrillColor
 };
