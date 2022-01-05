@@ -145,7 +145,7 @@ class Table_LayerEntry
 
         var span = document.createElement("Span");
         span.classList.add("checkmark_color")
-        span.style.backgroundColor = colorMap.GetTraceColor(layer.layerNumber);
+        span.style.backgroundColor = colorMap.GetTraceColor(layer.name);
 
         newlabel.appendChild(input);
         newlabel.appendChild(span);

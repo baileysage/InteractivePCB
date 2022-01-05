@@ -25,7 +25,7 @@ class Segment_Arc extends Segment
         guiContext.save();
 
         let renderOptions = { 
-            color    : colorMap.GetTraceColor(this.layer-1),
+            color    : colorMap.GetTraceColor(this.layer),
             fill     : false,
             lineWidth: Math.max(1 / scalefactor, this.width),
             lineCap  : "round" 

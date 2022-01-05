@@ -94,42 +94,42 @@ void PrintSignalType_PolyArc( real x0, real y0, real radius, real angle0, real a
 }
 
 
-void PrintSignalVia_Round(int layer,real x, real y, real diameter, real drill)
+void PrintSignalVia_Round(string layerName,real x, real y, real diameter, real drill)
 {
-    printf( "{\"type\":\"via_round\",\"layer\":%d,\"x\":%5.5f,\"y\":%5.5f,\"diameter\":%5.5f,\"drill\":%5.5f}",
-            layer, x, y, diameter, drill
+    printf( "{\"type\":\"via_round\",\"layer\":\"%s\",\"x\":%5.5f,\"y\":%5.5f,\"diameter\":%5.5f,\"drill\":%5.5f}",
+            layerName, x, y, diameter, drill
           );
 }
 
-void PrintSignalVia_Octagon(int layer,real x, real y, real diameter, real drill)
+void PrintSignalVia_Octagon(string layerName,real x, real y, real diameter, real drill)
 {
-    printf( "{\"type\":\"via_octagon\",\"layer\":%d,\"x\":%5.5f,\"y\":%5.5f,\"diameter\":%5.5f,\"drill\":%5.5f}",
-            layer, x, y, diameter, drill
-          );
-}
-
-
-void PrintSignalVia_Square(int layer, real x, real y, real diameter, real drill)
-{
-    printf( "{\"type\":\"via_square\",\"layer\":%d,\"x\":%5.5f,\"y\":%5.5f,\"diameter\":%5.5f,\"drill\":%5.5f}",
-            layer, x, y, diameter, drill
+    printf( "{\"type\":\"via_octagon\",\"layer\":\"%s\",\"x\":%5.5f,\"y\":%5.5f,\"diameter\":%5.5f,\"drill\":%5.5f}",
+            layerName, x, y, diameter, drill
           );
 }
 
 
-
-void PrintPathType_Line(int layer, real x0, real y0, real x1, real y1, real width)
+void PrintSignalVia_Square(string layerName, real x, real y, real diameter, real drill)
 {
-    printf( "{\"type\":\"line\",\"layer\":%d,\"x0\":%5.5f,\"y0\":%5.5f,\"x1\":%5.5f,\"y1\":%5.5f,\"width\":%5.5f}",
-            layer, x0, y0, x1, y1, width
+    printf( "{\"type\":\"via_square\",\"layer\":\"%s\",\"x\":%5.5f,\"y\":%5.5f,\"diameter\":%5.5f,\"drill\":%5.5f}",
+            layerName, x, y, diameter, drill
+          );
+}
+
+
+
+void PrintPathType_Line(string layerName, real x0, real y0, real x1, real y1, real width)
+{
+    printf( "{\"type\":\"line\",\"layer\":\"%s\",\"x0\":%5.5f,\"y0\":%5.5f,\"x1\":%5.5f,\"y1\":%5.5f,\"width\":%5.5f}",
+            layerName, x0, y0, x1, y1, width
           );
 }
 
 // x0 and y0 represent the center of the circle the arc is based on
-void PrintPathType_Arc(int layer, real x0, real y0, real radius, real angle0, real angle1, real width)
+void PrintPathType_Arc(string layerName, real x0, real y0, real radius, real angle0, real angle1, real width)
 {
-    printf( "{\"type\":\"arc\",\"layer\":%d,\"cx0\":%5.5f,\"cy0\":%5.5f,\"radius\":%5.5f,\"angle0\":%5.5f,\"angle1\":%5.5f,\"width\":%5.5f,\"direction\":\"clockwise\"}",
-            layer, x0, y0, radius, angle0, angle1, width
+    printf( "{\"type\":\"arc\",\"layer\":\"%s\",\"cx0\":%5.5f,\"cy0\":%5.5f,\"radius\":%5.5f,\"angle0\":%5.5f,\"angle1\":%5.5f,\"width\":%5.5f,\"direction\":\"clockwise\"}",
+            layerName, x0, y0, radius, angle0, angle1, width
           );
 }
 
@@ -141,7 +141,7 @@ void PrintLayer(int layerNumber, string layerName)
     board(B)
     {
         printf("{");
-        printf("\"name\":\"%s\",\"layerNumber\":%d,\"paths\":[",layerName, layerNumber);
+        printf("\"name\":\"%s\",\"paths\":[",layerName);
         int once = 0;
         B.texts(T)
         {
@@ -155,11 +155,11 @@ void PrintLayer(int layerNumber, string layerName)
                     }
                     if(W.arc)
                     {
-                        PrintPathType_Arc(layerNumber, u2mm(W.arc.xc), u2mm(W.arc.yc),  u2mm(W.arc.radius),  W.arc.angle1,  W.arc.angle2,  u2mm(W.width));
+                        PrintPathType_Arc(layerName, u2mm(W.arc.xc), u2mm(W.arc.yc),  u2mm(W.arc.radius),  W.arc.angle1,  W.arc.angle2,  u2mm(W.width));
                     }
                     else
                     {
-                        PrintPathType_Line(layerNumber, u2mm(W.x1),  u2mm(W.y1),  u2mm(W.x2),  u2mm(W.y2),  u2mm(W.width));
+                        PrintPathType_Line(layerName, u2mm(W.x1),  u2mm(W.y1),  u2mm(W.x2),  u2mm(W.y2),  u2mm(W.width));
                     }
                     once = 1;
                 }
@@ -177,11 +177,11 @@ void PrintLayer(int layerNumber, string layerName)
                 if(W.arc)
                 {
                     // According to eagle documentation, output is always clockwise.
-                    PrintPathType_Arc(W.layer , u2mm(W.arc.xc), u2mm(W.arc.yc),  u2mm(W.arc.radius),  W.arc.angle1,  W.arc.angle2,  u2mm(W.width));
+                    PrintPathType_Arc(layerName , u2mm(W.arc.xc), u2mm(W.arc.yc),  u2mm(W.arc.radius),  W.arc.angle1,  W.arc.angle2,  u2mm(W.width));
                 }
                 else
                 {
-                    PrintPathType_Line(W.layer , u2mm(W.x1),  u2mm(W.y1),  u2mm(W.x2),  u2mm(W.y2),  u2mm(W.width));
+                    PrintPathType_Line(layerName, u2mm(W.x1),  u2mm(W.y1),  u2mm(W.x2),  u2mm(W.y2),  u2mm(W.width));
                 }
                 once = 1;
             }
@@ -431,11 +431,11 @@ void GeneratePCBEdges( void )
                 if(W.arc)
                 {
                     // According to eagle documentation, output is always clockwise. 
-                    PrintPathType_Arc(W.layer , u2mm(W.arc.xc), u2mm(W.arc.yc),  u2mm(W.arc.radius),  W.arc.angle1,  W.arc.angle2,  u2mm(W.width));
+                    PrintPathType_Arc(layerNames[W.layer] , u2mm(W.arc.xc), u2mm(W.arc.yc),  u2mm(W.arc.radius),  W.arc.angle1,  W.arc.angle2,  u2mm(W.width));
                 }
                 else
                 {
-                    PrintPathType_Line(W.layer , u2mm(W.x1),  u2mm(W.y1),  u2mm(W.x2),  u2mm(W.y2),  u2mm(W.width));
+                    PrintPathType_Line(layerNames[W.layer] , u2mm(W.x1),  u2mm(W.y1),  u2mm(W.x2),  u2mm(W.y2),  u2mm(W.width));
                 }
                 once = 1;
             }
@@ -480,11 +480,11 @@ void PrintTraces(void)
                 if(W.arc)
                 {
                     // According to eagle documentation, output is always clockwise.
-                    PrintPathType_Arc(W.layer ,u2mm(W.arc.xc), u2mm(W.arc.yc),  u2mm(W.arc.radius),  W.arc.angle1,  W.arc.angle2,  u2mm(W.width));
+                    PrintPathType_Arc(layerNames[W.layer] ,u2mm(W.arc.xc), u2mm(W.arc.yc),  u2mm(W.arc.radius),  W.arc.angle1,  W.arc.angle2,  u2mm(W.width));
                 }
                 else
                 {
-                    PrintPathType_Line(W.layer, u2mm(W.x1), u2mm(W.y1), u2mm(W.x2), u2mm(W.y2), u2mm(W.width));
+                    PrintPathType_Line(layerNames[W.layer], u2mm(W.x1), u2mm(W.y1), u2mm(W.x2), u2mm(W.y2), u2mm(W.width));
                 }
                 once_wire = 1;
             }
@@ -497,16 +497,16 @@ void PrintTraces(void)
                 }
                 if(V.shape[LAYER_TOP] ==  VIA_SHAPE_SQUARE)
                 {
-                    PrintSignalVia_Square(LAYER_VIAS,u2mm(V.x), u2mm(V.y), u2mm(V.diameter[LAYER_TOP]), u2mm(V.drill));
+                    PrintSignalVia_Square(layerNames[LAYER_VIAS],u2mm(V.x), u2mm(V.y), u2mm(V.diameter[LAYER_TOP]), u2mm(V.drill));
                 }
                 else if(V.shape[LAYER_TOP] ==  VIA_SHAPE_ROUND)
                 {
-                    PrintSignalVia_Round(LAYER_VIAS,u2mm(V.x), u2mm(V.y), u2mm(V.diameter[LAYER_TOP]), u2mm(V.drill));
+                    PrintSignalVia_Round(layerNames[LAYER_VIAS],u2mm(V.x), u2mm(V.y), u2mm(V.diameter[LAYER_TOP]), u2mm(V.drill));
                 }
                 // must be octagon
                 else
                 {
-                    PrintSignalVia_Octagon(LAYER_VIAS,u2mm(V.x), u2mm(V.y), u2mm(V.diameter[LAYER_TOP]), u2mm(V.drill));
+                    PrintSignalVia_Octagon(layerNames[LAYER_VIAS],u2mm(V.x), u2mm(V.y), u2mm(V.diameter[LAYER_TOP]), u2mm(V.drill));
                 }
                 once_wire = 1;
             }

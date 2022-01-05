@@ -45,7 +45,7 @@ class Segment_Polygon extends Segment
 
         let compositionType = (this.positive) ? "source-over" : "destination-out";
         let renderOptions = {
-            color: colorMap.GetTraceColor(this.layer-1),
+            color: colorMap.GetTraceColor(this.layer),
             fill: true,
             compositionType: compositionType
         };

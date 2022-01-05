@@ -79,9 +79,9 @@ function getAttributeValue(part, attributeToLookup)
                                          PCB Layers Interfaces
 ***************************************************************************************************/
 
-function GetLayerCanvas(layerNumber, isFront)
+function GetLayerCanvas(layerName, isFront)
 {
-    let layerCanvas = globalData.layer_list.get(layerNumber);
+    let layerCanvas = globalData.layer_list.get(layerName);
 
     if(layerCanvas == undefined)
     {
