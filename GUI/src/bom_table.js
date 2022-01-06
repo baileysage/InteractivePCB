@@ -5,7 +5,7 @@ var render     = require("./render.js");
 
 function createCheckboxChangeHandler(checkbox, bomentry)
 {
-    return function() 
+    return function(event) 
     {
         if(bomentry.checkboxes.get(checkbox))
         {
@@ -27,7 +27,15 @@ function createCheckboxChangeHandler(checkbox, bomentry)
         // Render current row so its highlighted
         document.getElementById(rowid).classList.add("highlighted");
         // Set current selected row global variable
-        globalData.setCurrentHighlightedRowId(rowid);
+        if(event.ctrlKey)
+        {
+            globalData.setCurrentHighlightedRowId(rowid, true);
+        }
+        else
+        {
+            globalData.setCurrentHighlightedRowId(rowid, false);
+        }
+        
         // If highlighted then a special color will be used for the part.
         render.drawHighlights(IsCheckboxClicked(globalData.getCurrentHighlightedRowId(), "placed"));
     };
@@ -141,7 +149,7 @@ function populateBomBody()
     clearBOMTable();
 
     globalData.setHighlightHandlers([]);
-    globalData.setCurrentHighlightedRowId(null);
+    globalData.setCurrentHighlightedRowId(null, false);
 
     let bomtable = pcb.GetBOM();
 
@@ -244,22 +252,37 @@ function populateBomBody()
 
 function createRowHighlightHandler(rowid, refs)
 {
-    return function()
+    return function(event)
     {
-        if (globalData.getCurrentHighlightedRowId())
+        /*
+            If control key not pressed, then highlight all rows.
+        */
+        if(event.ctrlKey)
         {
-            if (globalData.getCurrentHighlightedRowId() == rowid)
+            // Skip, do nothing.
+        }
+        else
+        {
+            let highlitedRows = globalData.getCurrentHighlightedRowId()
+            for(let highlitedRow of highlitedRows)
             {
-                return;
+                if (highlitedRow == rowid)
+                {
+                    globalData.setCurrentHighlightedRowId(highlitedRow, false);
+                    globalData.setHighlightedRefs(refs);
+                    render.drawHighlights(IsCheckboxClicked(highlitedRow, "placed"));
+                }
+                else
+                {
+                    document.getElementById(highlitedRow).classList.remove("highlighted");
+                }
             }
-            document.getElementById(globalData.getCurrentHighlightedRowId()).classList.remove("highlighted");
         }
 
         document.getElementById(rowid).classList.add("highlighted");
-        globalData.setCurrentHighlightedRowId(rowid);
+        globalData.setCurrentHighlightedRowId(rowid, true);
+        render.drawHighlights(IsCheckboxClicked(rowid, "placed"));
         globalData.setHighlightedRefs(refs);
-        // If highlighted then a special color will be used for the part.
-        render.drawHighlights(IsCheckboxClicked(globalData.getCurrentHighlightedRowId(), "placed"));
     }
 }
 
@@ -285,7 +308,7 @@ function populateBomTable()
 
 function populateBomHeader() 
 {
-    bomhead   = document.getElementById("bomhead");
+    let bomhead   = document.getElementById("bomhead");
     while (bomhead.firstChild)
     {
         bomhead.removeChild(bomhead.firstChild);

@@ -327,11 +327,25 @@ function getCurrentSortOrder()
 /*************************************************
 Current Highlighted Row ID
 *************************************************/
-let currentHighlightedRowId;
+let currentHighlightedRowId = [];
 
-function setCurrentHighlightedRowId(value)
+function setCurrentHighlightedRowId(value, isMulti)
 {
-    currentHighlightedRowId = value;
+    if(value == null)
+    {
+        currentHighlightedRowId = [];
+    }
+    else
+    {
+        if(isMulti)
+        {
+            currentHighlightedRowId.push(value);
+        }
+        else
+        {
+            currentHighlightedRowId = [value];
+        }
+    }
 }
 
 function getCurrentHighlightedRowId()

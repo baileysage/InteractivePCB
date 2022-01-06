@@ -164,6 +164,7 @@ canvas:active {
 
 .bom tr.highlighted:nth-child(n) {
   background-color: #cfc;
+  -moz-user-select: none;
 }
 
 .dark .bom tr.highlighted:nth-child(n) {
