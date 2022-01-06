@@ -297,11 +297,13 @@ void PrintPads(UL_ELEMENT E)
         // Pin 1
         if(C.name=="1")
         {
-           printf("\"pin1\":\"yes\",");
+            // Yes
+           printf("\"pin1\":1,");
         }
         else
         {
-            printf("\"pin1\":\"no\",");
+            // No
+            printf("\"pin1\":0,");
         }
 
         /* Set shape */

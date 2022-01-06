@@ -1,9 +1,10 @@
 "use strict";
 
-var Package_Pad         = require("./Package_Pad.js").Package_Pad
+var Package_Pad     = require("./Package_Pad.js").Package_Pad
 var Point           = require("../render/point.js").Point
 var render_lowlevel = require("../render/render_lowlevel.js");
-var pcb                = require("../pcb.js");
+var pcb             = require("../pcb.js");
+var colormap        = require("../colormap.js");
 
 class Package_Pad_Rectangle extends Package_Pad
 {
@@ -51,9 +52,9 @@ class Package_Pad_Rectangle extends Package_Pad
             // Bottom left point
             let point3 = new Point(-this.dx/2, -this.dy/2);
 
-
+            let color = colormap.GetPadColor(this.pin1, false, false);
             let renderOptions = {
-                color: 'black',
+                color: color,
                 fill: true,
             };
 

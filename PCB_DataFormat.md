@@ -77,7 +77,7 @@ Generated JSON is validated using [JSON Formatter & Validator](https://jsonforma
     
 
     <PAD_TYPE>    ::= "\"smd\""  | "\"tht\""
-    <PAD_PIN_ONE> ::= "\"yes\""  | "\"no\""
+    <PAD_PIN_ONE> ::= "1" | "0" //  1 = Yes, 0 = No
     <PAD_SHAPE>   ::= "\"rect\"" | "\"octagon\"" | "\"oblong\"" | "\"circle\""
 
     /*************** CONFIG SECTION ***************/
