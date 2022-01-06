@@ -627,7 +627,6 @@ window.onload = function(e)
     {
         if(config.category=="color")
         {
-            console.log(config.name, config.value);
             colorMap.SetColor(config.name, config.value);
         }
         else

@@ -62,7 +62,7 @@ class Package_Pad_Oblong extends Package_Pad
             let centerPoint = new Point(this.x, this.y);
 
             let renderOptions = { 
-                color: color,
+                color: "black",
                 fill: true,
             };
 
