@@ -25,9 +25,9 @@ class PCB_Part
 
     }
 
-    Render(isViewFront)
+    Render(guiContext, isViewFront)
     {
-        this.package.Render(isViewFront, this.location);
+        this.package.Render(guiContext, isViewFront, this.location);
     }
 }
 

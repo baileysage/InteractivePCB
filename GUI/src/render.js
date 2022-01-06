@@ -4,6 +4,7 @@
 
 var globalData         = require("./global.js");
 var render_canvas      = require("./render/render_Canvas.js");
+var pcb                = require("./pcb.js");
 
 function DrawTraces(isViewFront, scalefactor)
 {
@@ -23,15 +24,29 @@ function DrawLayers(isViewFront, scalefactor)
 
 function DrawModules(isViewFront)
 {
+    // TODO: Global function here. GUI context should be passed as 
+    //       an argument to the function. 
+    let guiContext = pcb.GetLayerCanvas("Pads", isViewFront).getContext("2d")
     for (let part of globalData.pcb_parts)
     {
-        part.Render(isViewFront);
+        part.Render(guiContext, isViewFront);
     }
 }
 
 function DrawHighlitedModules(isViewFront, layer, scalefactor, refs)
 {
     console.log(refs)
+    // TODO: Global function here. GUI context should be passed as 
+    //       an argument to the function. 
+    let guiContext = pcb.GetLayerCanvas("Highlights", isViewFront).getContext("2d")
+    // Draw selected parts on highlight layer.
+    for (let part of globalData.pcb_parts)
+    {
+        if(refs.includes(part.name))
+        {
+            part.Render(guiContext, isViewFront);
+        }
+    }
 }
 
 function RenderPCB(canvasdict)
@@ -114,7 +129,7 @@ function drawHighlightsOnLayer(canvasdict)
 function drawHighlights() 
 {
     drawHighlightsOnLayer(globalData.GetAllCanvas().front);
-    //drawHighlightsOnLayer(globalData.GetAllCanvas().back);
+    drawHighlightsOnLayer(globalData.GetAllCanvas().back);
 }
 
 function resizeAll() 

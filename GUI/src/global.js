@@ -109,11 +109,17 @@ function setHighlightedRefs(refs, isMulti)
     {
         if(isMulti)
         {
-            highlightedRefs.push(ConvertRangesToReferenceDesignators(refs));
+            // Skip
         }
         else
         {
-            highlightedRefs = [ConvertRangesToReferenceDesignators(refs)];
+            highlightedRefs = [];
+        }
+
+        let newRefs = ConvertRangesToReferenceDesignators(refs);
+        for(let ref of newRefs)
+        {
+            highlightedRefs.push(ref);
         }
     }
 }

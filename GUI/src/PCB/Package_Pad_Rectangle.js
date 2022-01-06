@@ -3,7 +3,6 @@
 var Package_Pad     = require("./Package_Pad.js").Package_Pad
 var Point           = require("../render/point.js").Point
 var render_lowlevel = require("../render/render_lowlevel.js");
-var pcb             = require("../pcb.js");
 var colormap        = require("../colormap.js");
 
 class Package_Pad_Rectangle extends Package_Pad
@@ -22,13 +21,8 @@ class Package_Pad_Rectangle extends Package_Pad
         this.drill      = iPCB_JSON_Pad.drill;
     }
 
-    Render(isFront, location)
+    Render(guiContext, isFront, location)
     {
-        // TODO: Global function here. GUI context should be passed as 
-        //       an argument to the function. 
-        let guiContext = pcb.GetLayerCanvas("Pads", isFront).getContext("2d")
-
-
         if(    (((location == "F") && (this.pad_type == "smd") &&  isFront))
             || (((location == "B") && (this.pad_type == "smd") && !isFront))
             || (this.pad_type == "tht")

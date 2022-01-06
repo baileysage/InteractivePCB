@@ -8,8 +8,6 @@ var Package_Pad_Oblong     = require("./Package_Pad_Oblong.js").Package_Pad_Oblo
 var Package_Pad_Round      = require("./Package_Pad_Round.js").Package_Pad_Round;
 var Package_Pad_Octagon    = require("./Package_Pad_Octagon.js").Package_Pad_Octagon;
 
-
-
 class Package
 {
     constructor(iPCB_JSON_Package)
@@ -45,11 +43,11 @@ class Package
         }
     }
 
-    Render(isViewFront, location)
+    Render(guiContext, isViewFront, location)
     {
         for (let pad of this.pads)
         {
-            pad.Render(isViewFront, location);
+            pad.Render(guiContext, isViewFront, location);
         }
     }
 }
