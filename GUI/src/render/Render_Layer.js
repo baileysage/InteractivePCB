@@ -5,7 +5,7 @@ let layerZNumber = 0;
 class Render_Layer
 {
     // Render should take as an argument the model not the raw JSON data
-    constructor(iPCB_JSON_Layer, layerNumber)
+    constructor(iPCB_JSON_Layer)
     {
         this.visible_front = true;
         this.visible_back  = true;

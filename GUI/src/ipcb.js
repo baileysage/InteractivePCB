@@ -617,6 +617,24 @@ window.onload = function(e)
         globalData.layer_list.set(layer.name, [new PCB_Layer(layer), new Render_Layer(layer)]);
     }
 
+    /*
+        Internally the following layers are used
+            1. Pads
+            2. Highlights
+        If these were not created before, then they will be created here.
+    */
+    let layerPads       = {"name":"Pads", "paths": []};
+    if(globalData.layer_list.get(layerPads.name) == undefined)
+    {
+        globalData.layer_list.set(layerPads.name, [new PCB_Layer(layerPads), new Render_Layer(layerPads)]);
+    }
+
+    let layerHighlights = {"name":"Highlights", "paths": []};
+    if(globalData.layer_list.get(layerHighlights.name) == undefined)
+    {
+        globalData.layer_list.set(layerHighlights.name, [new PCB_Layer(layerHighlights), new Render_Layer(layerHighlights)]);
+    }
+
     /* Create layer objects from JSON file */
     for(let part of pcbdata.parts)
     {

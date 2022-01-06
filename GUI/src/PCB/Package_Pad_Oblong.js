@@ -37,7 +37,7 @@ class Package_Pad_Oblong extends Package_Pad
         To render the length and width are derived. This is divided in half to get the 
         values used to translate the central point to one of the verticies. 
     */
-    Render(isFront, location, scalefactor)
+    Render(isFront, location)
     {
         // TODO: Global function here. GUI context should be passed as 
         //       an argument to the function. 

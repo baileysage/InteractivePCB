@@ -8,7 +8,7 @@ class Package_Pad
 
     }
 
-    Render(isViewFront, scalefactor)
+    Render(isFront, location)
     {
 
     }

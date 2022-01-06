@@ -98,15 +98,31 @@ function ConvertRangesToReferenceDesignators(text)
    return refs
 }
 
-function setHighlightedRefs(refs)
+
+function setHighlightedRefs(refs, isMulti)
 {
-    highlightedRefs = ConvertRangesToReferenceDesignators(refs);
+    if(refs == null)
+    {
+        highlightedRefs = [];
+    }
+    else
+    {
+        if(isMulti)
+        {
+            highlightedRefs.push(ConvertRangesToReferenceDesignators(refs));
+        }
+        else
+        {
+            highlightedRefs = [ConvertRangesToReferenceDesignators(refs)];
+        }
+    }
 }
 
 function getHighlightedRefs()
 {
     return highlightedRefs;
 }
+
 /************************************************/
 
 /*************************************************

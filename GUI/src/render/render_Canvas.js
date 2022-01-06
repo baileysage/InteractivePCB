@@ -54,9 +54,9 @@ function recalcLayerScale(canvasdict, canvas)
 
     if(canvasdict.layer ==="F")
     {
-        canvas.width = width;
-        canvas.height = height;
-        canvas.style.width = (width / 2) + "px";
+        canvas.width        = width;
+        canvas.height       = height;
+        canvas.style.width  = (width / 2) + "px";
         canvas.style.height = (height / 2) + "px";
     }
     else
@@ -88,7 +88,7 @@ function applyRotation(bbox)
 
 function ClearHighlights(canvasdict)
 {
-    let canvas = pcb.GetLayerCanvas("highlights", (canvasdict.layer === "F"));
+    let canvas = pcb.GetLayerCanvas("Highlights", (canvasdict.layer === "F"));
     ClearCanvas(canvas);
 }
 

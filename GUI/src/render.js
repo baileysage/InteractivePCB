@@ -21,12 +21,17 @@ function DrawLayers(isViewFront, scalefactor)
     }
 }
 
-function DrawModules(isViewFront, scalefactor)
+function DrawModules(isViewFront)
 {
     for (let part of globalData.pcb_parts)
     {
-        part.Render(isViewFront, scalefactor);
+        part.Render(isViewFront);
     }
+}
+
+function DrawHighlitedModules(isViewFront, layer, scalefactor, refs)
+{
+    console.log(refs)
 }
 
 function RenderPCB(canvasdict)
@@ -44,7 +49,7 @@ function RenderPCB(canvasdict)
         Step 3 essentially renders items on layers not rendered in 1 or 2. 
         This could be silkscreen, cutouts, board edge, etc...
     */
-    DrawModules(isViewFront, canvasdict.transform.s);
+    DrawModules(isViewFront);
     DrawTraces (isViewFront, canvasdict.transform.s);
     DrawLayers (isViewFront, canvasdict.transform.s);
 }
@@ -102,12 +107,13 @@ function drawHighlightsOnLayer(canvasdict)
 {
     let isViewFront = (canvasdict.layer === "F");
     render_canvas.ClearHighlights(canvasdict);
-    DrawModules   (isViewFront, canvasdict.layer, canvasdict.transform.s, globalData.getHighlightedRefs());
+
+    DrawHighlitedModules(isViewFront, canvasdict.layer, canvasdict.transform.s, globalData.getHighlightedRefs());
 }
 
 function drawHighlights() 
 {
-    //drawHighlightsOnLayer(globalData.GetAllCanvas().front);
+    drawHighlightsOnLayer(globalData.GetAllCanvas().front);
     //drawHighlightsOnLayer(globalData.GetAllCanvas().back);
 }
 

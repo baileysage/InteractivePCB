@@ -45,11 +45,11 @@ class Package
         }
     }
 
-    Render(isViewFront, location, scalefactor)
+    Render(isViewFront, location)
     {
         for (let pad of this.pads)
         {
-            pad.Render(isViewFront, location, scalefactor);
+            pad.Render(isViewFront, location);
         }
     }
 }

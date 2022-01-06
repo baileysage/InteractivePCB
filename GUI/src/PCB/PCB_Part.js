@@ -25,9 +25,9 @@ class PCB_Part
 
     }
 
-    Render(isViewFront, scalefactor)
+    Render(isViewFront)
     {
-        this.package.Render(isViewFront, this.location, scalefactor);
+        this.package.Render(isViewFront, this.location);
     }
 }
 

@@ -22,7 +22,7 @@ class Package_Pad_Rectangle extends Package_Pad
         this.drill      = iPCB_JSON_Pad.drill;
     }
 
-    Render(isFront, location, scalefactor)
+    Render(isFront, location)
     {
         // TODO: Global function here. GUI context should be passed as 
         //       an argument to the function. 
