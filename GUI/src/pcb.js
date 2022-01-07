@@ -18,6 +18,8 @@ var globalData = require("./global.js");
 // where ATTRIBUTE is a dict of ATTRIBUTE NAME : ATTRIBUTE VALUE
 let BOM = [];
 
+let BOM_Combined = new Map();
+
 //TODO: There should be steps here for validating the data and putting it into a 
 //      format that is valid for our application
 function CreateBOM(pcbdataStructure)
@@ -48,12 +50,40 @@ function CreateBOM(pcbdataStructure)
         }
         // Add the par to the global part array
         BOM.push(new Part.Part(value, footprint, reference, location, attributes, checkboxes));
+
+        if(BOM_Combined.has(value))
+        {
+            let exisingPart = BOM_Combined.get(value)
+            exisingPart.quantity = exisingPart.quantity + 1;
+            exisingPart.reference = exisingPart.reference + "," + reference;
+        }
+        else
+        {
+            // Add the par to the global part array
+            BOM_Combined.set(value, new Part.Part(value, footprint, reference, location, [], []));
+        }
     }
+
+    console.log(BOM)
+    console.log(BOM_Combined)
 }
 
 function GetBOM()
 {
-    return BOM;
+     if(globalData.getCombineValues())
+     {
+        let result = []
+
+        for(let parts of BOM_Combined.values())
+        {
+            result.push(parts)
+        }
+        return result;
+     }
+     else
+     {
+        return BOM;
+     }
 }
 
 function getAttributeValue(part, attributeToLookup)

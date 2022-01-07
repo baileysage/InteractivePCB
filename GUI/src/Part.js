@@ -9,6 +9,7 @@ class Part {
         this.reference  = reference;
         this.location   = location;
         this.attributes = attributes;
+        // TODO: Checkbox should be part of bom_table and not pat
         this.checkboxes = checkboxes;
     }
 
