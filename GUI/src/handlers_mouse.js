@@ -27,7 +27,7 @@ function smoothScrollToRow(rowid)
     });
 }
 
-function modulesClicked(references) 
+function modulesClicked(event, references) 
 {
     let lastClickedIndex = references.indexOf(globalData.getLastClickedRef());
     let ref = references[(lastClickedIndex + 1) % references.length];
@@ -36,7 +36,7 @@ function modulesClicked(references)
         if (handler.refs.indexOf(ref) >= 0) 
         {
             globalData.setLastClickedRef(ref);
-            handler.handler();
+            handler.handler(event);
             smoothScrollToRow(globalData.getCurrentHighlightedRowId());
             break;
         }
@@ -82,7 +82,7 @@ function handleMouseClick(e, layerdict)
     let reflist = bboxScan(layerdict.layer, v[0], v[1], t);
     if (reflist.length > 0) 
     {
-        modulesClicked(reflist);
+        modulesClicked(e, reflist);
         render.drawHighlights();
     }
 }
