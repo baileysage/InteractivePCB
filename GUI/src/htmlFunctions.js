@@ -81,7 +81,7 @@ removeBOMEntries.oninput=function()
 };
 
 
-/* Layer Table FIlter */
+/* Layer Table Filter */
 const filterLayer = document.getElementById("layer-filter");
 filterLayer.oninput=function()
 {

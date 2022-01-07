@@ -324,6 +324,10 @@ function populateBomTable()
 {
     populateBomHeader();
     populateBomBody();
+
+        /* Read filter string. Hide BOM elements that dont cintain string entry */
+    let filterBOM = document.getElementById("bom-filter");
+    Filter(filterBOM.value)
 }
 
 function populateBomHeader() 
