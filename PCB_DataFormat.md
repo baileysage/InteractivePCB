@@ -40,7 +40,7 @@ Generated JSON is validated using [JSON Formatter & Validator](https://jsonforma
     <PCB_TRACE>  ::= "{" "\"name\":" "\"" <STRING> "\"" "," "\"segments\":" "[" <SEGMENT> "]" "}"
 
     <PCB_LAYERS> ::= <PCB_LAYER> | <PCB_LAYER> "," <PCB_LAYERS>
-    <PCB_LAYER>  ::= "{" "\"name\":" "\"" <STRING> "\"" "," "\"layerNumber\":" <UNSIGNED_INTEGER> "," "\"paths\":" "[" <PATHS> "]" "}"
+    <PCB_LAYER>  ::= "{" "\"name\":" "\"" <STRING> "\"" "," "\"paths\":" "[" <PATHS> "]" "}"
 
 
     /*************** PARTS SECTION ***************/
