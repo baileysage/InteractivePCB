@@ -55,7 +55,7 @@ Generated JSON is validated using [JSON Formatter & Validator](https://jsonforma
     <PART_ATTRIBUTE>       ::= "\"attributes\":" "[" <ATTRIBUTES> "]"
     <PART_LOCATION>        ::= "\"location\":" <LOCATION>
 
-    <LOCATION>  ::= "\"F\"" | "\"B\""
+    <LOCATION>  ::= "\"F\"" | "\"B\"" | "\"N\"" // F = Front, B = Back, N = Neither
 
     <ATTRIBUTES> ::= <ATTRIBUTE> | <ATTRIBUTE> "," <ATTRIBUTES>
     <ATTRIBUTE>  ::= "{" "\"name\":" "\"" <STRING> "\"" "," "\"value\":" "\"" <STRING> "\"" "}"
