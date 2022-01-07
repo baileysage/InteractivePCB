@@ -1,6 +1,5 @@
 "use strict";
 
-var Point        = require("../render/point.js").Point;
 var BoundingBox  = require("../BoundingBox.js").BoundingBox;
 
 var Package_Pad_Rectangle  = require("./Package_Pad_Rectangle.js").Package_Pad_Rectangle;
@@ -8,14 +7,13 @@ var Package_Pad_Oblong     = require("./Package_Pad_Oblong.js").Package_Pad_Oblo
 var Package_Pad_Round      = require("./Package_Pad_Round.js").Package_Pad_Round;
 var Package_Pad_Octagon    = require("./Package_Pad_Octagon.js").Package_Pad_Octagon;
 
+var colormap           = require("../colormap.js");
+
 class Package
 {
     constructor(iPCB_JSON_Package)
     {
-        let bBox_PointA = new Point(iPCB_JSON_Package.bounding_box.x0, iPCB_JSON_Package.bounding_box.y0);
-        let bBox_PointB = new Point(iPCB_JSON_Package.bounding_box.x1, iPCB_JSON_Package.bounding_box.y1);
-
-        this.boundingBox = new BoundingBox(bBox_PointA, bBox_PointB);
+        this.boundingBox = new BoundingBox(iPCB_JSON_Package.bounding_box.x0, iPCB_JSON_Package.bounding_box.y0, iPCB_JSON_Package.bounding_box.x1, iPCB_JSON_Package.bounding_box.y1);
         this.pads = [];
 
         for(let pad of iPCB_JSON_Package.pads)
@@ -43,11 +41,26 @@ class Package
         }
     }
 
-    Render(guiContext, isViewFront, location)
+    Render(guiContext, isViewFront, location, isSelected)
     {
         for (let pad of this.pads)
         {
-            pad.Render(guiContext, isViewFront, location);
+            if(    (((location == "F") && (pad.IsSMD()) &&  isViewFront))
+                || (((location == "B") && (pad.IsSMD()) && !isViewFront))
+                || (pad.IsTHT())
+            )
+            {
+                let color = colormap.GetPadColor(pad.IsPin1(), isSelected, false);
+                pad.Render(guiContext, color);
+            }
+        }
+
+        if(    (isSelected && (location == "F") && isViewFront)
+            || (isSelected && (location == "B") && !isViewFront)
+          )
+        {
+            let color = colormap.GetBoundingBoxColor(isSelected, false);
+            this.boundingBox.Render(guiContext, color);
         }
     }
 }

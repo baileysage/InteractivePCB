@@ -29,7 +29,7 @@ function DrawModules(isViewFront)
     let guiContext = pcb.GetLayerCanvas("Pads", isViewFront).getContext("2d")
     for (let part of globalData.pcb_parts)
     {
-        part.Render(guiContext, isViewFront);
+        part.Render(guiContext, isViewFront, false);
     }
 }
 
@@ -44,7 +44,7 @@ function DrawHighlitedModules(isViewFront, layer, scalefactor, refs)
     {
         if(refs.includes(part.name))
         {
-            part.Render(guiContext, isViewFront);
+            part.Render(guiContext, isViewFront, true);
         }
     }
 }

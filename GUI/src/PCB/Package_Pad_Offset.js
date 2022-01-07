@@ -9,9 +9,6 @@ class Package_Pad_Offset extends Package_Pad
     constructor(iPCB_JSON_Pad)
     {
         super(iPCB_JSON_Pad);
-        this.pad_type   = iPCB_JSON_Pad.pad_type;
-        this.pin1       = iPCB_JSON_Pad.pin1;
-        this.shape      = iPCB_JSON_Pad.shape;
         this.angle      = iPCB_JSON_Pad.angle;
         this.x          = iPCB_JSON_Pad.x;
         this.y          = iPCB_JSON_Pad.y;
@@ -20,17 +17,11 @@ class Package_Pad_Offset extends Package_Pad
         this.drill      = iPCB_JSON_Pad.drill;
     }
 
-    Render(guiContext, isFront, location)
+    Render(guiContext, color)
     {
-        if(    (((location == "F") && (this.pad_type == "smd") &&  isFront))
-            || (((location == "B") && (this.pad_type == "smd") && !isFront))
-            || (this.pad_type == "tht")
-          )
-        {
-            guiContext.save();
-            console.log("Offset pad rending unimplemented.");
-            guiContext.restore();
-        }
+        guiContext.save();
+        console.log("Offset pad rending unimplemented.");
+        guiContext.restore();
     }
 }
 

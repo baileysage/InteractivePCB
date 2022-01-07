@@ -10,9 +10,6 @@ class Package_Pad_Octagon extends Package_Pad
     constructor(iPCB_JSON_Pad)
     {
         super(iPCB_JSON_Pad);
-        this.pad_type   = iPCB_JSON_Pad.pad_type;
-        this.pin1       = iPCB_JSON_Pad.pin1;
-        this.shape      = iPCB_JSON_Pad.shape;
         this.angle      = iPCB_JSON_Pad.angle;
         this.x          = iPCB_JSON_Pad.x;
         this.y          = iPCB_JSON_Pad.y;
@@ -20,61 +17,54 @@ class Package_Pad_Octagon extends Package_Pad
         this.drill      = iPCB_JSON_Pad.drill;
     }
 
-    Render(guiContext, isFront, location)
+   Render(guiContext, color)
     {
-        if(    (((location == "F") && (this.pad_type == "smd") &&  isFront))
-            || (((location == "B") && (this.pad_type == "smd") && !isFront))
-            || (this.pad_type == "tht")
-          )
+        guiContext.save();
+        // Will store the verticies of the polygon.
+        let polygonVerticies = [];
+
+        
+        let n = 8;
+        let r = this.diameter/2;
+        // Assumes a polygon centered at (0,0)
+        for (let i = 1; i <= n; i++) 
         {
-            guiContext.save();
-            // Will store the verticies of the polygon.
-            let polygonVerticies = [];
+            polygonVerticies.push(new Point(r * Math.cos(2 * Math.PI * i / n), r * Math.sin(2 * Math.PI * i / n)));
+        }
 
-            
-            let n = 8;
-            let r = this.diameter/2;
-            // Assumes a polygon centered at (0,0)
-            for (let i = 1; i <= n; i++) 
-            {
-                polygonVerticies.push(new Point(r * Math.cos(2 * Math.PI * i / n), r * Math.sin(2 * Math.PI * i / n)));
-            }
+        let angle = (this.angle+45/2);
+        let centerPoint = new Point(this.x, this.y);
+        let renderOptions = { 
+            color: color,
+            fill: true,
+        };
 
-            let angle = (this.angle+45/2);
+        render_lowlevel.RegularPolygon( 
+            guiContext,
+            centerPoint, 
+            polygonVerticies,
+            angle,
+            renderOptions
+        );
+
+
+        if(this.pad_type == "tht")
+        {
             let centerPoint = new Point(this.x, this.y);
-            let color = colormap.GetPadColor(this.pin1, false, false);
-            let renderOptions = { 
-                color: color,
+            let renderOptions = {
+                color: "#CCCCCC",
                 fill: true,
             };
 
-            render_lowlevel.RegularPolygon( 
+            render_lowlevel.Circle(
                 guiContext,
-                centerPoint, 
-                polygonVerticies,
-                angle,
+                centerPoint,
+                this.drill/2, 
                 renderOptions
             );
-
-
-            if(this.pad_type == "tht")
-            {
-                let centerPoint = new Point(this.x, this.y);
-                let renderOptions = {
-                    color: "#CCCCCC",
-                    fill: true,
-                };
-
-                render_lowlevel.Circle(
-                    guiContext,
-                    centerPoint,
-                    this.drill/2, 
-                    renderOptions
-                );
-            }
-
-            guiContext.restore();
         }
+
+        guiContext.restore();
     }
 }
 
