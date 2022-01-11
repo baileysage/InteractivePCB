@@ -17,7 +17,7 @@
 ***************************************************************************************************/
 string dirName;
 
-unsigned PROTOCOL_VERSION = 2;
+int PROTOCOL_VERSION = 2;
 
 /*Function to get path to folder with project which is now opened.*/
 string get_project_path()
@@ -43,100 +43,6 @@ string outputFileName = dirName + "/" +"pcbdata.json";
 string layerNames[];
 
 
-
-
-/**************************************************************************************************/
-
-
-
-
-
-/**************************************************************************************************/
-/********************                    COMMON DEFINITIONS                    ********************/
-/**************************************************************************************************/
-
-/******************** SEGMENT DEFINITIONS ********************/
-
-/********** PATH DEFINITIONS **********/
-void Print_Segment_Path_Line(string layerName, real x0, real y0, real x1, real y1, real width)
-{
-    printf(   "{\"type\":\"line\",\"layer\":\"%s\",\"x0\":%5.5f,\"y0\":%5.5f,\"x1\":%5.5f,\"y1\":%5.5f,\"width\":%5.5f}"
-            , layerName
-            , x0
-            , y0
-            , x1
-            , y1
-            , width
-          );
-}
-
-void Print_Segment_Path_Arc(string layerName, real x0, real y0, real radius, real angle0, real angle1, real width)
-{
-    printf(   "{\"type\":\"arc\",\"layer\":\"%s\",\"cx0\":%5.5f,\"cy0\":%5.5f,\"radius\":%5.5f,\"angle0\":%5.5f,"\"angle1\":%5.5f,\"width\":%5.5f,\"direction\":\"clockwise\"}"
-            , layerNames
-            , x0
-            , y0
-            , radius
-            , angle0
-            , angle1
-            , width
-        );
-}
-
-/********** POLYGONS DEFINITIONS **********/
-void Print_Segment_Path_Polygon(void)
-{
-    //<POLYGON>          ::= "{" "\"type\"" ":" "\"polygon\"" "," "\"layer\":" <STRING> "," "\"positive\"" ":" <POLYGON_DIRECTION> "," "\"segments\"" ":" "[" <PATHS> "]" "}"
-}
-
-
-
-/********** VIA DEFINITIONS **********/
-void Print_Segment_VIA_Round(string layerName,real x, real y, real diameter, real drill)
-{
-    Print_Segment_Via("via_round", layerName, x, y, diameter, drill);
-}
-
-void Print_Segment_VIA_Square(string layerName,real x, real y, real diameter, real drill)
-{
-    Print_Segment_Via("via_square", layerName, x, y, diameter, drill);
-}
-
-void Print_Segment_VIA_Octogon(string layerName, real x, real y, real diameter, real drill)
-{
-    Print_Segment_Via("via_octagon", layerName, x, y, diameter, drill);
-}
-
-void Print_Segment_Via(string viaType, string layerName, real x, real y, real diameter, real drill)
-{
-    printf(   "{\"type\":\"$s\",\"layer\":\"%s\",\"x\":%5.5f,\"y\":%5.5f,\"diameter\":%5.5f,\"drill\":%5.5f}"
-            , layerName
-            , x
-            , y
-            , diameter
-            , drill
-          );
-}
-
-void Print_BoundingBox(real x0, real y0, real x1, real y1)
-{
-
-    // Print the edge_box segment to the output file
-    printf("\"bounding_box\":{");
-    printf("\"x0\":%5.5f,", u2mm(E.package.area.x1));
-    printf("\"y0\":%5.5f,", u2mm(E.package.area.y1));
-    printf("\"x1\":%5.5f,", u2mm(E.package.area.x2));
-    printf("\"y1\":%5.5f" , u2mm(E.package.area.y2));
-    printf("}");
-
-    printf(   "\"bounding_box\":{\"x0\":%5.5f,\"y0\":%5.5f,\"x1\":%5.5f,\"y1\":%5.5f}"
-            , x0
-            , y0
-            , x1
-            , y1
-          );
-}
-
 // Eagle color codes are ARGB
 // iPCB expects them in RGBA.
 char hex_characters[]={'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
@@ -161,10 +67,112 @@ string PalletColorToHTMLString(int colorCode_ARGB)
     return str;
 }
 
+/*
+DESCRIPTION: Scans a string and replaces douple quotes (") with a space character. This is needed
+             so that the resulting JSON file is valid. Without this check the resulting JSON
+             could include double quotes embedded in a  part and the resulting JSON is invalid
+             which will make iPCB not work. 
+*/
+string removeDoubleQuote(string passedString)
+{
+    for (int i = 0; passedString[i]; ++i) 
+    {    
+        if(passedString[i] == '\"')
+        {
+            passedString[i] = ' ';
+        }
+    }
+    return passedString;
+}
+
+
+/**************************************************************************************************/
+
+
+
+
+
+/**************************************************************************************************/
+/********************                    COMMON DEFINITIONS                    ********************/
+/**************************************************************************************************/
+
+    /******************** SEGMENT DEFINITIONS ********************/
+
+    /********** PATH DEFINITIONS **********/
+    void Print_Segment_Path_Line(string layerName, real x0, real y0, real x1, real y1, real width)
+    {
+        printf(   "{\"type\":\"line\",\"layer\":\"%s\",\"x0\":%5.5f,\"y0\":%5.5f,\"x1\":%5.5f,\"y1\":%5.5f,\"width\":%5.5f}"
+                , layerName
+                , x0
+                , y0
+                , x1
+                , y1
+                , width
+              );
+    }
+
+    void Print_Segment_Path_Arc(string layerName, real x0, real y0, real radius, real angle0, real angle1, real width)
+    {
+        printf(   "{\"type\":\"arc\",\"layer\":\"%s\",\"cx0\":%5.5f,\"cy0\":%5.5f,\"radius\":%5.5f,\"angle0\":%5.5f,\"angle1\":%5.5f,\"width\":%5.5f,\"direction\":\"clockwise\"}"
+                , layerName
+                , x0
+                , y0
+                , radius
+                , angle0
+                , angle1
+                , width
+            );
+    }
+
+    /********** POLYGONS DEFINITIONS **********/
+    void Print_Segment_Path_Polygon(void)
+    {
+        //<POLYGON>          ::= "{" "\"type\"" ":" "\"polygon\"" "," "\"layer\":" <STRING> "," "\"positive\"" ":" <POLYGON_DIRECTION> "," "\"segments\"" ":" "[" <PATHS> "]" "}"
+    }
+
+    /********** VIA DEFINITIONS **********/
+    
+    void Print_Segment_Via(string viaType, string layerName, real x, real y, real diameter, real drill)
+    {
+        printf(   "{\"type\":\"$s\",\"layer\":\"%s\",\"x\":%5.5f,\"y\":%5.5f,\"diameter\":%5.5f,\"drill\":%5.5f}"
+                , layerName
+                , x
+                , y
+                , diameter
+                , drill
+              );
+    }
+
+    void Print_Segment_VIA_Round(string layerName,real x, real y, real diameter, real drill)
+    {
+        Print_Segment_Via("via_round", layerName, x, y, diameter, drill);
+    }
+
+    void Print_Segment_VIA_Square(string layerName,real x, real y, real diameter, real drill)
+    {
+        Print_Segment_Via("via_square", layerName, x, y, diameter, drill);
+    }
+
+    void Print_Segment_VIA_Octogon(string layerName, real x, real y, real diameter, real drill)
+    {
+        Print_Segment_Via("via_octagon", layerName, x, y, diameter, drill);
+    }
+
+    void Print_BoundingBox(real x0, real y0, real x1, real y1)
+    {
+        printf(   "\"bounding_box\":{\"x0\":%5.5f,\"y0\":%5.5f,\"x1\":%5.5f,\"y1\":%5.5f}"
+                , x0
+                , y0
+                , x1
+                , y1
+              );
+    }
+
+
 /**************************************************************************************************/
 /********************                   METADATA DEFINITIONS                   ********************/
 /**************************************************************************************************/
-    void Print_Metadata_ProtocolVersion(unsigned versionNumber)
+    void Print_Metadata_ProtocolVersion(int versionNumber)
     {
         printf("\"protocol_version\":%u", versionNumber);
     }
@@ -180,13 +188,13 @@ string PalletColorToHTMLString(int colorCode_ARGB)
             {
                 if( (A.name == "COMPANY") )
                 {
-                    company = A.value;
+                    companyName = A.value;
                 }
             }
             printf("\"company\":\"%s\"", companyName);
     }
 
-    void Print_Metadata_ProjectRevision(void)
+    void Print_Metadata_ProjectRevision(UL_BOARD B)
     {
         /*
             Iterate over the board attributes looking for 'REV' or 'REVISION'. If this attribute exists 
@@ -200,7 +208,7 @@ string PalletColorToHTMLString(int colorCode_ARGB)
                 revision = A.value;
             }
         }
-        printf(\"revision\":\"%s \"", revision);
+        printf("\"revision\":\"%s\"", revision);
     }
 
     void Print_Metadata_ECAD(void)
@@ -222,15 +230,6 @@ string PalletColorToHTMLString(int colorCode_ARGB)
     void Print_Metadata_Date(void)
     {
         printf("\"date\":\"%s\"", t2string(time(), "Uyyyy-MM-dd hh:mm:ss"));
-    }
-
-    void Print_Metadata_NumberParts(void)
-    {
-        printf("\"number_parts\":{");
-        Print_Metadata_NumberParts_Top();
-        printf(",");
-        Print_Metadata_NumberParts_Bottom();
-        printf("}");
     }
 
     void Print_Metadata_NumberParts_Top(UL_BOARD B)
@@ -259,6 +258,15 @@ string PalletColorToHTMLString(int colorCode_ARGB)
         printf("\"bottom\":%u", partCount);
     }
 
+    void Print_Metadata_NumberParts(UL_BOARD B)
+    {
+        printf("\"number_parts\":{");
+        Print_Metadata_NumberParts_Top(B);
+        printf(",");
+        Print_Metadata_NumberParts_Bottom(B);
+        printf("}");
+    }
+
     void Print_Metadata( void )
     {
         board(B)
@@ -269,19 +277,18 @@ string PalletColorToHTMLString(int colorCode_ARGB)
             printf("\"metadata\":{");
             Print_Metadata_ProtocolVersion(PROTOCOL_VERSION);
             printf(",");
-            Print_Metadata_ECAD(B);
+            Print_Metadata_ECAD();
             printf(",");
-            Print_Metadata_CompanyName(void);
+            Print_Metadata_CompanyName(B);
             printf(",");
-            Print_Metadata_ProjectName(B.name)
+            Print_Metadata_ProjectName(B.name);
             printf(",");
-            Print_Metadata_ProjectRevision(void);
+            Print_Metadata_ProjectRevision(B);
             printf(",");
             Print_Metadata_Date();
             printf(",");
             Print_Metadata_NumberParts(B);
-            printf("},");
-            printf("\n");
+            printf("}");
         }
     }
 /**************************************************************************************************/
@@ -310,7 +317,6 @@ string PalletColorToHTMLString(int colorCode_ARGB)
             }
             printedOnce = 1;
         }
-        int printedOnce = 0;
         S.vias(V)
         {
             if(printedOnce == 1)
@@ -332,15 +338,17 @@ string PalletColorToHTMLString(int colorCode_ARGB)
             }
             printedOnce = 1;
         }
-        S.polygons(P)
-        {
-            if(printedOnce == 1)
-            {
-                printf(",");
-            }
+        
+        //S.polygons(P)
+        //{
+        //    if(printedOnce == 1)
+        //    {
+        //        printf(",");
+        //    }
+        //    Print_Segment_Path_Polygon(P);
+        //    printedOnce = 1;
+        //}
 
-            printedOnce = 1;
-        }
         printf("]");
         printf("}");
     }
@@ -356,7 +364,7 @@ string PalletColorToHTMLString(int colorCode_ARGB)
                 {
                     printf(",");
                 }
-                Print_Segment_Path_Polygon();
+                Print_Board_Traces_PCB_Trace(S);
                 once_signal = 1;
             }
         }
@@ -364,7 +372,7 @@ string PalletColorToHTMLString(int colorCode_ARGB)
 
     void Print_Board_Traces_PCB_Layer(UL_LAYER L)
     {
-        printf("{\"name\":\"%s\",\"paths\":[",layerName);
+        printf("{\"name\":\"%s\",\"paths\":[",L.name);
         board(B)
         {
             int once = 0;
@@ -438,7 +446,7 @@ string PalletColorToHTMLString(int colorCode_ARGB)
     {
         board(B)
         {
-            Print_BoundingBox(u2mm(B.area.x1), u2mm(B.area.y1), u2mm(B.area.x2), u2mm(B.area.y2))
+            Print_BoundingBox(u2mm(B.area.x1), u2mm(B.area.y1), u2mm(B.area.x2), u2mm(B.area.y2));
         }
     }
 
@@ -456,7 +464,7 @@ string PalletColorToHTMLString(int colorCode_ARGB)
         printf("]");
     }
 
-    void Print_Board( void )
+    void Print_Board_Data( void )
     {
         printf("\"board\":{");
         Print_Board_Shape();
@@ -471,378 +479,307 @@ string PalletColorToHTMLString(int colorCode_ARGB)
 /**************************************************************************************************/
 /********************                      PART DEFINITIONS                    ********************/
 /**************************************************************************************************/
-
-    
-    <PART>        ::= "{" <PART_NAME> "," <PART_VALUE> "," <PART_PACKAGE> "," <PART_ATTRIBUTE> "," <PART_LOCATION> "}"
-
-    <PART_NAME>            ::= "\"name\":"  "\"" <STRING> "\""
-    <PART_VALUE>           ::= "\"value\":" "\"" <STRING> "\""
-    <PART_PACKAGE>         ::= "\"package\":" "{" <PACKAGE_PADS> "," <PACKAGE_BOUNDING_BOX> "}"
-    <PART_ATTRIBUTE>       ::= "\"attributes\":" "[" <ATTRIBUTES> "]"
-    <PART_LOCATION>        ::= "\"location\":" <LOCATION>
-
-    <LOCATION>  ::= "\"F\"" | "\"B\"" | "\"N\"" // F = Front, B = Back, N = Neither
-
-    <ATTRIBUTES> ::= <ATTRIBUTE> | <ATTRIBUTE> "," <ATTRIBUTES>
-    <ATTRIBUTE>  ::= "{" "\"name\":" "\"" <STRING> "\"" "," "\"value\":" "\"" <STRING> "\"" "}"
-
-
-    <PACKAGE_PADS>         ::= "\"pads\":" "[" <PADS> "]"
-    <PACKAGE_BOUNDING_BOX> ::= <BOUNDING_BOX>
-
-
-    <PADS> ::= <PAD> | <PAD> "," <PADS>
-    <PAD>  ::= <PAD_RECTANGLE> | <PAD_OBLONG> | <PAD_ROUND> | <PAD_OCTAGON> | <PAD_OFFSET>
-
-    <PAD_RECTANGLE> ::= "{" "\"pad_type\":" <PAD_TYPE> "," "\"pin1\":" <PAD_PIN_ONE> "," "\"shape\":" "\"rect\""    "," "\"angle\":" <REAL_NUMBER> "," "\"x\":" <REAL_NUMBER> "," "\"y\":" <REAL_NUMBER> "," "\"dx\":" <REAL_NUMBER> "," "\"dy\":" <REAL_NUMBER> "," "\"drill\":" <REAL_NUMBER> "}"
-    <PAD_OBLONG>    ::= "{" "\"pad_type\":" <PAD_TYPE> "," "\"pin1\":" <PAD_PIN_ONE> "," "\"shape\":" "\"oblong\""  "," "\"angle\":" <REAL_NUMBER> "," "\"x\":" <REAL_NUMBER> "," "\"y\":" <REAL_NUMBER> "," "\"diameter\":" <REAL_NUMBER> "," "\"elongation\":" <REAL_NUMBER> "," "\"drill\":" <REAL_NUMBER> "}"
-    <PAD_ROUND>     ::= "{" "\"pad_type\":" <PAD_TYPE> "," "\"pin1\":" <PAD_PIN_ONE> "," "\"shape\":" "\"round\""   "," "\"angle\":" <REAL_NUMBER> "," "\"x\":" <REAL_NUMBER> "," "\"y\":" <REAL_NUMBER> "," "\"diameter\":" <REAL_NUMBER> "," "\"drill\":" <REAL_NUMBER>"}"
-    <PAD_OCTAGON>   ::= "{" "\"pad_type\":" <PAD_TYPE> "," "\"pin1\":" <PAD_PIN_ONE> "," "\"shape\":" "\"round\""   "," "\"angle\":" <REAL_NUMBER> "," "\"x\":" <REAL_NUMBER> "," "\"y\":" <REAL_NUMBER> "," "\"diameter\":" <REAL_NUMBER> "," "\"drill\":" <REAL_NUMBER>"}"
-    <PAD_OFFSET>    ::= "{" "\"pad_type\":" <PAD_TYPE> "," "\"pin1\":" <PAD_PIN_ONE> "," "\"shape\":" "\"oblong\""  "," "\"angle\":" <REAL_NUMBER> "," "\"x\":" <REAL_NUMBER> "," "\"y\":" <REAL_NUMBER> "," "\"diameter\":" <REAL_NUMBER> "," "\"elongation\":" <REAL_NUMBER> "," "\"drill\":" <REAL_NUMBER> "}"
-
-    
-
-    <PAD_TYPE>    ::= "\"smd\""  | "\"tht\""
-    <PAD_PIN_ONE> ::= "1" | "0" //  1 = Yes, 0 = No
-    <PAD_SHAPE>   ::= "\"rect\"" | "\"octagon\"" | "\"oblong\"" | "\"circle\""
-
-
-void Print_Part_Entry(void)
-{
-    <PARTS_ENTRY> ::= <PART> | <PART> "," <PARTS_ENTRY>
-}
-
-
-void Pint_Part(void)
-{
-    printf("\"parts\":" "[");
-    Print_Part_Entry();
-    printf("]");
-}
-
-
-/**************************************************************************************************/
-
-/**************************************************************************************************/
-/********************                  CONFIGURATION DEFINITIONS               ********************/
-/**************************************************************************************************/
-void Print_Configuration()
-{
-    printf("\"configuration\": [");
-
-    board(B)
+    void Print_Part_Pad_Type(UL_CONTACT C)
     {
-        int firstLayer = 1;
-        B.layers(L)
+        if(C.smd)
         {
-            if(L.used)
-            {
-                if(!firstLayer)
-                {
-                    printf(",");
-                }
-                printf( "{\"category\":\"%s\",\"name\":\"%s\",\"value\":\"%s\"}"
-                        ,"color"
-                        ,L.name
-                        ,PalletColorToHTMLString(palette(L.color))
-                      );
-                firstLayer = 0;
-            }
+            printf("\"smd\"");
+        }
+        else
+        {
+            printf("\"tht\"");
         }
     }
-    printf("]");
-}
-/**************************************************************************************************/
 
-void PrintPads(UL_ELEMENT E)
-{
-    int first = 1;
-    printf("\"pads\": [");
-
-    E.package.contacts(C)
+    int Print_Part_Pad_IsPin1(UL_CONTACT C)
     {
-        if (!first)
-        {   
-            printf(",");
-        }
-
-        printf("{");
-
-        // Surface mount or through hole
-        if(C.smd)
-        {
-            printf("\"pad_type\":\"smd\",");
-        }
-        else
-        {
-            printf("\"pad_type\":\"tht\",");
-        }
-
-        // Pin 1
         if(C.name=="1")
         {
-            // Yes
-           printf("\"pin1\":1,");
+           return 1;
         }
         else
         {
-            // No
-            printf("\"pin1\":0,");
+            return 0;
         }
+    }
 
-        /* Set shape */
+    real Print_Part_Pad_Drill(UL_CONTACT C)
+    {
+        if(!C.smd)
+        {
+            return u2mm(C.pad.drill);
+        }
+        else
+        {
+            return 0;
+        }
+    }
+
+    void Print_Part_Pad_SMD(UL_CONTACT C)
+    {
+        printf(   "{\"pad_type\":\"%s\",\"pin1\":%u,\"shape\":\"%s\",\"angle\":%5.5f,\"x\":%5.5f," "\"y\":%5.5f,\"dx\":%5.5f,\"dy\":%5.5f,\"drill\":%5.5f}"
+                , "smd"
+                , Print_Part_Pad_IsPin1(C)
+                , "rect"
+                , C.smd.angle
+                , u2mm(C.smd.x)
+                , u2mm(C.smd.y)
+                , u2mm(C.smd.dx)
+                , u2mm(C.smd.dy)
+                , Print_Part_Pad_Drill(C)
+              );
+    }
+
+    void Print_Part_Pad_Rectangle(UL_CONTACT C)
+    {
+        printf(   "{\"pad_type\":\"%s\",\"pin1\":%u,\"shape\":\"%s\",\"angle\":%5.5f,\"x\":%5.5f," "\"y\":%5.5f,\"dx\":%5.5f,\"dy\":%5.5f,\"drill\":%5.5f}"
+                , "tht"
+                , Print_Part_Pad_IsPin1(C)
+                , "rect"
+                , C.pad.angle
+                , u2mm(C.pad.x)
+                , u2mm(C.pad.y)
+                , u2mm(C.pad.diameter[LAYER_TOP])
+                , u2mm(C.pad.diameter[LAYER_TOP])
+                , Print_Part_Pad_Drill(C)
+              );
+    }
+    void Print_Part_Pad_Oblong(UL_CONTACT C)
+    {
+        printf(   "{\"pad_type\":\"%s\",\"pin1\":%u,\"shape\":\"%s\",\"angle\":%5.5f,\"x\":%5.5f,\"y\":%5.5f,\"diameter\":%5.5f,\"elongation\":%d,\"drill\":%5.5f}"
+                , "tht"
+                , Print_Part_Pad_IsPin1(C)
+                , "oblong"
+                , C.pad.angle
+                , u2mm(C.pad.x)
+                , u2mm(C.pad.y)
+                , u2mm(C.pad.diameter[LAYER_TOP])
+                , C.pad.elongation
+                , Print_Part_Pad_Drill(C)
+              );
+    }
+    void Print_Part_Pad_Round(UL_CONTACT C)
+    {
+        printf(   "{\"pad_type\":\"%s\",\"pin1\":%u,\"shape\":\"%s\",\"angle\":%5.5f,\"x\":%5.5f,\"y\":%5.5f,\"diameter\":%5.5f,\"drill\":%5.5f}"
+                , "tht"
+                , Print_Part_Pad_IsPin1(C)
+                , "round"
+                , C.pad.angle
+                , u2mm(C.pad.x)
+                , u2mm(C.pad.y)
+                , u2mm(C.pad.diameter[LAYER_TOP])
+                , u2mm(C.pad.drill)
+              );
+    }
+    void Print_Part_Pad_Octagon(UL_CONTACT C)
+    {
+        printf(   "{\"pad_type\":\"%s\",\"pin1\":%u,\"shape\":\"%s\",\"angle\":%5.5f,\"x\":%5.5f,\"y\":%5.5f,\"diameter\":%5.5f,\"drill\":%5.5f}"
+                , "tht"
+                , Print_Part_Pad_IsPin1(C)
+                , "octagon"
+                , C.pad.angle
+                , u2mm(C.pad.x)
+                , u2mm(C.pad.y)
+                , u2mm(C.pad.diameter[LAYER_TOP])
+                , u2mm(C.pad.drill)
+              );
+    }
+    void Print_Part_Pad_Offset(UL_CONTACT C)
+    {
+        printf(   "{\"pad_type\":\"%s\",\"pin1\":%u,\"shape\":\"%s\",\"angle\":%5.5f,\"x\":%5.5f,\"y\":%5.5f,\"diameter\":%5.5f,\"elongation\":%d,\"drill\":%5.5f}"
+                , "tht"
+                , Print_Part_Pad_IsPin1(C)
+                , "offset"
+                , C.pad.angle
+                , u2mm(C.pad.x)
+                , u2mm(C.pad.y)
+                , u2mm(C.pad.diameter[LAYER_TOP])
+                , C.pad.elongation
+                , u2mm(C.pad.drill)
+              );
+    }
+
+    void Print_Part_Package_Pad(UL_CONTACT C)
+    {
         if(C.smd)
         {
-            printf("\"shape\":\"rect\",");
-            printf("\"angle\":%5.5f,",C.smd.angle);
-            printf("\"x\":%5.5f,"    , u2mm(C.smd.x) );
-            printf("\"y\":%5.5f,"    , u2mm(C.smd.y) );
-            printf("\"dx\":%5.5f,"   , u2mm(C.smd.dx));
-            printf("\"dy\":%5.5f"    , u2mm(C.smd.dy));
+            Print_Part_Pad_SMD(C);
         }
         else
         {
             if(C.pad.shape[LAYER_TOP] == PAD_SHAPE_SQUARE)
             {
-                printf("\"shape\":\"rect\",");
-                printf("\"angle\":%5.5f," ,C.pad.angle);
-                printf("\"x\":%5.5f,"     , u2mm(C.pad.x) );
-                printf("\"y\":%5.5f,"     , u2mm(C.pad.y) );
-                printf("\"dx\":%5.5f,"    , u2mm(C.pad.diameter[LAYER_TOP]));
-                printf("\"dy\":%5.5f,"    , u2mm(C.pad.diameter[LAYER_TOP]));
-                printf("\"drill\":%5.5f"  , u2mm(C.pad.drill) );
+                Print_Part_Pad_Rectangle(C);
             }
             else if(C.pad.shape[LAYER_TOP] == PAD_SHAPE_ROUND)
             {
-                printf("\"shape\":\"round\",");
-                printf("\"angle\":%5.5f,"      ,C.pad.angle);
-                printf("\"x\":%5.5f,"          , u2mm(C.pad.x) );
-                printf("\"y\":%5.5f,"          , u2mm(C.pad.y) );
-                printf("\"elongation\":%d,"    , C.pad.elongation );
-                printf("\"drill\":%5.5f"       , u2mm(C.pad.drill) );
+                Print_Part_Pad_Round(C);
             }
             else if(C.pad.shape[LAYER_TOP] == PAD_SHAPE_OCTAGON)
             {
-                printf("\"shape\":\"octagon\",");
-                printf("\"angle\":%5.5f,"      ,C.pad.angle);
-                printf("\"x\":%5.5f,"          , u2mm(C.pad.x) );
-                printf("\"y\":%5.5f,"          , u2mm(C.pad.y) );
-                printf("\"diameter\":%5.5f,"  , u2mm(C.pad.diameter[LAYER_TOP]) );
-                printf("\"elongation\":%d,"    , C.pad.elongation );
-                printf("\"drill\":%5.5f"       ,u2mm(C.pad.drill) );
+                Print_Part_Pad_Octagon(C);
             }
             else if(C.pad.shape[LAYER_TOP] == PAD_SHAPE_LONG)
             {
-                printf("\"shape\":\"oblong\",");
-                printf("\"angle\":%5.5f,"     ,C.pad.angle);
-                printf("\"x\":%5.5f,"         , u2mm(C.pad.x));
-                printf("\"y\":%5.5f,"         , u2mm(C.pad.y));
-                printf("\"diameter\":%5.5f,"  , u2mm(C.pad.diameter[LAYER_TOP]) );
-                printf("\"elongation\":%d,"   , C.pad.elongation);
-                printf("\"drill\":%5.5f"      ,u2mm(C.pad.drill));
+                Print_Part_Pad_Oblong(C);
             }
             else if(C.pad.shape[LAYER_TOP] == PAD_SHAPE_OFFSET)
             {
-                printf("\"shape\":\"offset\",");
-                printf("\"angle\":%5.5f,"     , C.pad.angle);
-                printf("\"x\":%5.5f,"         , u2mm(C.pad.x) );
-                printf("\"y\":%5.5f,"         , u2mm(C.pad.y) );
-                printf("\"diameter\":%5.5f,"  , u2mm(C.pad.diameter[LAYER_TOP]) );
-                printf("\"elongation\":%d,"   , C.pad.elongation );
-                printf("\"drill\":%5.5f"      , u2mm(C.pad.drill) );
-            }
-            else
-            {
-
+                Print_Part_Pad_Offset(C);
             }
         }
+    }
+
+    void Print_Part_Package_Pads(UL_ELEMENT E)
+    {
+        int firstPad = 1;
+        printf("\"pads\": [");
+        E.package.contacts(C)
+        {
+            if (!firstPad)
+            {   
+                printf(",");
+            }
+            Print_Part_Package_Pad(C);
+            firstPad = 0;
+        }
+        printf("]");
+
+    }
+
+    void Print_Part_Package_BoundingBox(UL_ELEMENT E)
+    {
+        Print_BoundingBox(E.package.area.x1, u2mm(E.package.area.y1), u2mm(E.package.area.x2), u2mm(E.package.area.y2));
+    }
+
+    void Print_Part_Name(string name)
+    {
+        printf("\"name\":\"%s\"", name);
+    }
+
+    void Print_Part_Value(string value)
+    {
+        printf("\"value\":\"%s\"", value);
+    }
+
+    void Print_Part_Package(UL_ELEMENT E)
+    {
+        printf("\"package\":{");
+        Print_Part_Package_Pads(E);
+        printf(",");
+        Print_Part_Package_BoundingBox(E);
         printf("}");
-        first = 0;
     }
-    printf("]");
-}
 
-
-
-/*
-DESCRIPTION: Scans a string and replaces douple quotes (") with a space character. This is needed
-             so that the resulting JSON file is valid. Without this check the resulting JSON
-             could include double quotes embedded in a  part and the resulting JSON is invalid
-             which will make iPCB not work. 
-*/
-string removeDoubleQuote(string passedString)
-{
-    for (int i = 0; passedString[i]; ++i) 
-    {    
-        if(passedString[i] == '\"')
-        {
-            passedString[i] = ' ';
-        }
-    }
-    return passedString;
-}
-
-
-void PrintPackageBoundingBox(UL_ELEMENT E)
-{
-    // Print the edge_box segment to the output file
-    printf("\"bounding_box\":{");
-    printf("\"x0\":%5.5f,", u2mm(E.package.area.x1));
-    printf("\"y0\":%5.5f,", u2mm(E.package.area.y1));
-    printf("\"x1\":%5.5f,", u2mm(E.package.area.x2));
-    printf("\"y1\":%5.5f" , u2mm(E.package.area.y2));
-    printf("}");
-}
-
-void GeneratePCBEdges( void )
-{
-    int once = 0;
-    printf("\"edges\":[");
-    // Iterate over every wire on the pcb board. 
-    board(B)
+    void Print_Part_Attributes(UL_ELEMENT E)
     {
-        B.wires(W)
+        printf("\"attributes\":[");
+        int firstAttribute = 1;
+        E.attributes(A)
         {
-            /* 
-                Check if the wire is on the dimension layer. If the wire is on the dimension layer then
-                add a segment object to the output file. 
-
-                The start and end points of the wire segment need to be converted to be in millimeters.
-                The type will always be set to segment since the assumption is that the board dimension
-                is set using wire segments.
-
-                The widths is the size of the wire.
-            */
-            if(W.layer == LAYER_DIMENSION)
-            {
-                if(once == 1)
-                {
-                    printf(",");
-                }
-                if(W.arc)
-                {
-                    // According to eagle documentation, output is always clockwise. 
-                    PrintPathType_Arc(layerNames[W.layer] , u2mm(W.arc.xc), u2mm(W.arc.yc),  u2mm(W.arc.radius),  W.arc.angle1,  W.arc.angle2,  u2mm(W.width));
-                }
-                else
-                {
-                    PrintPathType_Line(layerNames[W.layer] , u2mm(W.x1),  u2mm(W.y1),  u2mm(W.x2),  u2mm(W.y2),  u2mm(W.width));
-                }
-                once = 1;
-            }
-        }
-    }
-    printf("]");
-}
-/*
-    Add the section for the bounding box. The bounding box is created by looking at the min and max 
-    x and y values for the board. The min and max values are defined as the lower left and upper 
-    right points that form a box that encapsulates the entire pcb. 
-*/
-void GeneratePCBShape( void )
-{
-    board(B) {
-        // Print to the file the start of the edges section. This will be an array of wire segments
-        GeneratePCBBoundingBox();
-        printf("\n");
-    }
-}
-
-
-void PrintPartData()
-{
-    int firstPart = 1;
-    board(B) 
-    {
-        B.elements(E)
-        {
-            if(!firstPart)
+            if(!firstAttribute)
             {
                 printf(",");
             }
-            printf("{");
-            printf("\"name\":\"%s\"," , removeDoubleQuote(E.name));
-            printf("\"value\":\"%s\",", removeDoubleQuote(E.value));
-
-            /**************************************************************************************/
-            // package
-            printf("\"package\":{");
-            PrintPads(E);
+            printf("{\"name\":\"%s\",\"value\":\"%s\"}",removeDoubleQuote(A.name),removeDoubleQuote(A.value));
+            firstAttribute = 0;
+        }
+        if(!firstAttribute)
+        {
             printf(",");
-            PrintPackageBoundingBox(E);
-            printf("},");
-            /**********************************************************************************/
+        }
+        printf("{\"name\":\"%s\",\"value\":\"%s\"}","footprint",E.footprint.name);
+        firstAttribute = 0;
+        printf("]");
+    }
 
-            /**************************************************************************************/
-            // Attributes
-            numeric string attributeName;
-            numeric string attributeValue;
-            E.attributes(A)
-            {
-                attributeName += removeDoubleQuote(A.name) + ";";
-                attributeValue += removeDoubleQuote(A.value) + ";";
-            }
-            
-            attributeName += "footprint" + ";";
-            attributeValue += E.footprint.name + ";";
-
-            // This removes the trailing ;
-            if(strlen(attributeName) > 0)
-            {
-                attributeName[strlen(attributeName)-1] = 0;
-            }
-            else
-            {
-                attributeName[0] = 0;
-            }
-
-            // This removes the trailing ;
-            if(strlen(attributeValue) > 0)
-            {
-                attributeValue[strlen(attributeValue)-1] = 0;
-            }
-            else
-            {
-                attributeValue[0] = 0;
-            }
-
-
-            printf("\"attributes\":{\n");
-            printf("\"name\":\"%s\","  , attributeName);
-            printf("\"value\":\"%s\"" , attributeValue);
-            printf("},");
-            /**************************************************************************************/
-            // Location
-            if(!E.mirror)
-            {
-                printf("\"location\":\"F\"");
-            }
-            else
-            {
-                printf("\"location\":\"B\"");
-            }
-
-            printf("}");
-            firstPart = 0;
+    void Print_Part_Location(UL_ELEMENT E)
+    {
+        printf("\"location\":");
+        if(!E.mirror)
+        {
+            printf("\"F\"");
+        }
+        else
+        {
+            printf("\"B\"");
         }
     }
-}
 
-void GenerateParts( void )
-{
-    printf("\"parts\":[");
-    PrintPartData();
-    printf("]");
-}
+    void Print_Part(UL_ELEMENT E)
+    {
+        printf("{");
+        Print_Part_Name(E.name);
+        printf(",");
+        Print_Part_Value(E.value);
+        printf(",");
+        Print_Part_Package(E);
+        printf(",");
+        Print_Part_Attributes(E);
+        printf(",");
+        Print_Part_Location(E);
+        printf("}");
+    }
 
+    void Print_Parts(void)
+    {
+        int firstPart = 1;
+        board(B)
+        {
+            B.elements(E)
+            {
+                if(!firstPart)
+                {
+                    printf(",");
+                }
+                Print_Part(E);
+                firstPart = 0;
+            }
+        }
+    }
+
+    void Print_Parts_Data(void)
+    {
+        printf("\"parts\":" "[");
+        Print_Parts();
+        printf("]");
+    }
 /**************************************************************************************************/
 
+/**************************************************************************************************/
+/********************                  CONFIGURATION DEFINITIONS               ********************/
+/**************************************************************************************************/
+    void Print_Configuration_Data()
+    {
+        printf("\"configuration\": [");
 
-
+        board(B)
+        {
+            int firstLayer = 1;
+            B.layers(L)
+            {
+                if(L.used)
+                {
+                    if(!firstLayer)
+                    {
+                        printf(",");
+                    }
+                    printf( "{\"category\":\"%s\",\"name\":\"%s\",\"value\":\"%s\"}"
+                            ,"color"
+                            ,L.name
+                            ,PalletColorToHTMLString(palette(L.color))
+                          );
+                    firstLayer = 0;
+                }
+            }
+        }
+        printf("]");
+    }
+/**************************************************************************************************/
 
 output(outputFileName,"wt")
 {
-     board(B)
+    board(B)
     {
         B.layers(L)
         {
@@ -850,13 +787,13 @@ output(outputFileName,"wt")
         }
     }
 
-    printf("var pcbdata =  {\n");
+    printf("var pcbdata =  {");
     Print_Metadata();
-    printf(",")
-    Print_Board();
     printf(",");
-    Print_Parts();
+    Print_Board_Data();
     printf(",");
-    Print_Configuration();
+    Print_Parts_Data();
+    printf(",");
+    Print_Configuration_Data();
     printf("}");
 }

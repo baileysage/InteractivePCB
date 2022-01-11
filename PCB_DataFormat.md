@@ -7,7 +7,7 @@ Generated JSON is validated using [JSON Formatter & Validator](https://jsonforma
     /*************** TOP LEVEL ***************/
     <FILE>             ::= "{" <PCB_DATA> "}"
 
-    <PCB_DATA>         ::= <METADATA> "," <BOARD> "," <PARTS> ("," <PCB_TEST_POINTS>)? ("," <CONFIGURATION>)? 
+    <PCB_DATA>         ::= <METADATA> "," <BOARD_DATA> "," <PARTS_DATA> ("," <PCB_TEST_POINTS_DATA>)? ("," <CONFIGURATION_DATA>)? 
 
     /*************** METADATA SECTION ***************/
     <METADATA>         ::= "\"metadata\":" "{" <PROTOCOL_VERSION> "," <ECAD> "," <COMPANY_NAME> "," <PROJECT_NAME> "," <PROJECT_REVISION> "," <DATE> "," <NUMBER_PARTS> "}"
@@ -31,7 +31,7 @@ Generated JSON is validated using [JSON Formatter & Validator](https://jsonforma
 
 
     /*************** BOARD SECTION ***************/
-    <BOARD>         ::= "\"board\":" "{" <BOARD_SHAPE> "," <BOARD_TRACES>  "," <BOARD_LAYERS> "}"
+    <BOARD_DATA>    ::= "\"board\":" "{" <BOARD_SHAPE> "," <BOARD_TRACES>  "," <BOARD_LAYERS> "}"
     <BOARD_SHAPE>   ::= <BOUNDING_BOX>
     <BOARD_TRACES>  ::= "\"traces\":" "[" <PCB_TRACES> "]"
     <BOARD_LAYERS>  ::= "\"layers\":" "[" <PCB_LAYERS> "]"
@@ -44,10 +44,10 @@ Generated JSON is validated using [JSON Formatter & Validator](https://jsonforma
 
 
     /*************** PARTS SECTION ***************/
-    <PARTS> ::= "\"parts\":" "[" <PARTS_ENTRY> "]"
+    <PARTS_DATA> ::= "\"parts\":" "[" <PARTS> "]"
 
-    <PARTS_ENTRY> ::= <PART> | <PART> "," <PARTS_ENTRY>
-    <PART>        ::= "{" <PART_NAME> "," <PART_VALUE> "," <PART_PACKAGE> "," <PART_ATTRIBUTE> "," <PART_LOCATION> "}"
+    <PARTS> ::= <PART> | <PART> "," <PARTS>
+    <PART>  ::= "{" <PART_NAME> "," <PART_VALUE> "," <PART_PACKAGE> "," <PART_ATTRIBUTE> "," <PART_LOCATION> "}"
 
     <PART_NAME>            ::= "\"name\":"  "\"" <STRING> "\""
     <PART_VALUE>           ::= "\"value\":" "\"" <STRING> "\""
@@ -82,7 +82,7 @@ Generated JSON is validated using [JSON Formatter & Validator](https://jsonforma
 
     /*************** CONFIG SECTION ***************/
 
-    <CONFIGURATION> ::= "\"configuration\":" "[" <PARAMETERS> "]"
+    <CONFIGURATION_DATA> ::= "\"configuration\":" "[" <PARAMETERS> "]"
     <PARAMETERS>      ::= <PARAMETER> | <PARAMETER> "," <PARAMETERS>
     <PARAMETER>       ::= "{" "\"name\":" "\"" <STRING> "\"" "," "\"value\":" "\"" <STRING> "\"" "}"
 
