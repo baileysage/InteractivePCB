@@ -40,62 +40,36 @@ function setDarkMode(value)
     render.RenderPCB(globalData.GetAllCanvas().back);
 }
 
-function highlightPreviousRow()
+function highlightPreviousRow(event)
 {
-    if (!globalData.getCurrentHighlightedRowId())
+    if (globalData.getCurrentHighlightedRowId().length == 1)
     {
-        globalData.getHighlightHandlers()[globalData.getHighlightHandlers().length - 1].handler();
-    }
-    else
-    {
-        if (    (globalData.getHighlightHandlers().length > 1)
-             && (globalData.getHighlightHandlers()[0].id == globalData.getCurrentHighlightedRowId())
-        )
+        for (let i = 0; i < globalData.getHighlightHandlers().length - 1; i++)
         {
-            globalData.getHighlightHandlers()[globalData.getHighlightHandlers().length - 1].handler();
-        }
-        else
-        {
-            for (let i = 0; i < globalData.getHighlightHandlers().length - 1; i++)
+            if (globalData.getHighlightHandlers()[i + 1].id == globalData.getCurrentHighlightedRowId())
             {
-                if (globalData.getHighlightHandlers()[i + 1].id == globalData.getCurrentHighlightedRowId())
-                {
-                    globalData.getHighlightHandlers()[i].handler();
-                    break;
-                }
+                globalData.getHighlightHandlers()[i].handler(event);
+                break;
             }
         }
+        handlers_mouse.smoothScrollToRow(globalData.getCurrentHighlightedRowId());
     }
-    handlers_mouse.smoothScrollToRow(globalData.getCurrentHighlightedRowId());
 }
 
-function highlightNextRow()
+function highlightNextRow(event)
 {
-    if (!globalData.getCurrentHighlightedRowId())
+    if (globalData.getCurrentHighlightedRowId().length == 1)
     {
-        globalData.getHighlightHandlers()[0].handler();
-    }
-    else
-    {
-        if (    (globalData.getHighlightHandlers().length > 1)
-             && (globalData.getHighlightHandlers()[globalData.getHighlightHandlers().length - 1].id == globalData.getCurrentHighlightedRowId())
-        )
+        for (let i = 1; i < globalData.getHighlightHandlers().length; i++)
         {
-            globalData.getHighlightHandlers()[0].handler();
-        }
-        else
-        {
-            for (let i = 1; i < globalData.getHighlightHandlers().length; i++)
+            if (globalData.getHighlightHandlers()[i - 1].id == globalData.getCurrentHighlightedRowId())
             {
-                if (globalData.getHighlightHandlers()[i - 1].id == globalData.getCurrentHighlightedRowId())
-                {
-                    globalData.getHighlightHandlers()[i].handler();
-                    break;
-                }
+                globalData.getHighlightHandlers()[i].handler(event);
+                break;
             }
         }
+        handlers_mouse.smoothScrollToRow(globalData.getCurrentHighlightedRowId());
     }
-    handlers_mouse.smoothScrollToRow(globalData.getCurrentHighlightedRowId());
 }
 
 function modulesClicked(references)
@@ -252,19 +226,19 @@ document.onkeydown = function(e)
 {
     switch (e.key)
     {
-    case "ArrowUp":
-        highlightPreviousRow();
-        e.preventDefault();
-        break;
-    case "ArrowDown":
-        highlightNextRow();
-        e.preventDefault();
-        break;
-    case "F11":
-         e.preventDefault();
-        break;
-    default:
-        break;
+        case "ArrowUp":
+            highlightPreviousRow(e);
+            e.preventDefault();
+            break;
+        case "ArrowDown":
+            highlightNextRow(e);
+            e.preventDefault();
+            break;
+        case "F11":
+             e.preventDefault();
+            break;
+        default:
+            break;
     }
 
     if (e.altKey)
