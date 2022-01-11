@@ -67,12 +67,12 @@ Generated JSON is validated using [JSON Formatter & Validator](https://jsonforma
     <PADS> ::= <PAD> | <PAD> "," <PADS>
     <PAD>  ::= <PAD_SMD> | <PAD_RECTANGLE> | <PAD_ROUND> | <PAD_OCTAGON> | <PAD_OBLONG> | <PAD_OFFSET>
 
-    <PAD_SMD>       ::= "{" <PAD_PIN_ONE>  "," <PAD_TYPE_SMD>      "," <ANGLE> "," <X> "," <Y> "," <DX>       "," <DY> "," <DRILL> "}"
-    <PAD_RECTANGLE> ::= "{" <PAD_PIN_ONE>  "," <PAD_TYPE_RECTAGLE> "," <ANGLE> "," <X> "," <Y> "," <DX>       "," <DY> "," <DRILL> "}"
-    <PAD_ROUND>     ::= "{" <PAD_PIN_ONE>  "," <PAD_TYPE_ROUND>    "," <ANGLE> "," <X> "," <Y> "," <DIAMETER> "," <DRILL> "}"
-    <PAD_OCTAGON>   ::= "{" <PAD_PIN_ONE>  "," <PAD_TYPE_OCTAGON>  "," <ANGLE> "," <X> "," <Y> "," <DIAMETER> "," <DRILL> "}"
-    <PAD_OBLONG>    ::= "{" <PAD_PIN_ONE>  "," <PAD_TYPE_OBLONG>   "," <ANGLE> "," <X> "," <Y> "," <DIAMETER> "," <ELONGATION> "," <DRILL> "}"
-    <PAD_OFFSET>    ::= "{" <PAD_PIN_ONE>  "," <PAD_TYPE_OFFSET>   "," <ANGLE> "," <X> "," <Y> "," <DIAMETER> "," <ELONGATION> "," <DRILL> "}"
+    <PAD_SMD>       ::= "{" <PAD_PIN_ONE>  "," <PAD_TYPE_SMD>      "," <ANGLE> "," <X> "," <Y> "," <DX>       "," <DY> "}"
+    <PAD_RECTANGLE> ::= "{" <PAD_PIN_ONE>  "," <PAD_TYPE_RECTAGLE> "," <ANGLE> "," <X> "," <Y> "," <DX>       "," <DY> "," <DRILL_TABLE> "}"
+    <PAD_ROUND>     ::= "{" <PAD_PIN_ONE>  "," <PAD_TYPE_ROUND>    "," <ANGLE> "," <X> "," <Y> "," <DIAMETER> "," <DRILL_TABLE> "}"
+    <PAD_OCTAGON>   ::= "{" <PAD_PIN_ONE>  "," <PAD_TYPE_OCTAGON>  "," <ANGLE> "," <X> "," <Y> "," <DIAMETER> "," <DRILL_TABLE> "}"
+    <PAD_OBLONG>    ::= "{" <PAD_PIN_ONE>  "," <PAD_TYPE_OBLONG>   "," <ANGLE> "," <X> "," <Y> "," <DIAMETER> "," <ELONGATION> "," <DRILL_TABLE> "}"
+    <PAD_OFFSET>    ::= "{" <PAD_PIN_ONE>  "," <PAD_TYPE_OFFSET>   "," <ANGLE> "," <X> "," <Y> "," <DIAMETER> "," <ELONGATION> "," <DRILL_TABLE> "}"
 
     /*  1 = Yes, 0 = No */
     <PAD_PIN_ONE> ::= "\"pin1\":0" | "\"pin1\":1"
@@ -115,9 +115,9 @@ Generated JSON is validated using [JSON Formatter & Validator](https://jsonforma
     <LINE>         ::= "{" <SEGMENT_TYPE_LINE>        "," <LAYER> "," <X0> "," <Y0> "," <X1> "," <Y1> "," <WIDTH> "}"
     <ARC>          ::= "{" <SEGMENT_TYPE_ARC>         "," <LAYER> "," <X>  "," <Y>  "," <RADIUS> "," <ANGLE0> "," <ANGLE1> "," <WIDTH> "," <DIRECTION> "}"
     <POLYGON>      ::= "{" <SEGMENT_TYPE_POLYGON>     "," <LAYER> "," <POLYGON_DIRECTION> "," <SEGMENTS> "}"
-    <VIA_ROUND>    ::= "{" <SEGMENT_TYPE_VIA_ROUND>   "," <LAYER> "," <X> "," <Y> "," <DIAMETER> "," <DRILL> "}"
-    <VIA_SQUARE>   ::= "{" <SEGMENT_TYPE_VIA_SQUARE>  "," <LAYER> "," <X> "," <Y> "," <DIAMETER> "," <DRILL> "}"
-    <VIA_OCTAGON>  ::= "{" <SEGMENT_TYPE_VIA_OCTAGON> "," <LAYER> "," <X> "," <Y> "," <DIAMETER> "," <DRILL> "}"
+    <VIA_ROUND>    ::= "{" <SEGMENT_TYPE_VIA_ROUND>   "," <X> "," <Y> "," <DIAMETER> "," <DRILL_TABLE> "}"
+    <VIA_SQUARE>   ::= "{" <SEGMENT_TYPE_VIA_SQUARE>  "," <X> "," <Y> "," <DIAMETER> "," <DRILL_TABLE> "}"
+    <VIA_OCTAGON>  ::= "{" <SEGMENT_TYPE_VIA_OCTAGON> "," <X> "," <Y> "," <DIAMETER> "," <DRILL_TABLE> "}"
 
 
     <ARC_DIRECTION>     ::= "\"clockwise\"" | "\"counterclockwise\""
@@ -145,7 +145,9 @@ Generated JSON is validated using [JSON Formatter & Validator](https://jsonforma
     <DX>          ::= "\"dx\":" <REAL_NUMBER>
     <DY>          ::= "\"dy\":" <REAL_NUMBER>
 
-    <DRILL>      ::= "\"drill\":" <REAL_NUMBER>
+    <DRILL_TABLE>       ::= "\"drill_table\":" "[" <DRILL_TABLE_ENTRY> "]"
+    <DRILL_TABLE_ENTRY> ::= "{" <LAYER> "," <DIAMETER> "}"
+
     <ELONGATION> ::= "\"elongation\":" <POSITIVE_REAL_NUMBER>
     <DIAMETER>   ::= "\"diameter\":" <REAL_NUMBER>
     <RADIUS>     ::= "\"radius\"" ":" <REAL_NUMBER> 
