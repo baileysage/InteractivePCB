@@ -6,6 +6,7 @@
 var Split             = require("split.js");
 var globalData        = require("./global.js");
 var render            = require("./render.js");
+var renderCanvas      = require("./render/render_Canvas.js");
 var pcb               = require("./pcb.js");
 var handlers_mouse    = require("./handlers_mouse.js");
 var layerTable        = require("./layer_table.js");
@@ -324,18 +325,8 @@ function toggleLayers()
     changeBomLayout(mainLayout);
 }
 
-function LoadPCB(pcbdata)
+function Create_Layers(pcbdata)
 {
-    console.log(pcbdata)
-    // Remove all items from BOM table
-    // And delete internal bom structure
-    bomTable.clearBOMTable();
-    pcb.DeleteBOM();
-    // Create a new BOM table
-    pcb.CreateBOM(pcbdata);
-
-    // Remove all items from layer table
-    layerTable.clearLayerTable();
     globalData.layer_list = new Map();
     /* Create layer objects from JSON file */
     for(let layer of pcbdata.board.layers)
@@ -360,8 +351,75 @@ function LoadPCB(pcbdata)
     {
         globalData.layer_list.set(layerHighlights.name, [new PCB_Layer(layerHighlights), new Render_Layer(layerHighlights)]);
     }
+}
 
+function Create_Traces(pcbdata)
+{
+    globalData.pcb_traces = [];
+    /* Create trace objects from JSON file */
+    for(let trace of pcbdata.board.traces)
+    {
+        globalData.pcb_traces.push(new PCB_Trace(trace));
+    }
+}
+
+function Create_Parts(pcbdata)
+{
+    globalData.pcb_parts = [];
+    /* Create layer objects from JSON file */
+    for(let part of pcbdata.parts)
+    {
+        globalData.pcb_parts.push(new PCB_Part(part));
+    }
+}
+
+function Create_Configuration(pcbdata)
+{
+    for(let config of pcbdata.configuration)
+    {
+        if(config.category=="color")
+        {
+            colorMap.SetColor(config.name, config.value);
+        }
+        else
+        {
+            console.log("Warning: Unsupported parameter ", config.category, config.name);
+        }
+    }
+}
+
+function LoadPCB(pcbdata)
+{
+    // Update COnfiguration data
+    Create_Configuration(pcbdata);
+
+    // Remove all items from BOM table
+    // And delete internal bom structure
+    bomTable.clearBOMTable();
+    pcb.DeleteBOM();
+    // Create a new BOM table
+    pcb.CreateBOM(pcbdata);
+
+    for (let layer of globalData.layer_list)
+    {
+        renderCanvas.ClearCanvas(layer[1][globalData.render_layers].GetCanvas(true));
+        renderCanvas.ClearCanvas(layer[1][globalData.render_layers].GetCanvas(false));
+    }
+    
+    layerTable.clearLayerTable(); // <--- Actually viewed layer table
+    Create_Layers(pcbdata); // <--- BAckground layer information
     layerTable.populateLayerTable();
+
+    // Update Metadata
+    let metadata = Metadata.GetInstance();
+    metadata.Set(pcbdata.metadata);
+    populateMetadata();
+
+    // Create traces
+    Create_Traces(pcbdata);
+
+    // Parts
+    Create_Parts(pcbdata);
 
 
 }
@@ -612,7 +670,6 @@ function changeBomLayout(layout)
     changeCanvasLayout(globalData.getCanvasLayout());
 }
 
-
 // TODO: Remove global variable. Used to test feature.
 document.getElementById("fullscreen-btn").classList.remove("depressed");
 let isFullscreen = false;
@@ -646,53 +703,11 @@ window.onload = function(e)
     versionNumberHTML.innerHTML = version.GetVersionString();
     console.log(version.GetVersionString());
 
-    /* Create trace objects from JSON file */
-    for(let trace of pcbdata.board.traces)
-    {
-        globalData.pcb_traces.push(new PCB_Trace(trace));
-    }
 
-    /* Create layer objects from JSON file */
-    for(let layer of pcbdata.board.layers)
-    {
-        globalData.layer_list.set(layer.name, [new PCB_Layer(layer), new Render_Layer(layer)]);
-    }
-
-    /*
-        Internally the following layers are used
-            1. Pads
-            2. Highlights
-        If these were not created before, then they will be created here.
-    */
-    let layerPads       = {"name":"Pads", "paths": []};
-    if(globalData.layer_list.get(layerPads.name) == undefined)
-    {
-        globalData.layer_list.set(layerPads.name, [new PCB_Layer(layerPads), new Render_Layer(layerPads)]);
-    }
-
-    let layerHighlights = {"name":"Highlights", "paths": []};
-    if(globalData.layer_list.get(layerHighlights.name) == undefined)
-    {
-        globalData.layer_list.set(layerHighlights.name, [new PCB_Layer(layerHighlights), new Render_Layer(layerHighlights)]);
-    }
-
-    /* Create layer objects from JSON file */
-    for(let part of pcbdata.parts)
-    {
-        globalData.pcb_parts.push(new PCB_Part(part));
-    }
-
-    for(let config of pcbdata.configuration)
-    {
-        if(config.category=="color")
-        {
-            colorMap.SetColor(config.name, config.value);
-        }
-        else
-        {
-            console.log("Warning: Unsupported parameter ", config.category, config.name);
-        }
-    }
+    Create_Traces(pcbdata);
+    Create_Layers(pcbdata);
+    Create_Parts(pcbdata);
+    Create_Configuration(pcbdata);
 
     // Must be called after loading PCB as rendering required the bounding box information for PCB
     render.initRender();

@@ -85,7 +85,6 @@ function applyRotation(bbox)
     };
 }
 
-
 function ClearHighlights(canvasdict)
 {
     let canvas = pcb.GetLayerCanvas("Highlights", (canvasdict.layer === "F"));
@@ -143,5 +142,5 @@ function ResizeCanvas(layerdict)
 
 
 module.exports = {
-    ResizeCanvas, RedrawCanvas, rotateVector, ClearHighlights
+    ResizeCanvas, RedrawCanvas, rotateVector, ClearHighlights, ClearCanvas
 };
