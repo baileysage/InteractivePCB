@@ -66,17 +66,15 @@ Generated JSON is validated using [JSON Formatter & Validator](https://jsonforma
 
 
     <PADS> ::= <PAD> | <PAD> "," <PADS>
-    <PAD>  ::= <PAD_RECTANGLE> | <PAD_OBLONG> | <PAD_ROUND> | <PAD_OCTAGON> | <PAD_OFFSET>
+    <PAD>  ::= <PAD_SMD> | <PAD_RECTANGLE> | <PAD_OBLONG> | <PAD_ROUND> | <PAD_OCTAGON> | <PAD_OFFSET>
 
-    <PAD_RECTANGLE> ::= "{" "\"pad_type\":" <PAD_TYPE> "," "\"pin1\":" <PAD_PIN_ONE> "," "\"shape\":" "\"rect\""    "," "\"angle\":" <REAL_NUMBER> "," "\"x\":" <REAL_NUMBER> "," "\"y\":" <REAL_NUMBER> "," "\"dx\":" <REAL_NUMBER> "," "\"dy\":" <REAL_NUMBER> "," "\"drill\":" <REAL_NUMBER> "}"
-    <PAD_OBLONG>    ::= "{" "\"pad_type\":" <PAD_TYPE> "," "\"pin1\":" <PAD_PIN_ONE> "," "\"shape\":" "\"oblong\""  "," "\"angle\":" <REAL_NUMBER> "," "\"x\":" <REAL_NUMBER> "," "\"y\":" <REAL_NUMBER> "," "\"diameter\":" <REAL_NUMBER> "," "\"elongation\":" <REAL_NUMBER> "," "\"drill\":" <REAL_NUMBER> "}"
-    <PAD_ROUND>     ::= "{" "\"pad_type\":" <PAD_TYPE> "," "\"pin1\":" <PAD_PIN_ONE> "," "\"shape\":" "\"round\""   "," "\"angle\":" <REAL_NUMBER> "," "\"x\":" <REAL_NUMBER> "," "\"y\":" <REAL_NUMBER> "," "\"diameter\":" <REAL_NUMBER> "," "\"drill\":" <REAL_NUMBER>"}"
-    <PAD_OCTAGON>   ::= "{" "\"pad_type\":" <PAD_TYPE> "," "\"pin1\":" <PAD_PIN_ONE> "," "\"shape\":" "\"round\""   "," "\"angle\":" <REAL_NUMBER> "," "\"x\":" <REAL_NUMBER> "," "\"y\":" <REAL_NUMBER> "," "\"diameter\":" <REAL_NUMBER> "," "\"drill\":" <REAL_NUMBER>"}"
-    <PAD_OFFSET>    ::= "{" "\"pad_type\":" <PAD_TYPE> "," "\"pin1\":" <PAD_PIN_ONE> "," "\"shape\":" "\"oblong\""  "," "\"angle\":" <REAL_NUMBER> "," "\"x\":" <REAL_NUMBER> "," "\"y\":" <REAL_NUMBER> "," "\"diameter\":" <REAL_NUMBER> "," "\"elongation\":" <REAL_NUMBER> "," "\"drill\":" <REAL_NUMBER> "}"
+    <PAD_SMD>       ::= "{" "\"pin1\":" <PAD_PIN_ONE> "," "\"type\":" "\"smd\""    "," "\"angle\":" <REAL_NUMBER> "," "\"x\":" <REAL_NUMBER> "," "\"y\":" <REAL_NUMBER> "," "\"dx\":" <REAL_NUMBER> "," "\"dy\":" <REAL_NUMBER> "," "\"drill\":" <REAL_NUMBER> "}"
+    <PAD_RECTANGLE> ::= "{" "\"pin1\":" <PAD_PIN_ONE> "," "\"type\":" "\"rect\""   "," "\"angle\":" <REAL_NUMBER> "," "\"x\":" <REAL_NUMBER> "," "\"y\":" <REAL_NUMBER> "," "\"dx\":" <REAL_NUMBER> "," "\"dy\":" <REAL_NUMBER> "," "\"drill\":" <REAL_NUMBER> "}"
+    <PAD_OBLONG>    ::= "{" "\"pin1\":" <PAD_PIN_ONE> "," "\"type\":" "\"oblong\"" "," "\"angle\":" <REAL_NUMBER> "," "\"x\":" <REAL_NUMBER> "," "\"y\":" <REAL_NUMBER> "," "\"diameter\":" <REAL_NUMBER> "," "\"elongation\":" <POSITIVE_REAL_NUMBER> "," "\"drill\":" <REAL_NUMBER> "}"
+    <PAD_ROUND>     ::= "{" "\"pin1\":" <PAD_PIN_ONE> "," "\"type\":" "\"round\""  "," "\"angle\":" <REAL_NUMBER> "," "\"x\":" <REAL_NUMBER> "," "\"y\":" <REAL_NUMBER> "," "\"diameter\":" <REAL_NUMBER> "," "\"drill\":" <REAL_NUMBER>"}"
+    <PAD_OCTAGON>   ::= "{" "\"pin1\":" <PAD_PIN_ONE> "," "\"type\":" "\"round\""  "," "\"angle\":" <REAL_NUMBER> "," "\"x\":" <REAL_NUMBER> "," "\"y\":" <REAL_NUMBER> "," "\"diameter\":" <REAL_NUMBER> "," "\"drill\":" <REAL_NUMBER>"}"
+    <PAD_OFFSET>    ::= "{" "\"pin1\":" <PAD_PIN_ONE> "," "\"type\":" "\"oblong\"" "," "\"angle\":" <REAL_NUMBER> "," "\"x\":" <REAL_NUMBER> "," "\"y\":" <REAL_NUMBER> "," "\"diameter\":" <REAL_NUMBER> "," "\"elongation\":" <POSITIVE_REAL_NUMBER> "," "\"drill\":" <REAL_NUMBER> "}"
 
-    
-
-    <PAD_TYPE>    ::= "\"smd\""  | "\"tht\""
     <PAD_PIN_ONE> ::= "1" | "0" //  1 = Yes, 0 = No
     <PAD_SHAPE>   ::= "\"rect\"" | "\"octagon\"" | "\"oblong\"" | "\"circle\""
 
@@ -91,7 +89,6 @@ Generated JSON is validated using [JSON Formatter & Validator](https://jsonforma
 
     <TEST_POINTS>     ::= <TEST_POINT> | <TEST_POINT> "," <TEST_POINTS>
     <TEST_POINT>      ::= "{" "\"name\":" "\"" <STRING> "\"" "," "\"description\":" "\"" <STRING> "\"" "," "\"expected\":" "\"" <STRING> "\"" "}"
-
 
     /*************** COMMON RULES ***************/
 
@@ -128,7 +125,6 @@ Generated JSON is validated using [JSON Formatter & Validator](https://jsonforma
     <REAL_NUMBER>          ::= <POSITIVE_REAL_NUMBER> | <NEGATIVE_REAL_NUMBER>
     <POSITIVE_REAL_NUMBER> ::=     ("0" |  [1-9] [0-9]*) ("." [0-9]+ )?
     <NEGATIVE_REAL_NUMBER> ::= "-" ([1-9] [0-9]*) ("." [0-9]+ )? | "-" ("0" "." [0-9]+) 
-
 
     <STRING>      ::= ([a-z] | [A-Z]) ([a-z] | [A-Z] | [0-9] | "-" | "_" | "$")*
     <DATE_STRING> ::= ([a-z] | [A-Z] | [0-9] | "-" | "_" | ":" | " ")*
