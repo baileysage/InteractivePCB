@@ -35,19 +35,13 @@ function CreateBOM(pcbdataStructure)
         let reference = part.name;
         let location  = part.location;
 
-        // AttributeName and AttributeValue are two strings that are deliminated by ';'. 
-        // Split the strings by ';' and then zip them together
-        let attributeNames  = part.attributes.name.split(";");
-        let attributeValues = part.attributes.value.split(";");
+        let attributes = new Map(); // Create a empty dictionary
+        for(let i of part.attributes)
+        {
+            attributes.set(i.name.toLowerCase(),i.value.toLowerCase());
+        }
 
         let checkboxes = new Map();
-
-        //XXX: ASSUMTION that attributeNames is the same length as attributeValues
-        let attributes = new Map(); // Create a empty dictionary
-        for(let i in attributeNames)
-        {
-            attributes.set(attributeNames[i].toLowerCase(),attributeValues[i].toLowerCase());
-        }
         // Add the par to the global part array
         BOM.push(new Part.Part(value, footprint, reference, location, attributes, checkboxes));
 
