@@ -14,8 +14,8 @@ Generated JSON is validated using [JSON Formatter & Validator](https://jsonforma
 
     <PROTOCOL_VERSION> ::= "\"protocol_version\":" <POSITIVE_REAL_NUMBER>
 
-    <COMPANY_NAME>     ::= "\"revision\"" ":" "\"" <STRING> "\""
-    <PROJECT_REVISION> ::= "\"company\""  ":" "\"" <STRING> "\""
+    <PROJECT_REVISION> ::= "\"revision\"" ":" "\"" <STRING> "\""
+    <COMPANY_NAME>     ::= "\"company\""  ":" "\"" <STRING> "\""
 
     <ECAD>             ::= "\"ecad\":" <ECAD_PROGRAM>
     <ECAD_PROGRAM>     ::= <EAGLE_CAD>
@@ -102,18 +102,18 @@ Generated JSON is validated using [JSON Formatter & Validator](https://jsonforma
     <VIAS>             ::= <VIA>     | <VIA>     "," <VIAS>
 
     <PATH>             ::= <LINE> | <ARC>
-    <LINE>             ::= "{" "\"type\"" ":" "\"line\"" "," "\"layer\":" <UNSIGNED_INTEGER> "," "\"x0\"" ":" <REAL_NUMBER> "," "\"y0\"" ":" <REAL_NUMBER> "," "\"x1\"" ":" <REAL_NUMBER> "," "\"y1\"" ":" <REAL_NUMBER> "," "\"width\"" ":" <REAL_NUMBER> "}"
-    <ARC>              ::= "{" "\"type\"" ":" "\"arc\"" "," "\"layer\":" <UNSIGNED_INTEGER> "," "\"cx0\"" ":" <REAL_NUMBER> "," "\"cy0\"" ":" <REAL_NUMBER> "," "\"radius\"" ":" <REAL_NUMBER> "," "\"angle0\"" ":" <REAL_NUMBER> "," "\"angle1\"" ":" <REAL_NUMBER> "," "\"width\"" ":" <REAL_NUMBER> "," "\"direction\"" ":" <ARC_DIRECTION> "}"
-    <POLYGON>          ::= "{" "\"type\"" ":" "\"polygon\"" "," "\"layer\":" <UNSIGNED_INTEGER> "," "\"positive\"" ":" <POLYGON_DIRECTION> "," "\"segments\"" ":" "[" <PATHS> "]" "}"
+    <LINE>             ::= "{" "\"type\"" ":" "\"line\"" "," "\"layer\":" <STRING> "," "\"x0\"" ":" <REAL_NUMBER> "," "\"y0\"" ":" <REAL_NUMBER> "," "\"x1\"" ":" <REAL_NUMBER> "," "\"y1\"" ":" <REAL_NUMBER> "," "\"width\"" ":" <REAL_NUMBER> "}"
+    <ARC>              ::= "{" "\"type\"" ":" "\"arc\"" "," "\"layer\":" <STRING> "," "\"cx0\"" ":" <REAL_NUMBER> "," "\"cy0\"" ":" <REAL_NUMBER> "," "\"radius\"" ":" <REAL_NUMBER> "," "\"angle0\"" ":" <REAL_NUMBER> "," "\"angle1\"" ":" <REAL_NUMBER> "," "\"width\"" ":" <REAL_NUMBER> "," "\"direction\"" ":" <ARC_DIRECTION> "}"
+    <POLYGON>          ::= "{" "\"type\"" ":" "\"polygon\"" "," "\"layer\":" <STRING> "," "\"positive\"" ":" <POLYGON_DIRECTION> "," "\"segments\"" ":" "[" <PATHS> "]" "}"
     <VIA>              ::= <VIA_ROUND> | <VIA_SQUARE> | <VIA_OCTAGON>
 
 
     <ARC_DIRECTION>     ::= "\"clockwise\"" | "\"counterclockwise\""
     <POLYGON_DIRECTION> ::= "1" | "0"
 
-    <VIA_ROUND>    ::= "{" "\"type\"" ":" "\"via_round\""   "," "\"layer\":" <UNSIGNED_INTEGER> "," "\"x\"" ":" <REAL_NUMBER> "," "\"y\"" ":" <REAL_NUMBER> "," "\"diameter\"" ":" <REAL_NUMBER> "," "\"drill\"" ":" <REAL_NUMBER> "}"
-    <VIA_SQUARE>   ::= "{" "\"type\"" ":" "\"via_square\""  "," "\"layer\":" <UNSIGNED_INTEGER> "," "\"x\"" ":" <REAL_NUMBER> "," "\"y\"" ":" <REAL_NUMBER> "," "\"diameter\"" ":" <REAL_NUMBER> "," "\"drill\"" ":" <REAL_NUMBER> "}"
-    <VIA_OCTAGON>  ::= "{" "\"type\"" ":" "\"via_octagon\"" "," "\"layer\":" <UNSIGNED_INTEGER> "," "\"x\"" ":" <REAL_NUMBER> "," "\"y\"" ":" <REAL_NUMBER> "," "\"diameter\"" ":" <REAL_NUMBER> "," "\"drill\"" ":" <REAL_NUMBER> "}"
+    <VIA_ROUND>    ::= "{" "\"type\"" ":" "\"via_round\""   "," "\"layer\":" <STRING> "," "\"x\"" ":" <REAL_NUMBER> "," "\"y\"" ":" <REAL_NUMBER> "," "\"diameter\"" ":" <REAL_NUMBER> "," "\"drill\"" ":" <REAL_NUMBER> "}"
+    <VIA_SQUARE>   ::= "{" "\"type\"" ":" "\"via_square\""  "," "\"layer\":" <STRING> "," "\"x\"" ":" <REAL_NUMBER> "," "\"y\"" ":" <REAL_NUMBER> "," "\"diameter\"" ":" <REAL_NUMBER> "," "\"drill\"" ":" <REAL_NUMBER> "}"
+    <VIA_OCTAGON>  ::= "{" "\"type\"" ":" "\"via_octagon\"" "," "\"layer\":" <STRING> "," "\"x\"" ":" <REAL_NUMBER> "," "\"y\"" ":" <REAL_NUMBER> "," "\"diameter\"" ":" <REAL_NUMBER> "," "\"drill\"" ":" <REAL_NUMBER> "}"
 
 
     <BOUNDING_BOX> ::= "\"bounding_box\":" "{" <X0> "," <Y0> "," <X1> "," <Y1> "}"
