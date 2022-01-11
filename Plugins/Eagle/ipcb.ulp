@@ -649,7 +649,7 @@ string removeDoubleQuote(string passedString)
 
     void Print_Part_Package_BoundingBox(UL_ELEMENT E)
     {
-        Print_BoundingBox(E.package.area.x1, u2mm(E.package.area.y1), u2mm(E.package.area.x2), u2mm(E.package.area.y2));
+        Print_BoundingBox(u2mm(E.package.area.x1), u2mm(E.package.area.y1), u2mm(E.package.area.x2), u2mm(E.package.area.y2));
     }
 
     void Print_Part_Name(string name)
