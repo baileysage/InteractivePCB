@@ -324,6 +324,47 @@ function toggleLayers()
     changeBomLayout(mainLayout);
 }
 
+function LoadPCB(pcbdata)
+{
+    console.log(pcbdata)
+    // Remove all items from BOM table
+    // And delete internal bom structure
+    bomTable.clearBOMTable();
+    pcb.DeleteBOM();
+    // Create a new BOM table
+    pcb.CreateBOM(pcbdata);
+
+    // Remove all items from layer table
+    layerTable.clearLayerTable();
+    globalData.layer_list = new Map();
+    /* Create layer objects from JSON file */
+    for(let layer of pcbdata.board.layers)
+    {
+        globalData.layer_list.set(layer.name, [new PCB_Layer(layer), new Render_Layer(layer)]);
+    }
+
+    /*
+        Internally the following layers are used
+            1. Pads
+            2. Highlights
+        If these were not created before, then they will be created here.
+    */
+    let layerPads       = {"name":"Pads", "paths": []};
+    if(globalData.layer_list.get(layerPads.name) == undefined)
+    {
+        globalData.layer_list.set(layerPads.name, [new PCB_Layer(layerPads), new Render_Layer(layerPads)]);
+    }
+
+    let layerHighlights = {"name":"Highlights", "paths": []};
+    if(globalData.layer_list.get(layerHighlights.name) == undefined)
+    {
+        globalData.layer_list.set(layerHighlights.name, [new PCB_Layer(layerHighlights), new Render_Layer(layerHighlights)]);
+    }
+
+    layerTable.populateLayerTable();
+
+
+}
 
 function changeBomLayout(layout)
 {
@@ -332,7 +373,7 @@ function changeBomLayout(layout)
     document.getElementById("bom-lr-btn").classList.remove("depressed");
     document.getElementById("bom-tb-btn").classList.remove("depressed");
     document.getElementById("pcb-btn").classList.remove("depressed");
-    switch (layout) 
+    switch (layout)
     {
     case "BOM":
         document.getElementById("bom-btn").classList.add("depressed");
@@ -653,18 +694,22 @@ window.onload = function(e)
         }
     }
 
+    // Must be called after loading PCB as rendering required the bounding box information for PCB
+    render.initRender();
+
+    layerTable.populateLayerTable();
+    //cleanGutters();
+
+    populateMetadata();
 
     // Create canvas layers. One canvas per pcb layer
 
     globalData.initStorage();
-    cleanGutters();
-    // Must be called after loading PCB as rendering required the bounding box information for PCB
-    render.initRender();
 
     // Set up mouse event handlers
     handlers_mouse.addMouseHandlers(document.getElementById("frontcanvas"), globalData.GetAllCanvas().front);
-    handlers_mouse.addMouseHandlers(document.getElementById("backcanvas"), globalData.GetAllCanvas().back);
-    
+    handlers_mouse.addMouseHandlers(document.getElementById("backcanvas") , globalData.GetAllCanvas().back);
+
     globalData.setBomLayout(globalData.readStorage("bomlayout"));
     if (!globalData.getBomLayout())
     {
@@ -676,9 +721,6 @@ window.onload = function(e)
         globalData.setCanvasLayout("FB");
     }
 
-    layerTable.populateLayerTable();
-
-    populateMetadata();
     globalData.setBomCheckboxes(globalData.readStorage("bomCheckboxes"));
     if (globalData.getBomCheckboxes() === null)
     {
@@ -690,26 +732,31 @@ window.onload = function(e)
     {
         globalData.setRemoveBOMEntries("");
     }
+
     globalData.setAdditionalAttributes(globalData.readStorage("additionalAttributes"));
     if (globalData.getAdditionalAttributes() === null)
     {
         globalData.setAdditionalAttributes("");
     }
+
     if (globalData.readStorage("redrawOnDrag") === "false")
     {
         document.getElementById("dragCheckbox").checked = false;
         globalData.setRedrawOnDrag(false);
     }
+
     if (globalData.readStorage("darkmode") === "true")
     {
         document.getElementById("darkmodeCheckbox").checked = true;
         setDarkMode(true);
     }
+
     if (globalData.readStorage("hidePlacedParts") === "true")
     {
         document.getElementById("hidePlacedParts").checked = true;
         globalData.setHidePlacedParts(true);
     }
+
     if (globalData.readStorage("highlightpin1") === "true")
     {
         document.getElementById("highlightpin1Checkbox").checked = true;
@@ -717,24 +764,26 @@ window.onload = function(e)
         render.RenderPCB(globalData.GetAllCanvas().front);
         render.RenderPCB(globalData.GetAllCanvas().back);
     }
+
     // If this is true then combine parts and display quantity
     if (globalData.readStorage("combineValues") === "true")
     {
         document.getElementById("combineValues").checked = true;
         globalData.setCombineValues(true);
     }
+
     if (globalData.readStorage("debugMode") === "true")
     {
         document.getElementById("debugMode").checked = true;
         globalData.setDebugMode(true);
     }
+
     // Read the value of board rotation from local storage
     let boardRotation = globalData.readStorage("boardRotation");
     /*
-      Adjusted to match how the update rotation angle is calculated.
-    
+        Adjusted to match how the update rotation angle is calculated.
         If null, then angle not in local storage, set to 180 degrees.
-      */
+    */
     if (boardRotation === null)
     {
         boardRotation = 180;
@@ -743,6 +792,7 @@ window.onload = function(e)
     {
         boardRotation = parseInt(boardRotation);
     }
+
     // Set internal global variable for board rotation.
     globalData.SetBoardRotation(boardRotation);
     document.getElementById("boardRotation").value = (boardRotation-180) / 5;
@@ -758,5 +808,5 @@ window.matchMedia("print").addListener(render.resizeAll);
 
 module.exports = {
     changeBomLayout, setDarkMode        , changeCanvasLayout,
-    setAdditionalAttributes, toggleLayers, toggleFullScreen
+    setAdditionalAttributes, toggleLayers, toggleFullScreen, LoadPCB
 };

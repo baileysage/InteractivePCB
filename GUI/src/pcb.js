@@ -57,9 +57,6 @@ function CreateBOM(pcbdataStructure)
             BOM_Combined.set(value, new Part.Part(value, footprint, reference, location, [], []));
         }
     }
-
-    console.log(BOM)
-    console.log(BOM_Combined)
 }
 
 function GetBOM()
@@ -80,18 +77,27 @@ function GetBOM()
      }
 }
 
+function DeleteBOM()
+{
+    BOM = [];
+    BOM_Combined = new Map();
+}
+
 function getAttributeValue(part, attributeToLookup)
 {
     let attributes = part.attributes;
     let result = "";
 
-    if(attributeToLookup == "name")
+    if(!globalData.getCombineValues())
     {
-        result = part.reference;
-    }
-    else
-    {
-        result = (attributes.has(attributeToLookup) ? attributes.get(attributeToLookup) : "");
+        if(attributeToLookup == "name")
+        {
+            result = part.reference;
+        }
+        else
+        {
+                result = (attributes.has(attributeToLookup) ? attributes.get(attributeToLookup) : "");
+        }
     }
     // Check that the attribute exists by looking up its name. If it exists
     // the return the value for the attribute, otherwise return an empty string. 
@@ -117,5 +123,5 @@ function GetLayerCanvas(layerName, isFront)
 }
 
 module.exports = {
-    CreateBOM, GetBOM, getAttributeValue, GetLayerCanvas
+    CreateBOM, GetBOM, DeleteBOM, getAttributeValue, GetLayerCanvas
 };

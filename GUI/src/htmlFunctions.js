@@ -1,6 +1,7 @@
 var globalData = require("./global.js");
 var render     = require("./render.js");
 var ipcb       = require("./ipcb.js");
+var pcb        = require("./pcb.js");
 var layerTable = require("./layer_table.js")
 var bomTable   = require("./bom_table.js")
 
@@ -180,13 +181,10 @@ load_pcb.onchange=function()
     // Handle errors load
     reader.onload = function loadHandler(event) {
                         pcbdata = JSON.parse(event.target.result);
-                        pcbdata = JSON.parse(event.target.result);
-                        layerTable.clearLayerTable();
-                        bomTable.clearBOMTable();
-
-                        render.ClearCanvas(globalData.GetAllCanvas().front);
-                        render.ClearCanvas(globalData.GetAllCanvas().back);
-
+                        // Delete all canvas entries
+                        // Load new PCB data file
+                        ipcb.LoadPCB(pcbdata);
+                        ipcb.changeBomLayout(globalData.getBomLayout());
                     };
 
     reader.onerror = function errorHandler(evt) {

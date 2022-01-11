@@ -105,6 +105,7 @@ function populateLayerBody()
 
 function clearLayerTable()
 {
+    let layerBody = document.getElementById("layerbody");
     while (layerBody.firstChild) 
     {
         layerBody.removeChild(layerBody.firstChild);
