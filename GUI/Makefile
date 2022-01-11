@@ -44,7 +44,7 @@ Build/iPCB.html: iPCB.html | Build
 	@#npx html-minifier --collapse-whitespace --remove-comments --remove-optional-tags --remove-redundant-attributes --remove-script-type-attributes --remove-tag-whitespace --use-short-doctype --minify-css true --minify-js true $<  > $@
 
 Build/pcbdata.json: ../Examples/Eagle/Simple_BRD/pcbdata.json | Build
-	cp $< $@
+	cat $< | sed 's/var pcbdata =//g' | python -m json.tool | sed  '1s;^;var pcbdata =;' > $@
 
 Release:
 	mkdir $@
