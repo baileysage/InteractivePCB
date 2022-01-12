@@ -10,61 +10,6 @@ let layer_list = new Map();
 
 
 /*************************************************
-              Board Rotation                    
-*************************************************/
-let storage = undefined;
-const storagePrefix = "INTERACTIVE_PCB__"
-
-function initStorage ()
-{
-    try
-    {
-        window.localStorage.getItem("blank");
-        storage = window.localStorage;
-    }
-    catch (e)
-    {
-        console.log("ERROR: Storage init error");
-    }
-
-    if (!storage)
-    {
-        try
-        {
-            window.sessionStorage.getItem("blank");
-            storage = window.sessionStorage;
-        }
-        catch (e)
-        {
-            console.log("ERROR: Session storage not available");
-            // sessionStorage also not available
-        }
-    }
-}
-
-function readStorage(key)
-{
-    if (storage)
-    {
-        return storage.getItem(storagePrefix + "#" + key);
-    }
-    else
-    {
-        return null;
-    }
-}
-
-function writeStorage(key, value)
-{
-    if (storage)
-    {
-        storage.setItem(storagePrefix + "#" + key, value);
-    }
-}
-
-/************************************************/
-
-/*************************************************
               Highlighted Refs                    
 *************************************************/
 let highlightedRefs = [];
@@ -131,42 +76,6 @@ function getHighlightedRefs()
 
 /************************************************/
 
-/*************************************************
-              Redraw On Drag                      
-*************************************************/
-let redrawOnDrag = true;
-
-function setRedrawOnDrag(value)
-{
-    redrawOnDrag = value;
-    writeStorage("redrawOnDrag", value);
-}
-
-function getRedrawOnDrag()
-{
-    return redrawOnDrag;
-}
-
-/************************************************/
-
-
-/*************************************************
-                 Debug Mode                       
-*************************************************/
-let debugMode = false;
-
-function setDebugMode(value)
-{
-    debugMode = value;
-    writeStorage("debugMode", value);
-}
-
-function getDebugMode()
-{
-    return debugMode;
-}
-
-/************************************************/
 
 /*************************************************
 layer Split
@@ -464,22 +373,6 @@ function getAdditionalAttributes(){
 /************************************************/
 
 
-/*************************************************
-Highlight Pin 1
-*************************************************/
-let highlightpin1 = false;
-
-function setHighlightPin1(value)
-{
-    writeStorage("highlightpin1", value);
-    highlightpin1 = value;
-}
-
-function getHighlightPin1(){
-    return highlightpin1;
-}
-
-/************************************************/
 
 /*************************************************
 Last Clicked Ref
@@ -496,43 +389,6 @@ function getLastClickedRef()
     return lastClickedRef;
 }
 
-/************************************************/
-
-
-/*************************************************
-Combine Values
-*************************************************/
-let combineValues = false;
-
-function setCombineValues(value)
-{
-    writeStorage("combineValues", value);
-    combineValues = value;
-}
-
-function getCombineValues()
-{
-    return combineValues;
-}
-/************************************************/
-
-
-
-/*************************************************
-Combine Values
-*************************************************/
-let hidePlacedParts = false;
-
-function setHidePlacedParts(value)
-{
-    writeStorage("hidePlacedParts", value);
-    hidePlacedParts = value;
-}
-
-function getHidePlacedParts()
-{
-    return hidePlacedParts;
-}
 /************************************************/
 
 let allcanvas =  undefined;
