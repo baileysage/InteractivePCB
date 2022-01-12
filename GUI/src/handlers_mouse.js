@@ -42,7 +42,6 @@ function modulesClicked(event, references)
         }
     }
 }
-
 function bboxScan(layer, x, y) 
 {
     let result = [];
@@ -52,9 +51,9 @@ function bboxScan(layer, x, y)
         {
             let b = part.package.bounding_box;
             if (    (x > b.x0 )
-                 && (x < b.x1 )
-                 && (y > b.y0 )
-                 && (y < b.y1 )
+                        && (x < b.x1 )
+                        && (y > b.y0 )
+                        && (y < b.y1 )
             )
             {
                 result.push(part.name);
@@ -63,7 +62,6 @@ function bboxScan(layer, x, y)
     }
     return result;
 }
-
 
 
 function handleMouseClick(e, layerdict) 
