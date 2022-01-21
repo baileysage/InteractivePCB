@@ -5,7 +5,7 @@ var Point           = require("../render/point.js").Point
 var render_lowlevel = require("../render/render_lowlevel.js");
 var colormap        = require("../colormap.js");
 
-class Package_Pad_Rectangle extends Package_Pad
+class Package_Pad_SMD extends Package_Pad
 {
     constructor(iPCB_JSON_Pad)
     {
@@ -15,7 +15,6 @@ class Package_Pad_Rectangle extends Package_Pad
         this.y          = iPCB_JSON_Pad.y;
         this.dx         = iPCB_JSON_Pad.dx;
         this.dy         = iPCB_JSON_Pad.dy;
-        this.drill      = iPCB_JSON_Pad.drill;
     }
 
     Render(guiContext, color)
@@ -51,22 +50,10 @@ class Package_Pad_Rectangle extends Package_Pad
             renderOptions
         );
 
-        renderOptions = {
-            color: "#CCCCCC",
-            fill: true,
-        };
-
-        render_lowlevel.Circle(
-            guiContext,
-            centerPoint,
-            this.drill/2, 
-            renderOptions
-        );
-
         guiContext.restore();
     }
 }
 
 module.exports = {
-    Package_Pad_Rectangle
+    Package_Pad_SMD
 };

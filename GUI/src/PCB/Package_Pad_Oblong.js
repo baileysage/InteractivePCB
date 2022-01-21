@@ -62,23 +62,18 @@ class Package_Pad_Oblong extends Package_Pad
             renderOptions
         );
 
-        /* Only draw drill hole if tht type pad */
-        if(this.pad_type == "tht")
-        {
-            let centerPoint = new Point(this.x, this.y);
+        renderOptions = {
+            color: "#CCCCCC",
+            fill: true,
+        };
 
-            let renderOptions = {
-                color: "#CCCCCC",
-                fill: true,
-            };
+        render_lowlevel.Circle(
+            guiContext,
+            centerPoint,
+            this.drill/2,
+            renderOptions
+        );
 
-            render_lowlevel.Circle(
-                guiContext,
-                centerPoint,
-                this.drill/2,
-                renderOptions
-            );
-        }
         guiContext.restore();
     }
 }

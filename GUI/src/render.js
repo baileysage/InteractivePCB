@@ -35,7 +35,6 @@ function DrawModules(isViewFront)
 
 function DrawHighlitedModules(isViewFront, layer, scalefactor, refs)
 {
-    console.log(refs)
     // TODO: Global function here. GUI context should be passed as 
     //       an argument to the function. 
     let guiContext = pcb.GetLayerCanvas("Highlights", isViewFront).getContext("2d")

@@ -34,23 +34,17 @@ class Package_Pad_Round extends Package_Pad
             renderOptions
         ); 
 
+        renderOptions = {
+            color: "#CCCCCC",
+            fill: true,
+        };
 
-
-        if(this.pad_type == "tht")
-        {
-            let centerPoint = new Point(this.x, this.y);
-            let renderOptions = {
-                color: "#CCCCCC",
-                fill: true,
-            };
-
-            render_lowlevel.Circle(
-                guiContext,
-                centerPoint,
-                this.drill/2, 
-                renderOptions
-            );
-        }
+        render_lowlevel.Circle(
+            guiContext,
+            centerPoint,
+            this.drill/2, 
+            renderOptions
+        );
 
         guiContext.restore();
 

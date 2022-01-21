@@ -6,6 +6,7 @@ var Package_Pad_Rectangle  = require("./Package_Pad_Rectangle.js").Package_Pad_R
 var Package_Pad_Oblong     = require("./Package_Pad_Oblong.js").Package_Pad_Oblong;
 var Package_Pad_Round      = require("./Package_Pad_Round.js").Package_Pad_Round;
 var Package_Pad_Octagon    = require("./Package_Pad_Octagon.js").Package_Pad_Octagon;
+var Package_Pad_SMD    = require("./Package_Pad_SMD.js").Package_Pad_SMD;
 
 var colormap           = require("../colormap.js");
 
@@ -18,25 +19,29 @@ class Package
 
         for(let pad of iPCB_JSON_Package.pads)
         {
-            if (pad.shape == "rect") 
+            if (pad.type == "rect")
             {
                 this.pads.push(new Package_Pad_Rectangle(pad));
             }
-            else if (pad.shape == "oblong") 
+            else if (pad.type == "oblong") 
             {
                 this.pads.push(new Package_Pad_Oblong(pad));
             }
-            else if (pad.shape == "round") 
+            else if (pad.type == "round") 
             {
                 this.pads.push(new Package_Pad_Round(pad));
             }
-            else if (pad.shape == "octagon") 
+            else if (pad.type == "octagon") 
             {
                 this.pads.push(new Package_Pad_Octagon(pad));
             }
+            else if (pad.type == "smd")
+            {
+                this.pads.push(new Package_Pad_SMD(pad));
+            }
             else
             {
-                console.log("ERROR: Unsupported pad type ", pad.shape);
+                console.log("ERROR: Unsupported pad type ", pad.type);
             }
         }
     }

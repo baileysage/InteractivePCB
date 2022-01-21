@@ -48,21 +48,17 @@ class Package_Pad_Octagon extends Package_Pad
         );
 
 
-        if(this.pad_type == "tht")
-        {
-            let centerPoint = new Point(this.x, this.y);
-            let renderOptions = {
-                color: "#CCCCCC",
-                fill: true,
-            };
+        renderOptions = {
+            color: "#CCCCCC",
+            fill: true,
+        };
 
-            render_lowlevel.Circle(
-                guiContext,
-                centerPoint,
-                this.drill/2, 
-                renderOptions
-            );
-        }
+        render_lowlevel.Circle(
+            guiContext,
+            centerPoint,
+            this.drill/2, 
+            renderOptions
+        );
 
         guiContext.restore();
     }
