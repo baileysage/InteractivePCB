@@ -1,7 +1,7 @@
 "use strict";
 
 let versionString_Major = 2;
-let versionString_Minor = 3;
+let versionString_Minor = 4;
 let versionString_Patch = 0;
 
 function GetVersionString()
