@@ -48,28 +48,39 @@ class Table_LayerEntry
         this.visible_back  = true;
 
         // Assumes that all layers are visible by default.
-        if (    (globalData.readStorage( "checkbox_layer_front_" + layer.name + "_visible" ) == "true")
-             || (globalData.readStorage( "checkbox_layer_front_" + layer.name + "_visible" ) == null)
-        )
+        if (globalData.readStorage( "checkbox_layer_front_" + layer.name + "_visible" ) == null)
         {
             this.visible_front = true;
+            globalData.layer_list.get(layer.name)[globalData.render_layers].SetVisibility(true,true);
             globalData.writeStorage("checkbox_layer_front_" + layer.name + "_visible", "true");
+            console.log("HERE");
+        }
+        else if ( globalData.readStorage( "checkbox_layer_front_" + layer.name + "_visible" ) == "true")
+        {
+            globalData.layer_list.get(layer.name)[globalData.render_layers].SetVisibility(true,true);
+            this.visible_front = true;
         }
         else
         {
+            globalData.layer_list.get(layer.name)[globalData.render_layers].SetVisibility(true,false);
             this.visible_front = false;
         }
 
-        // Assumes that all layers are visible by default.
-        if (    (globalData.readStorage( "checkbox_layer_back_" + layer.name + "_visible" ) == "true")
-             || (globalData.readStorage( "checkbox_layer_back_" + layer.name + "_visible" ) == null)
-        )
+        if (globalData.readStorage( "checkbox_layer_back_" + layer.name + "_visible" ) == null)
         {
             this.visible_back = true;
+            globalData.layer_list.get(layer.name)[globalData.render_layers].SetVisibility(false,true);
             globalData.writeStorage("checkbox_layer_back_" + layer.name + "_visible", "true");
+        }
+        // Assumes that all layers are visible by default.
+        else if (globalData.readStorage( "checkbox_layer_back_" + layer.name + "_visible" ) == "true")
+        {
+            globalData.layer_list.get(layer.name)[globalData.render_layers].SetVisibility(false,true);
+            this.visible_back = true;
         }
         else
         {
+            globalData.layer_list.get(layer.name)[globalData.render_layers].SetVisibility(false,false);
             this.visible_back = false;
         }
 

@@ -682,15 +682,19 @@ window.onload = function(e)
     console.log(version.GetVersionString());
 
 
+
+
     Create_Traces(pcbdata);
     Create_Layers(pcbdata);
     Create_Parts(pcbdata);
     Create_Configuration(pcbdata);
 
+    layerTable.populateLayerTable();
+
     // Must be called after loading PCB as rendering required the bounding box information for PCB
     render.initRender();
 
-    layerTable.populateLayerTable();
+
     //cleanGutters();
 
     populateMetadata();
