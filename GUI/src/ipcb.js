@@ -669,6 +669,10 @@ window.onload = function(e)
 {
     console.time("on load");
 
+    // Must occure early for storage parameters to be loaded. If not loaded early then 
+    // incorrect parameters may be used.
+    globalData.initStorage();
+
     pcb.CreateBOM(pcbdata);
     let metadata = Metadata.GetInstance();
     metadata.Set(pcbdata.metadata);
@@ -693,7 +697,7 @@ window.onload = function(e)
 
     // Create canvas layers. One canvas per pcb layer
 
-    globalData.initStorage();
+
 
     // Set up mouse event handlers
     handlers_mouse.addMouseHandlers(document.getElementById("frontcanvas"), globalData.GetAllCanvas().front);

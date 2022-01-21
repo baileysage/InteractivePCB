@@ -60,6 +60,10 @@ function writeStorage(key, value)
     {
         storage.setItem(storagePrefix + "#" + key, value);
     }
+    else
+    {
+        console.log("ERROR: Storage not initialized");
+    }
 }
 
 /************************************************/
