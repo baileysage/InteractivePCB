@@ -390,6 +390,7 @@
                     }
                 }
             }
+
             B.wires(W)
             {
                 if(W.layer == L.number)
@@ -409,6 +410,103 @@
                     once = 1;
                 }
             }
+
+            // Print text associated and shapes associated to components.
+            // Need to iterate over all elements if they exist on the layer.
+            B.elements(E)
+            {
+                // Outputs text that is still attached to part (not smashed).
+                E.footprint.circles(C)
+                {
+                    if(C.layer == L.number)
+                    {
+                         //TODO: Current not supported
+                    }
+                }
+
+                // Outputs text that is still attached to part (not smashed).
+                E.footprint.polygons(P)
+                {
+                    if(P.layer == L.number)
+                    {
+                        // Using contour loop variable to get the eagle calculate boundaries for the polygon.
+                        P.contours(C)
+                        {
+                            //TODO: Current not supported
+                        }
+                    }
+                }
+
+                // Outputs text that is still attached to part (not smashed).
+                E.footprint.texts(T)
+                {
+                    if(T.layer == L.number)
+                    {
+
+                        T.wires(W)
+                        {
+                            if(once == 1)
+                            {
+                                printf(",");
+                            }
+                            if(W.arc)
+                            {
+                                Print_Segment_Path_Arc(L.name ,u2mm(W.arc.xc), u2mm(W.arc.yc),  u2mm(W.arc.radius),  W.arc.angle1,  W.arc.angle2,  u2mm(W.width));
+                            }
+                            else
+                            {
+                                Print_Segment_Path_Line(L.name, u2mm(W.x1), u2mm(W.y1), u2mm(W.x2), u2mm(W.y2), u2mm(W.width));
+                            }
+                            once = 1;
+                        }
+                    }
+                }
+
+                E.footprint.wires(W)
+                {
+                    if(W.layer == L.number)
+                    {
+                            if(once == 1)
+                            {
+                                printf(",");
+                            }
+                            if(W.arc)
+                            {
+                                Print_Segment_Path_Arc(L.name ,u2mm(W.arc.xc), u2mm(W.arc.yc),  u2mm(W.arc.radius),  W.arc.angle1,  W.arc.angle2,  u2mm(W.width));
+                            }
+                            else
+                            {
+                                Print_Segment_Path_Line(L.name, u2mm(W.x1), u2mm(W.y1), u2mm(W.x2), u2mm(W.y2), u2mm(W.width));
+                            }
+                            once = 1;
+                    }
+                }
+
+                // Outputs text smashed for part.
+                E.texts(T)
+                {
+                    if(T.layer == L.number)
+                    {
+                        T.wires(W)
+                        {
+                            if(once == 1)
+                            {
+                                printf(",");
+                            }
+                            if(W.arc)
+                            {
+                                Print_Segment_Path_Arc(L.name ,u2mm(W.arc.xc), u2mm(W.arc.yc),  u2mm(W.arc.radius),  W.arc.angle1,  W.arc.angle2,  u2mm(W.width));
+                            }
+                            else
+                            {
+                                Print_Segment_Path_Line(L.name, u2mm(W.x1), u2mm(W.y1), u2mm(W.x2), u2mm(W.y2), u2mm(W.width));
+                            }
+                            once = 1;
+                        }
+                    }
+                }
+            }
+
         }
         printf("]");
         printf("}");
@@ -497,7 +595,7 @@
 
     void Print_Part_Pad_SMD(UL_CONTACT C)
     {
-        printf(   "{\"pin1\":%u,\"shape\":\"%s\",\"angle\":%5.5f,\"x\":%5.5f," "\"y\":%5.5f,\"dx\":%5.5f,\"dy\":%5.5f,\"drill\":%5.5f}"
+        printf(   "{\"pin1\":%u,\"type\":\"%s\",\"angle\":%5.5f,\"x\":%5.5f," "\"y\":%5.5f,\"dx\":%5.5f,\"dy\":%5.5f,\"drill\":%5.5f}"
                 , Print_Part_Pad_IsPin1(C)
                 , "smd"
                 , C.smd.angle
