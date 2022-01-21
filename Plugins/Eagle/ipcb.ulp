@@ -316,11 +316,11 @@
             }
             if(V.shape[LAYER_TOP] ==  VIA_SHAPE_SQUARE)
             {
-                Print_Segment_VIA_Round(layerNames[LAYER_VIAS],u2mm(V.x), u2mm(V.y), u2mm(V.diameter[LAYER_TOP]), u2mm(V.drill));
+                Print_Segment_VIA_Square(layerNames[LAYER_VIAS],u2mm(V.x), u2mm(V.y), u2mm(V.diameter[LAYER_TOP]), u2mm(V.drill));
             }
             else if(V.shape[LAYER_TOP] ==  VIA_SHAPE_ROUND)
             {
-                Print_Segment_VIA_Square(layerNames[LAYER_VIAS],u2mm(V.x), u2mm(V.y), u2mm(V.diameter[LAYER_TOP]), u2mm(V.drill));
+                Print_Segment_VIA_Round(layerNames[LAYER_VIAS],u2mm(V.x), u2mm(V.y), u2mm(V.diameter[LAYER_TOP]), u2mm(V.drill));
             }
             // must be octagon
             else
