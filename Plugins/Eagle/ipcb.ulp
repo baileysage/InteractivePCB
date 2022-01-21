@@ -186,6 +186,31 @@ void PrintLayer(int layerNumber, string layerName, string location)
             }
         }
 
+        // Print data on parts such as layer text.
+        B.elements(E)
+        {
+            E.texts(T)
+            {
+                if(T.layer == layerNumber)
+                {
+                    T.wires(W)
+                    {
+                        if(W.arc)
+                        {
+                            PrintPathType_Arc( u2mm(W.arc.xc), u2mm(W.arc.yc),  u2mm(W.arc.radius),  W.arc.angle1,  W.arc.angle2,  u2mm(W.width));
+                        }
+                        else
+                        {
+                            PrintPathType_Line( u2mm(W.x1),  u2mm(W.y1),  u2mm(W.x2),  u2mm(W.y2),  u2mm(W.width));
+                        }
+                    }
+                }
+            }
+        }
+
+
+
+
 
         tabcount--;
         PrintTabs();
@@ -219,19 +244,6 @@ void GenerateSilkscreen( void )
                 }
             }
         }
-
-        //PrintLayer(LAYER_TPLACE, "tplace", "F");
-        //PrintLayer(LAYER_BPLACE, "bplace", "B");
-
-        //PrintLayer(LAYER_TNAMES, "tnames", "F");
-        //PrintLayer(LAYER_BNAMES, "bnames", "B");
-        
-        //PrintLayer(LAYER_TVALUES, "tvalues", "F");
-        //PrintLayer(LAYER_BVALUES, "bvalues", "B");
-
-
-        //PrintLayer(LAYER_TDOCU, "tdocu", "F");
-        //PrintLayer(LAYER_BDOCU, "bdocu", "B");
 
         PrintTabs();
         tabcount--;
