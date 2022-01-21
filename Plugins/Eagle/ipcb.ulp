@@ -125,7 +125,8 @@
     
     void Print_Segment_Via(string viaType, string layerName, real x, real y, real diameter, real drill)
     {
-        printf(   "{\"type\":\"$s\",\"layer\":\"%s\",\"x\":%5.5f,\"y\":%5.5f,\"diameter\":%5.5f,\"drill\":%5.5f}"
+        printf(   "{\"type\":\"%s\",\"layer\":\"%s\",\"x\":%5.5f,\"y\":%5.5f,\"diameter\":%5.5f,\"drill\":%5.5f}"
+                , viaType
                 , layerName
                 , x
                 , y
