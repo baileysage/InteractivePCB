@@ -245,6 +245,15 @@ POLY</text>
 </spline>
 <rectangle x1="17.78" y1="10.16" x2="22.86" y2="15.24" layer="21"/>
 <circle x="20.32" y="6.35" radius="2.83980625" width="0.254" layer="21"/>
+<text x="35.56" y="1.27" size="1.016" layer="1" font="vector" ratio="15" align="center-left">1-16</text>
+<text x="35.56" y="-1.27" size="1.016" layer="1" font="vector" ratio="18" align="center-left">2-15</text>
+<text x="35.56" y="-3.81" size="1.016" layer="1" font="vector" ratio="15" align="center-left">3-14</text>
+<text x="35.56" y="-6.35" size="1.016" layer="1" font="vector" ratio="15" align="center-left">4-13</text>
+<text x="41.91" y="-6.35" size="1.016" layer="1" font="vector" ratio="15" align="center-left">8-9</text>
+<text x="41.91" y="-3.81" size="1.016" layer="1" font="vector" ratio="15" align="center-left">7-10</text>
+<text x="41.91" y="-1.27" size="1.016" layer="1" font="vector" ratio="15" align="center-left">6-11</text>
+<text x="41.91" y="1.27" size="1.016" layer="1" font="vector" ratio="15" align="center-left">5-12</text>
+<text x="48.26" y="1.27" size="1.016" layer="1" font="vector" ratio="15" align="center-left">2-16</text>
 </plain>
 <libraries>
 <library name="74xx-us" urn="urn:adsk.eagle:library:88">
@@ -438,7 +447,7 @@ a wide range of applications. Your particular design
 may have different requirements, so please make the
 necessary adjustments and save your customized
 design rules under a new name.</description>
-<param name="layerSetup" value="(1+2*3+4*5+6*7+8*9+10*11+12*13+14*15+16)"/>
+<param name="layerSetup" value="([1+(2*(3+(4*(5+(6*(7+(8*9)+10)*11)+12)*13)+14)*15)+16:2])"/>
 <param name="mtCopper" value="0.035mm 0.035mm 0.035mm 0.035mm 0.035mm 0.035mm 0.035mm 0.035mm 0.035mm 0.035mm 0.035mm 0.035mm 0.035mm 0.035mm 0.035mm 0.035mm"/>
 <param name="mtIsolate" value="1.5mm 0.15mm 0.2mm 0.15mm 0.2mm 0.15mm 0.2mm 0.15mm 0.2mm 0.15mm 0.2mm 0.15mm 0.2mm 0.15mm 0.2mm"/>
 <param name="mdWireWire" value="6mil"/>
@@ -1005,6 +1014,33 @@ design rules under a new name.</description>
 <signal name="S$28">
 <via x="62.23" y="52.07" extent="1-16" drill="0.508"/>
 </signal>
+<signal name="S$29">
+<via x="34.29" y="1.27" extent="1-16" drill="0.508"/>
+</signal>
+<signal name="S$30">
+<via x="34.29" y="-1.27" extent="2-15" drill="0.508"/>
+</signal>
+<signal name="S$31">
+<via x="34.29" y="-3.81" extent="3-14" drill="0.508"/>
+</signal>
+<signal name="S$32">
+<via x="34.29" y="-6.35" extent="4-13" drill="0.508"/>
+</signal>
+<signal name="S$33">
+<via x="40.64" y="1.27" extent="5-12" drill="0.508"/>
+</signal>
+<signal name="S$34">
+<via x="40.64" y="-1.27" extent="6-11" drill="0.508"/>
+</signal>
+<signal name="S$35">
+<via x="40.64" y="-3.81" extent="7-10" drill="0.508"/>
+</signal>
+<signal name="S$36">
+<via x="40.64" y="-6.35" extent="8-9" drill="0.508"/>
+</signal>
+<signal name="S$37">
+<via x="46.99" y="1.27" extent="2-16" drill="0.508"/>
+</signal>
 </signals>
 <mfgpreviewcolors>
 <mfgpreviewcolor name="soldermaskcolor" color="0xC8008000"/>
@@ -1013,24 +1049,6 @@ design rules under a new name.</description>
 <mfgpreviewcolor name="coppercolor" color="0xFFFFBF00"/>
 <mfgpreviewcolor name="substratecolor" color="0xFF786E46"/>
 </mfgpreviewcolors>
-<errors>
-<approved hash="23,1,5d946eea3539ef21"/>
-<approved hash="23,2,4a4cdc0338838ef0"/>
-<approved hash="23,3,2b7b4f945ec006d0"/>
-<approved hash="23,4,e3c56f1135f00615"/>
-<approved hash="23,5,abf5d67c5d26ae32"/>
-<approved hash="23,6,2a5d004ca765f763"/>
-<approved hash="23,7,6823d39ce49c6d77"/>
-<approved hash="23,8,a2271642f0e28d1d"/>
-<approved hash="23,9,e62341835dfe471a"/>
-<approved hash="23,10,d9ae76dde5d45975"/>
-<approved hash="23,11,3cfd38328a1a4508"/>
-<approved hash="23,12,58eef0c9d3f5cf3d"/>
-<approved hash="23,13,a167c51253d107aa"/>
-<approved hash="23,14,9093d2d261995a61"/>
-<approved hash="23,15,78c8f1224492617e"/>
-<approved hash="23,16,1ccdd70c9c642ca1"/>
-</errors>
 </board>
 </drawing>
 <compatibility>
