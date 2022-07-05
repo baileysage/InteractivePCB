@@ -280,22 +280,98 @@ document.onkeydown = function(e)
 };
 
 /* Layer table */
-let layerVisable = true;
+let layerTableVisable     = true;
+let traceTableVisable     = false;
+let testPointTableVisable = false;
 let mainLayout = "";
 
 document.getElementById("lay-btn").classList.add("depressed");
-function toggleLayers()
+function LayerTable_Toggle()
 {
-    if (layerVisable)
+    if (layerTableVisable)
     {
-        layerVisable = false;
+        layerTableVisable = false;
         document.getElementById("lay-btn").classList.remove("depressed");
     }
     else
     {
-        layerVisable = true;
+        layerTableVisable = true;
         document.getElementById("lay-btn").classList.add("depressed");
     }
+    changeBomLayout(mainLayout);
+}
+
+function LayerTable_Off()
+{
+    layerTableVisable = false;
+    document.getElementById("lay-btn").classList.remove("depressed");
+    changeBomLayout(mainLayout);
+}
+
+function LayerTable_On()
+{
+    layerTableVisable = true;
+    document.getElementById("lay-btn").classList.add("depressed");
+    changeBomLayout(mainLayout);
+}
+
+document.getElementById("trace-btn").classList.remove("depressed");
+function TraceTable_Toggle()
+{
+    if (traceTableVisable)
+    {
+        traceTableVisable = false;
+        document.getElementById("trace-btn").classList.remove("depressed");
+    }
+    else
+    {
+        traceTableVisable = true;
+        document.getElementById("trace-btn").classList.add("depressed");
+    }
+    changeBomLayout(mainLayout);
+}
+
+function TraceTable_Off()
+{
+    traceTableVisable = false;
+    document.getElementById("trace-btn").classList.remove("depressed");
+    changeBomLayout(mainLayout);
+}
+
+function TraceTable_On()
+{
+    traceTableVisable = true;
+    document.getElementById("trace-btn").classList.add("depressed");
+    changeBomLayout(mainLayout);
+}
+
+document.getElementById("testpoint-btn").classList.remove("depressed");
+function TestPointTable_Toggle()
+{
+    if (testPointTableVisable)
+    {
+        testPointTableVisable = false;
+        document.getElementById("testpoint-btn").classList.remove("depressed");
+    }
+    else
+    {
+        testPointTableVisable = true;
+        document.getElementById("testpoint-btn").classList.add("depressed");
+    }
+    changeBomLayout(mainLayout);
+}
+
+function TestPointTable_Off()
+{
+    testPointTableVisable = false;
+    document.getElementById("testpoint-btn").classList.remove("depressed");
+    changeBomLayout(mainLayout);
+}
+
+function TestPointTable_On()
+{
+    testPointTableVisable = true;
+    document.getElementById("testpoint-btn").classList.add("depressed");
     changeBomLayout(mainLayout);
 }
 
@@ -416,7 +492,7 @@ function changeBomLayout(layout)
 
         if (globalData.getBomSplit()) 
         {
-            if(layerVisable)
+            if(layerTableVisable)
             {
                 globalData.destroyLayerSplit();
                 globalData.setLayerSplit(null);
@@ -430,9 +506,9 @@ function changeBomLayout(layout)
         document.getElementById("bomdiv").style.display = "";
         document.getElementById("frontcanvas").style.display = "none";
         document.getElementById("backcanvas").style.display = "none";
-        if(layerVisable)
+        if(layerTableVisable)
         {
-            layerVisable = false;
+            layerTableVisable = false;
             document.getElementById("lay-btn").classList.remove("depressed");
             document.getElementById("layerdiv").style.display = "none";
         }
@@ -448,7 +524,7 @@ function changeBomLayout(layout)
         document.getElementById("frontcanvas").style.display = "";
         document.getElementById("backcanvas" ).style.display = "";
         
-        if(layerVisable)
+        if(layerTableVisable)
         {
             document.getElementById("layerdiv"   ).style.display = "";
         }
@@ -464,7 +540,7 @@ function changeBomLayout(layout)
         document.getElementById("canvasdiv"  ).classList.remove(   "split-horizontal");
         document.getElementById("frontcanvas").classList.add(   "split-horizontal");
         document.getElementById("backcanvas" ).classList.add(   "split-horizontal");
-        if(layerVisable)
+        if(layerTableVisable)
         {
             document.getElementById("layerdiv"   ).classList.add(   "split-horizontal");
         }
@@ -479,7 +555,7 @@ function changeBomLayout(layout)
             globalData.setCanvasSplit(null);
         }
 
-        if(layerVisable)
+        if(layerTableVisable)
         {
             globalData.setLayerSplit(Split(["#datadiv", "#layerdiv"], {
                 sizes: [80, 20],
@@ -521,7 +597,7 @@ function changeBomLayout(layout)
         document.getElementById("bomdiv").style.display = "";
         document.getElementById("frontcanvas").style.display = "";
         document.getElementById("backcanvas" ).style.display = "";
-        if(layerVisable)
+        if(layerTableVisable)
         {
             document.getElementById("layerdiv"   ).style.display = "";
         }
@@ -536,7 +612,7 @@ function changeBomLayout(layout)
         document.getElementById("canvasdiv"  ).classList.remove(   "split-horizontal");
         document.getElementById("frontcanvas").classList.add(   "split-horizontal");
         document.getElementById("backcanvas" ).classList.add(   "split-horizontal");
-        if(layerVisable)
+        if(layerTableVisable)
         {
             document.getElementById("layerdiv"   ).classList.add(   "split-horizontal");
         }
@@ -551,7 +627,7 @@ function changeBomLayout(layout)
             globalData.setCanvasSplit(null);
         }
 
-        if(layerVisable)
+        if(layerTableVisable)
         {
             globalData.setLayerSplit(Split(["#datadiv", "#layerdiv"], {
                 sizes: [80, 20],
@@ -582,7 +658,7 @@ function changeBomLayout(layout)
         document.getElementById("bomdiv").style.display = "";
         document.getElementById("frontcanvas").style.display = "";
         document.getElementById("backcanvas" ).style.display = "";
-        if(layerVisable)
+        if(layerTableVisable)
         {
             document.getElementById("layerdiv"   ).style.display = "";
         }
@@ -611,7 +687,7 @@ function changeBomLayout(layout)
             globalData.setCanvasSplit(null);
         }
 
-        if(layerVisable)
+        if(layerTableVisable)
         {
             globalData.setLayerSplit(Split(["#datadiv", "#layerdiv"], {
                 sizes: [80, 20],
@@ -804,6 +880,9 @@ window.onresize = render.resizeAll;
 window.matchMedia("print").addListener(render.resizeAll);
 
 module.exports = {
-    changeBomLayout, setDarkMode        , changeCanvasLayout,
-    setAdditionalAttributes, toggleLayers, toggleFullScreen, LoadPCB
+    changeBomLayout        , setDarkMode     , changeCanvasLayout,
+    setAdditionalAttributes, LayerTable_Toggle, TraceTable_Toggle,
+    TestPointTable_Toggle  , toggleFullScreen , LoadPCB, LayerTable_Off,
+    LayerTable_On          , TraceTable_Off   , TraceTable_On,
+    TestPointTable_Off     , TestPointTable_On
 };

@@ -163,7 +163,28 @@ pcb_btn.onclick=function()
 const lay_btn = document.getElementById("lay-btn");
 lay_btn.onclick=function()
 {
-    ipcb.toggleLayers();
+    console.log("1");
+    ipcb.LayerTable_Toggle();
+    ipcb.TestPointTable_Off();
+    ipcb.TraceTable_Off();
+};
+
+const trace_btn = document.getElementById("trace-btn");
+trace_btn.onclick=function()
+{
+    console.log("2");
+    ipcb.LayerTable_Off();
+    ipcb.TraceTable_Toggle();
+    ipcb.TestPointTable_Off();
+};
+
+const testpoint_btn = document.getElementById("testpoint-btn");
+testpoint_btn.onclick=function()
+{
+    console.log("3");
+    ipcb.LayerTable_Off();
+    ipcb.TraceTable_Off();
+    ipcb.TestPointTable_Toggle();
 };
 
 const load_pcb = document.getElementById("pcbFileInput");

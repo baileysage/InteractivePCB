@@ -60,6 +60,11 @@ button#bom-btn {
   background-repeat: no-repeat;
 }
 
+button#trace-btn {
+  background-position: 5px 5px;
+  background-repeat: no-repeat;
+}
+
 button#pcb-btn {
   background-position: 5px 5px;
   background-repeat: no-repeat;
@@ -188,7 +193,7 @@ canvas:active {
 }
 
 .bom .visiableCol {
-  width: 130px;
+  width: 150px;
 }
 
 .bom .Description {
