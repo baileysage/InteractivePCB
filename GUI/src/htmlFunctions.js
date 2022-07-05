@@ -167,6 +167,7 @@ lay_btn.onclick=function()
     ipcb.LayerTable_Toggle();
     ipcb.TestPointTable_Off();
     ipcb.TraceTable_Off();
+    ipcb.Render_RightScreenTable();
 };
 
 const trace_btn = document.getElementById("trace-btn");
@@ -176,6 +177,7 @@ trace_btn.onclick=function()
     ipcb.LayerTable_Off();
     ipcb.TraceTable_Toggle();
     ipcb.TestPointTable_Off();
+    ipcb.Render_RightScreenTable();
 };
 
 const testpoint_btn = document.getElementById("testpoint-btn");
@@ -185,6 +187,7 @@ testpoint_btn.onclick=function()
     ipcb.LayerTable_Off();
     ipcb.TraceTable_Off();
     ipcb.TestPointTable_Toggle();
+    ipcb.Render_RightScreenTable();
 };
 
 const load_pcb = document.getElementById("pcbFileInput");

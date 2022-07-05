@@ -283,6 +283,8 @@ document.onkeydown = function(e)
 let layerTableVisable     = true;
 let traceTableVisable     = false;
 let testPointTableVisable = false;
+
+let rightScreenTableVisable = layerTableVisable || traceTableVisable || testPointTableVisable;
 let mainLayout = "";
 
 document.getElementById("lay-btn").classList.add("depressed");
@@ -298,6 +300,7 @@ function LayerTable_Toggle()
         layerTableVisable = true;
         document.getElementById("lay-btn").classList.add("depressed");
     }
+    rightScreenTableVisable = layerTableVisable || traceTableVisable || testPointTableVisable;
     changeBomLayout(mainLayout);
 }
 
@@ -305,6 +308,7 @@ function LayerTable_Off()
 {
     layerTableVisable = false;
     document.getElementById("lay-btn").classList.remove("depressed");
+    rightScreenTableVisable = layerTableVisable || traceTableVisable || testPointTableVisable;
     changeBomLayout(mainLayout);
 }
 
@@ -312,6 +316,7 @@ function LayerTable_On()
 {
     layerTableVisable = true;
     document.getElementById("lay-btn").classList.add("depressed");
+    rightScreenTableVisable = layerTableVisable || traceTableVisable || testPointTableVisable;
     changeBomLayout(mainLayout);
 }
 
@@ -328,6 +333,7 @@ function TraceTable_Toggle()
         traceTableVisable = true;
         document.getElementById("trace-btn").classList.add("depressed");
     }
+    rightScreenTableVisable = layerTableVisable || traceTableVisable || testPointTableVisable;
     changeBomLayout(mainLayout);
 }
 
@@ -335,6 +341,7 @@ function TraceTable_Off()
 {
     traceTableVisable = false;
     document.getElementById("trace-btn").classList.remove("depressed");
+    rightScreenTableVisable = layerTableVisable || traceTableVisable || testPointTableVisable;
     changeBomLayout(mainLayout);
 }
 
@@ -342,6 +349,7 @@ function TraceTable_On()
 {
     traceTableVisable = true;
     document.getElementById("trace-btn").classList.add("depressed");
+    rightScreenTableVisable = layerTableVisable || traceTableVisable || testPointTableVisable;
     changeBomLayout(mainLayout);
 }
 
@@ -358,6 +366,7 @@ function TestPointTable_Toggle()
         testPointTableVisable = true;
         document.getElementById("testpoint-btn").classList.add("depressed");
     }
+    rightScreenTableVisable = layerTableVisable || traceTableVisable || testPointTableVisable;
     changeBomLayout(mainLayout);
 }
 
@@ -365,6 +374,7 @@ function TestPointTable_Off()
 {
     testPointTableVisable = false;
     document.getElementById("testpoint-btn").classList.remove("depressed");
+    rightScreenTableVisable = layerTableVisable || traceTableVisable || testPointTableVisable;
     changeBomLayout(mainLayout);
 }
 
@@ -372,7 +382,32 @@ function TestPointTable_On()
 {
     testPointTableVisable = true;
     document.getElementById("testpoint-btn").classList.add("depressed");
+    rightScreenTableVisable = layerTableVisable || traceTableVisable || testPointTableVisable;
     changeBomLayout(mainLayout);
+}
+
+function Render_RightScreenTable()
+{
+    let layerBody = document.getElementById("layerbody");
+    
+    if(layerTableVisable)
+    {
+        layerBody.removeAttribute("hidden");
+    }
+    else if(traceTableVisable)
+    {
+        console.log("Print trace table")
+        layerBody.setAttribute("hidden", "hidden");
+    }
+    else if(testPointTableVisable)
+    {
+        console.log("Print test point table")
+        layerBody.setAttribute("hidden", "hidden");
+    }
+    else
+    {
+        console.log("Invalid right screen table")
+    }
 }
 
 function Create_Layers(pcbdata)
@@ -458,7 +493,7 @@ function LoadPCB(pcbdata)
     
     layerTable.clearLayerTable(); // <--- Actually viewed layer table
     Create_Layers(pcbdata); // <--- BAckground layer information
-    layerTable.populateLayerTable();
+    layerTable.populateRightSideScreenTable();
 
     // Update Metadata
     let metadata = Metadata.GetInstance();
@@ -470,8 +505,6 @@ function LoadPCB(pcbdata)
 
     // Parts
     Create_Parts(pcbdata);
-
-
 }
 
 function changeBomLayout(layout)
@@ -492,7 +525,7 @@ function changeBomLayout(layout)
 
         if (globalData.getBomSplit()) 
         {
-            if(layerTableVisable)
+            if(rightScreenTableVisable)
             {
                 globalData.destroyLayerSplit();
                 globalData.setLayerSplit(null);
@@ -506,10 +539,12 @@ function changeBomLayout(layout)
         document.getElementById("bomdiv").style.display = "";
         document.getElementById("frontcanvas").style.display = "none";
         document.getElementById("backcanvas").style.display = "none";
-        if(layerTableVisable)
+        if(rightScreenTableVisable)
         {
-            layerTableVisable = false;
+            rightScreenTableVisable = false;
             document.getElementById("lay-btn").classList.remove("depressed");
+            document.getElementById("trace-tn").classList.remove("depressed");
+            document.getElementById("testpoint-btn").classList.remove("depressed");
             document.getElementById("layerdiv").style.display = "none";
         }
 
@@ -524,7 +559,7 @@ function changeBomLayout(layout)
         document.getElementById("frontcanvas").style.display = "";
         document.getElementById("backcanvas" ).style.display = "";
         
-        if(layerTableVisable)
+        if(rightScreenTableVisable)
         {
             document.getElementById("layerdiv"   ).style.display = "";
         }
@@ -540,7 +575,7 @@ function changeBomLayout(layout)
         document.getElementById("canvasdiv"  ).classList.remove(   "split-horizontal");
         document.getElementById("frontcanvas").classList.add(   "split-horizontal");
         document.getElementById("backcanvas" ).classList.add(   "split-horizontal");
-        if(layerTableVisable)
+        if(rightScreenTableVisable)
         {
             document.getElementById("layerdiv"   ).classList.add(   "split-horizontal");
         }
@@ -555,7 +590,7 @@ function changeBomLayout(layout)
             globalData.setCanvasSplit(null);
         }
 
-        if(layerTableVisable)
+        if(rightScreenTableVisable)
         {
             globalData.setLayerSplit(Split(["#datadiv", "#layerdiv"], {
                 sizes: [80, 20],
@@ -597,7 +632,7 @@ function changeBomLayout(layout)
         document.getElementById("bomdiv").style.display = "";
         document.getElementById("frontcanvas").style.display = "";
         document.getElementById("backcanvas" ).style.display = "";
-        if(layerTableVisable)
+        if(rightScreenTableVisable)
         {
             document.getElementById("layerdiv"   ).style.display = "";
         }
@@ -612,7 +647,7 @@ function changeBomLayout(layout)
         document.getElementById("canvasdiv"  ).classList.remove(   "split-horizontal");
         document.getElementById("frontcanvas").classList.add(   "split-horizontal");
         document.getElementById("backcanvas" ).classList.add(   "split-horizontal");
-        if(layerTableVisable)
+        if(rightScreenTableVisable)
         {
             document.getElementById("layerdiv"   ).classList.add(   "split-horizontal");
         }
@@ -627,7 +662,7 @@ function changeBomLayout(layout)
             globalData.setCanvasSplit(null);
         }
 
-        if(layerTableVisable)
+        if(rightScreenTableVisable)
         {
             globalData.setLayerSplit(Split(["#datadiv", "#layerdiv"], {
                 sizes: [80, 20],
@@ -658,7 +693,7 @@ function changeBomLayout(layout)
         document.getElementById("bomdiv").style.display = "";
         document.getElementById("frontcanvas").style.display = "";
         document.getElementById("backcanvas" ).style.display = "";
-        if(layerTableVisable)
+        if(rightScreenTableVisable)
         {
             document.getElementById("layerdiv"   ).style.display = "";
         }
@@ -687,7 +722,7 @@ function changeBomLayout(layout)
             globalData.setCanvasSplit(null);
         }
 
-        if(layerTableVisable)
+        if(rightScreenTableVisable)
         {
             globalData.setLayerSplit(Split(["#datadiv", "#layerdiv"], {
                 sizes: [80, 20],
@@ -765,7 +800,7 @@ window.onload = function(e)
     Create_Parts(pcbdata);
     Create_Configuration(pcbdata);
 
-    layerTable.populateLayerTable();
+    layerTable.populateRightSideScreenTable();
 
     // Must be called after loading PCB as rendering required the bounding box information for PCB
     render.initRender();
@@ -884,5 +919,5 @@ module.exports = {
     setAdditionalAttributes, LayerTable_Toggle, TraceTable_Toggle,
     TestPointTable_Toggle  , toggleFullScreen , LoadPCB, LayerTable_Off,
     LayerTable_On          , TraceTable_Off   , TraceTable_On,
-    TestPointTable_Off     , TestPointTable_On
+    TestPointTable_Off     , TestPointTable_On, Render_RightScreenTable
 };

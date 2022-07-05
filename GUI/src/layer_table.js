@@ -36,6 +36,14 @@ function populateLayerTable()
 }
 
 
+function populateRightSideScreenTable()
+{
+    let layerBody = document.getElementById("layerbody");
+    layerBody.removeAttribute("hidden");
+    populateLayerTable();
+}
+
+
 let filterLayer = "";
 function getFilterLayer() 
 {
@@ -103,7 +111,7 @@ function populateLayerBody()
     }
 }
 
-function clearLayerTable()
+function clearRightScreenTable()
 {
     let layerBody = document.getElementById("layerbody");
     while (layerBody.firstChild) 
@@ -133,5 +141,5 @@ function Filter(s)
 }
 
 module.exports = {
-    populateLayerTable, clearLayerTable, Filter
+    clearRightScreenTable, Filter, populateRightSideScreenTable
 };
