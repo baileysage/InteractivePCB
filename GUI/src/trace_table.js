@@ -22,17 +22,13 @@
 
 var pcb        = require("./pcb.js");
 var globalData = require("./global.js");
-var Table_LayerEntry = require("./render/Table_LayerEntry.js").Table_LayerEntry
+var Table_TraceEntry = require("./render/Table_TraceEntry.js").Table_TraceEntry
 
-function populateLayerTable()
+function populateTraceTable()
 {
     /* Populate header and BOM body. Place into DOM */
-    populateLayerHeader();
-    populateLayerBody();
-
-    /* Read filter string. Hide BOM elements that dont cintain string entry */
-    let filterLayer = document.getElementById("layer-filter");
-    Filter(filterLayer.value)
+    populateTraceHeader();
+    populateTraceBody();
 }
 
 
@@ -42,9 +38,9 @@ function getFilterLayer()
     return filterLayer;
 }
 
-function populateLayerHeader()
+function populateTraceHeader()
 {
-    let layerHead = document.getElementById("layerhead");
+    let layerHead = document.getElementById("tracehead");
     while (layerHead.firstChild) 
     {
         layerHead.removeChild(layerHead.firstChild);
@@ -57,72 +53,52 @@ function populateLayerHeader()
 
     th.classList.add("visiableCol");
 
-    let tr2 = document.createElement("TR");
-    let thf = document.createElement("TH"); // front
-    let thb = document.createElement("TH"); // back
-    let thc = document.createElement("TH"); // color
 
-    thf.innerHTML = "Front"
-    thb.innerHTML = "Back"
-    thc.innerHTML = "Color"
-    tr2.appendChild(thf)
-    tr2.appendChild(thb)
-    tr2.appendChild(thc)
-
-    th.innerHTML = "Visible";
-    th.colSpan = 3
+    th.innerHTML = "Trace";
     let span = document.createElement("SPAN");
     span.classList.add("none");
     th.appendChild(span);
     tr.appendChild(th);
 
     th = document.createElement("TH");
-    th.innerHTML = "Layer";
-    th.rowSpan = 2;
+    th.innerHTML = "Ohms";
+    span = document.createElement("SPAN");
+    span.classList.add("none");
+    th.appendChild(span);
+    tr.appendChild(th);
+
+
+    th = document.createElement("TH");
+    th.innerHTML = "Inductance";
     span = document.createElement("SPAN");
     span.classList.add("none");
     th.appendChild(span);
     tr.appendChild(th);
 
     layerHead.appendChild(tr);
-    layerHead.appendChild(tr2);
 }
 
-function populateLayerBody()
+function populateTraceBody()
 {
-    let layerBody = document.getElementById("layerbody");
-    while (layerBody.firstChild) 
+    let traceBody = document.getElementById("tracebody");
+    while (traceBody.firstChild) 
     {
-        layerBody.removeChild(layerBody.firstChild);
+        traceBody.removeChild(traceBody.firstChild);
     }
 
     // remove entries that do not match filter
-    for (let layer of globalData.layer_list)
+    for (let trace of globalData.pcb_traces)
     {
-        layerbody.appendChild(new Table_LayerEntry(layer[1][globalData.pcb_layers]));
+        console.log(trace)
+        traceBody.appendChild(new Table_TraceEntry(trace));
     }
 }
 
 function Filter(s)
 {
-    s = s.toLowerCase();
-    let layerBody = document.getElementById("layerbody");
-    
-    for (let layer of layerBody.rows)
-    {
 
-        if(layer.innerText.trim().toLowerCase().includes(s))
-        {
-            layer.style.display = "";
-        }
-        else
-        {
-            layer.style.display = "none";
-        }
-    }
-   
 }
 
 module.exports = {
-    Filter, populateLayerTable
+    populateTraceTable
 }

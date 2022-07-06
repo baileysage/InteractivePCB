@@ -23,6 +23,9 @@ var version           = require("./version.js");
 var Fullscreen = require("./fullscreen.js");
 var colorMap        = require("./colormap.js");
 
+
+var rightSideTable = require("./RightSideScreenTable.js")
+
 function setDarkMode(value)
 {
     let topmostdiv = document.getElementById("topmostdiv");
@@ -388,25 +391,29 @@ function TestPointTable_On()
 
 function Render_RightScreenTable()
 {
-    let layerBody = document.getElementById("layerbody");
-    
+    let layerBody = document.getElementById("layer_table");
+    let traceBody = document.getElementById("trace_table");
+
     if(layerTableVisable)
     {
         layerBody.removeAttribute("hidden");
+        traceBody.setAttribute("hidden", "hidden");
     }
     else if(traceTableVisable)
     {
         console.log("Print trace table")
         layerBody.setAttribute("hidden", "hidden");
+        traceBody.removeAttribute("hidden");
     }
     else if(testPointTableVisable)
     {
         console.log("Print test point table")
         layerBody.setAttribute("hidden", "hidden");
+        traceBody.setAttribute("hidden", "hidden");
     }
     else
     {
-        console.log("Invalid right screen table")
+        console.log("Right screen table disabled")
     }
 }
 
@@ -493,7 +500,7 @@ function LoadPCB(pcbdata)
     
     layerTable.clearLayerTable(); // <--- Actually viewed layer table
     Create_Layers(pcbdata); // <--- BAckground layer information
-    layerTable.populateRightSideScreenTable();
+    rightSideTable.populateRightSideScreenTable();
 
     // Update Metadata
     let metadata = Metadata.GetInstance();
@@ -800,7 +807,7 @@ window.onload = function(e)
     Create_Parts(pcbdata);
     Create_Configuration(pcbdata);
 
-    layerTable.populateRightSideScreenTable();
+    rightSideTable.populateRightSideScreenTable();
 
     // Must be called after loading PCB as rendering required the bounding box information for PCB
     render.initRender();
