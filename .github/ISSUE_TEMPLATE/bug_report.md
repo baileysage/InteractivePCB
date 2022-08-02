@@ -1,8 +1,7 @@
 ---
 name: Bug Report
-about: Use this template for reporting bugs (not security issues, see the Security
-  Policy)
-lastmod: 2022-08-02T23:28:24.447Z
+about: Use this template for reporting bugs
+lastmod: 2022-08-02T23:29:08.257Z
 ---
 
 # Expected Behavior
