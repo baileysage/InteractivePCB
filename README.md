@@ -43,10 +43,6 @@ Show some of your APIs
 
 ## Project Status
 
-Show the build status if you have a CI server:
-
-[![Build Status](http://your-server:12345/job/badge/icon)](http://your-server/job/badge/icon/)
-
 Describe the current release and any notes about the current state of the project. Examples: currently compiles on your host machine, but is not cross-compiling for ARM, APIs are not set, feature not implemented, etc.
 
 **[Back to top](#table-of-contents)**
@@ -69,11 +65,9 @@ Examples should be included
 
 ### Getting the Source
 
-Include a link to your GitHub repository (you have no idea how people will find your code), and also a summary of how to clone.
-
 This project is [hosted on GitHub](https://github.com/oceanofthelost/InteractivePCB). You can clone this project directly using this command:
 
-```
+```bash
 git clone git@github.com:oceanofthelost/InteractivePCB.git
 ```
 
@@ -135,9 +129,7 @@ Provide any instructions or contact information for users who need to get furthe
 
 ## Contributing
 
-Provide details about how people can contribute to your project. If you have a contributing guide, mention it here. e.g.:
-
-We encourage public contributions! Please review [CONTRIBUTING.md](CONTRIBUTING.md) for details on our development process and our [code of conduct](CODE_OF_CONDUCT.md)
+We encourage public contributions! Please review [CONTRIBUTING.md](CONTRIBUTING.md) for details on our development process and our [code of conduct](CODE_OF_CONDUCT.md) before you do! 
 
 **[Back to top](#table-of-contents)**
 
@@ -163,6 +155,10 @@ Also see the list of [contributors](https://github.com/oceanofthelost/Interactiv
 
 ## Acknowledgments
 
-Provide proper credits, shout-outs, and honorable mentions here. Also provide links to relevant repositories, blog posts, or contributors worth mentioning.
+Thank you to the following for inspiration and assistance on this project.
+
+[Embedded Artistry](https://github.com/embeddedartistry) for the thorough README template.
+
+[Code Thessaurus](https://github.com/codethesaurus/codethesaur.us) for our code of conduct and issue and PR templates.
 
 **[Back to top](#table-of-contents)**
