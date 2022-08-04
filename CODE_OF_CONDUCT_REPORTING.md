@@ -1,6 +1,6 @@
 # InteractivePCB Code of Conduct - Reporting Guide
 
-If you believe someone is violating the code of conduct we ask that you report it to the InteractivePCB Team by ******** TBD *******. All reports will be kept confidential. In some cases we may determine that a public statement will need to be made. If that's the case, the identities of all victims and reporters will remain confidential unless those individuals instruct us otherwise.
+If you believe someone is violating the code of conduct we ask that you report it to the InteractivePCB Team by [email](mailto:sean.alling@protonmail.com). All reports will be kept confidential. In some cases we may determine that a public statement will need to be made. If that's the case, the identities of all victims and reporters will remain confidential unless those individuals instruct us otherwise.
 
 If you believe anyone is in physical danger, please notify appropriate law enforcement first. If you are unsure what law enforcement agency is appropriate, please include this in your report and we will attempt to notify them.
 
@@ -18,7 +18,7 @@ In your report please include:
 
 ## What happens after you file a report?
 
-You will receive an email from the InteractivePCB Code of Conduct Working Group acknowledging receipt immediately. We promise to acknowledge receipt within 24 hours (and will aim for much quicker than that).
+You will receive an email from the InteractivePCB Code of Conduct Working Group acknowledging receipt immediately. We promise to acknowledge receipt within 72 hours (and will aim for much quicker than that).
 
 The working group will immediately meet to review the incident and determine:
 
@@ -46,4 +46,4 @@ Finally, the Working Group will make a report on the situation to the Interactiv
 
 ## Reconsideration
 
-Any of the parties directly involved or affected can request reconsideration of the committee’s decision. To make such a request, contact the Core Team at ******** TBD ******* with your request and motivation and the Core Team will review the case.
+Any of the parties directly involved or affected can request reconsideration of the committee’s decision. To make such a request, contact the Core Team bye [email](mailto:sean.alling@protonmail.com) with your request and motivation and the Core Team will review the case.

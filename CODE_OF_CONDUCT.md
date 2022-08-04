@@ -10,7 +10,7 @@ This isn’t an exhaustive list of things that you can’t do. Rather, take it i
 
 This code of conduct applies to all spaces managed by the InteractivePCB team. This includes GitHub, Slack, the issue tracker, and any other forums created by the project team which the community uses for communication. In addition, violations of this code outside these spaces may affect a person's ability to participate within them.
 
-If you believe someone is violating the code of conduct, we ask that you report it by emailing ******** TBD *******. For more details please see our [Reporting Guidelines](CODE_OF_CONDUCT_REPORTING.md).
+If you believe someone is violating the code of conduct, we ask that you report it by [email](mailto:sean.alling@protonmail.com). For more details please see our [Reporting Guidelines](CODE_OF_CONDUCT_REPORTING.md).
 
 * Be friendly and patient.
 * Be welcoming. We strive to be a community that welcomes and supports people of all backgrounds and identities. This includes, but is not limited to members of any race, ethnicity, culture, national origin, colour, immigration status, social and economic class, educational level, sex, sexual orientation, gender identity and expression, age, size, family status, political belief, religion, and mental and physical ability.
@@ -31,4 +31,4 @@ Original text courtesy of the Speak Up! project and the Django Project.
 
 ## Questions?
 
-If you have questions, please reach out to us by ******** TBD *******
+If you have questions, please reach out to us by [Contact Us](mailto:sean.alling@protonmail.com)
