@@ -1,18 +1,27 @@
 ---
-name: Feature Request
-about: Use this template for requesting new features
-lastmod: 2022-08-02T23:26:40.774Z
+name: Feature request
+about: Suggest an idea for this project
+title: ''
+labels: enhancement
+assignees: oceanofthelost
+
 ---
 
-# Description
+# Prerequisites
 
-<!-- What does this new feature look like? How would it work? -->
+Please answer the following questions for yourself before submitting an issue. **YOU MAY DELETE THE PREREQUISITES SECTION.**
 
-## Requirements
+- [ ] I checked and no existing issues or feature request exist
 
-<!-- What would be one or more things that this feature would require to work? -->
-<!-- If you don't know, that's fine! A maintainer can fill in the information or re-file the issue. -->
+# Current Behavior
+Is your feature request related to a problem? Please describe.
+A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
 
-## Additional Notes
+# Requested Behavior
+A clear and concise description of what you want to happen.
 
-<!-- Add any additional information here related to this request. -->
+# Alternatives
+A clear and concise description of any alternative solutions or features you've considered.
+
+# Additional Comments
+Add any other context or screenshots about the feature request here.
