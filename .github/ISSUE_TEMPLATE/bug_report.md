@@ -1,24 +1,50 @@
 ---
-name: Bug Report
-about: Use this template for reporting bugs
-lastmod: 2022-08-02T23:29:08.257Z
+name: Bug report
+about: Create a report to help us improve
+title: ''
+labels: bug
+assignees: oceanofthelost
+
 ---
+
+# Prerequisites
+
+Please answer the following questions for yourself before submitting an issue. **YOU MAY DELETE THE PREREQUISITES SECTION.**
+
+- [ ] I am running the latest version
+- [ ] I checked the documentation and found no answer
+- [ ] I checked to make sure that this issue has not already been filed
+- [ ] I'm reporting the issue to the correct repository (for multi-repository projects)
 
 # Expected Behavior
 
-<!-- Write out what the site should be doing here. -->
+Please describe the behavior you are expecting
 
-# Actual Behavior
+# Current Behavior
 
-<!-- Write out what the site is doing here that is not expected. -->
+What is the current behavior?
 
-# Steps to Reproduce the Problem
+# Failure Information (for bugs)
 
-1. 
-1. 
-1. ...
+Please help provide information about the failure if this is a bug. If it is not a bug, please remove the rest of this template.
 
-# Additional Info
+## Steps to Reproduce
 
-<!-- Optional. If there's any additional information that you have, mention it here. -->
-<!-- You can attach screenshots too by pasting them in the window. -->
+Please provide detailed steps for reproducing the issue.
+
+1. step 1
+2. step 2
+3. you get it...
+
+## Context
+
+Please provide any relevant information about your setup. This is important in case the issue is not reproducible except for under certain conditions.
+
+* Application Version:
+* Operating System:
+* Web Browser Used:
+* ElectronicCAD Application & Version:
+
+## Failure Logs
+
+Please include any relevant log snippets or files here.
