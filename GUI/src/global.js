@@ -3,6 +3,7 @@
 
 
 let pcb_traces = [];
+let pcb_testpoints = [];
 let pcb_layers = 0;
 let pcb_parts = [];
 let render_layers = 1;
@@ -10,7 +11,7 @@ let layer_list = new Map();
 
 
 /*************************************************
-              Board Rotation                    
+              Board Rotation
 *************************************************/
 let storage = undefined;
 const storagePrefix = "INTERACTIVE_PCB__"
@@ -69,7 +70,7 @@ function writeStorage(key, value)
 /************************************************/
 
 /*************************************************
-              Highlighted Refs                    
+              Highlighted Refs
 *************************************************/
 let highlightedRefs = [];
 
@@ -80,7 +81,7 @@ function ConvertRangesToReferenceDesignators(text)
     // Split ignoring the spaces.
     let partial_ref = text.split(',')
     let refs = []
-    
+
     for(let ref of partial_ref)
     {
         if(ref.match('-'))
@@ -136,7 +137,7 @@ function getHighlightedRefs()
 /************************************************/
 
 /*************************************************
-              Redraw On Drag                      
+              Redraw On Drag
 *************************************************/
 let redrawOnDrag = true;
 
@@ -155,7 +156,7 @@ function getRedrawOnDrag()
 
 
 /*************************************************
-                 Debug Mode                       
+                 Debug Mode
 *************************************************/
 let debugMode = false;
 
@@ -254,12 +255,12 @@ Canvas Layout
 *************************************************/
 let canvaslayout = "FB";
 
-/*XXX Found a bug at startup. Code assumes that canvas layout 
-is in one of three states. then system fails. he bug was that the 
-canvasLayout was being set to 'default' which is not a valid state. 
+/*XXX Found a bug at startup. Code assumes that canvas layout
+is in one of three states. then system fails. he bug was that the
+canvasLayout was being set to 'default' which is not a valid state.
 So no is check that if default is sent in then set the layout to FB mode.
 */
-/* TODO: Make the default check below actually check that the item 
+/* TODO: Make the default check below actually check that the item
 is in one of the three valid states. If not then set to FB, otherwise set to one of
 the three valid states
 */
@@ -565,7 +566,7 @@ function GetBoardRotation()
 
 
 module.exports = {
-    pcb_traces, pcb_layers, pcb_parts, render_layers, layer_list,
+    pcb_traces, pcb_layers, pcb_parts, render_layers, layer_list, pcb_testpoints,
     initStorage                , readStorage                , writeStorage          ,
     setHighlightedRefs         , getHighlightedRefs         ,
     setRedrawOnDrag            , getRedrawOnDrag            ,

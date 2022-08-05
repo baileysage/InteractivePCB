@@ -4,6 +4,7 @@ var pcb              = require("./pcb.js");
 var globalData       = require("./global.js");
 var layer_table      = require("./layer_table.js");
 var trace_table      = require("./trace_table.js");
+var testpoint_table      = require("./testpoint_table.js");
 var Table_LayerEntry = require("./render/Table_LayerEntry.js").Table_LayerEntry
 
 
@@ -18,6 +19,7 @@ function populateRightSideScreenTable()
 
     layer_table.populateLayerTable();
     trace_table.populateTraceTable();
+    testpoint_table.populateTestPointTable();
 }
 
 

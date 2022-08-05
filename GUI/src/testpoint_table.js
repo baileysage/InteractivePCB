@@ -22,25 +22,24 @@
 
 var pcb        = require("./pcb.js");
 var globalData = require("./global.js");
-var Table_TraceEntry = require("./render/Table_TraceEntry.js").Table_TraceEntry
+var Table_TestPointEntry = require("./render/Table_TestPointEntry.js").Table_TestPointEntry
 
-function populateTraceTable()
+function populateTestPointTable()
 {
     /* Populate header and BOM body. Place into DOM */
-    populateTraceHeader();
-    populateTraceBody();
+    populateTestPointHeader();
+    populateTestPointBody();
 }
 
-
 let filterLayer = "";
-function getFilterLayer()
+function getFilterTestPoint()
 {
     return filterLayer;
 }
 
-function populateTraceHeader()
+function populateTestPointHeader()
 {
-    let layerHead = document.getElementById("tracehead");
+    let layerHead = document.getElementById("testpointhead");
     while (layerHead.firstChild)
     {
         layerHead.removeChild(layerHead.firstChild);
@@ -53,15 +52,14 @@ function populateTraceHeader()
 
     th.classList.add("visiableCol");
 
-
-    th.innerHTML = "Trace";
+    th.innerHTML = "Test Point";
     let span = document.createElement("SPAN");
     span.classList.add("none");
     th.appendChild(span);
     tr.appendChild(th);
 
     th = document.createElement("TH");
-    th.innerHTML = "Ohms";
+    th.innerHTML = "Expected";
     span = document.createElement("SPAN");
     span.classList.add("none");
     th.appendChild(span);
@@ -69,7 +67,7 @@ function populateTraceHeader()
 
 
     th = document.createElement("TH");
-    th.innerHTML = "Inductance";
+    th.innerHTML = "Description";
     span = document.createElement("SPAN");
     span.classList.add("none");
     th.appendChild(span);
@@ -78,18 +76,19 @@ function populateTraceHeader()
     layerHead.appendChild(tr);
 }
 
-function populateTraceBody()
+function populateTestPointBody()
 {
-    let traceBody = document.getElementById("tracebody");
-    while (traceBody.firstChild)
+    let testPointBody = document.getElementById("testpointbody");
+    while (testPointBody.firstChild)
     {
-        traceBody.removeChild(traceBody.firstChild);
+        testPointBody.removeChild(testPointBody.firstChild);
     }
 
     // remove entries that do not match filter
-    for (let trace of globalData.pcb_traces)
+    for (let testpoint of globalData.pcb_testpoints)
     {
-        traceBody.appendChild(new Table_TraceEntry(trace));
+        console.log(testpoint)
+        testPointBody.appendChild(new Table_TestPointEntry(testpoint));
     }
 }
 
@@ -99,5 +98,5 @@ function Filter(s)
 }
 
 module.exports = {
-    populateTraceTable
+    populateTestPointTable
 }

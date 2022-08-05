@@ -14,6 +14,7 @@ var bomTable          = require("./bom_table.js");
 var Metadata          = require("./Metadata.js").Metadata;
 
 var PCB_Trace = require("./PCB/PCB_Trace.js").PCB_Trace;
+var PCB_TestPoint  = require("./PCB/PCB_TestPoint.js").PCB_TestPoint;
 var PCB_Layer = require("./PCB/PCB_Layer.js").PCB_Layer;
 var PCB_Part  = require("./PCB/PCB_Part.js").PCB_Part;
 
@@ -79,7 +80,7 @@ function modulesClicked(references)
 {
     let lastClickedIndex = references.indexOf(globalData.getLastClickedRef());
     let ref = references[(lastClickedIndex + 1) % references.length];
-    for (let handler of globalData.getHighlightHandlers()) 
+    for (let handler of globalData.getHighlightHandlers())
     {
         if (handler.refs.indexOf(ref) >= 0)
         {
@@ -91,7 +92,7 @@ function modulesClicked(references)
     }
 }
 
-function changeCanvasLayout(layout) 
+function changeCanvasLayout(layout)
 {
     if(mainLayout != "BOM")
     {
@@ -99,25 +100,25 @@ function changeCanvasLayout(layout)
         document.getElementById("fb-btn").classList.remove("depressed");
         document.getElementById("bl-btn").classList.remove("depressed");
 
-        switch (layout) 
+        switch (layout)
         {
         case "F":
             document.getElementById("fl-btn").classList.add("depressed");
-            if (globalData.getBomLayout() != "BOM") 
+            if (globalData.getBomLayout() != "BOM")
             {
                 globalData.collapseCanvasSplit(1);
             }
             break;
         case "B":
             document.getElementById("bl-btn").classList.add("depressed");
-            if (globalData.getBomLayout() != "BOM") 
+            if (globalData.getBomLayout() != "BOM")
             {
                 globalData.collapseCanvasSplit(0);
             }
             break;
         default:
             document.getElementById("fb-btn").classList.add("depressed");
-            if (globalData.getBomLayout() != "BOM") 
+            if (globalData.getBomLayout() != "BOM")
             {
                 globalData.setSizesCanvasSplit([50, 50]);
             }
@@ -202,7 +203,7 @@ function removeGutterNode(node)
     for (let i = 0; i < node.childNodes.length; i++)
     {
         if (    (node.childNodes[i].classList )
-             && (node.childNodes[i].classList.contains("gutter")) 
+             && (node.childNodes[i].classList.contains("gutter"))
         )
         {
             node.removeChild(node.childNodes[i]);
@@ -224,7 +225,7 @@ function setAdditionalAttributes(value)
     bomTable.populateBomTable();
 }
 
-// XXX: None of this seems to be working. 
+// XXX: None of this seems to be working.
 document.onkeydown = function(e)
 {
     switch (e.key)
@@ -393,23 +394,27 @@ function Render_RightScreenTable()
 {
     let layerBody = document.getElementById("layer_table");
     let traceBody = document.getElementById("trace_table");
+    let testPointBody = document.getElementById("testpoint_table");
 
     if(layerTableVisable)
     {
         layerBody.removeAttribute("hidden");
         traceBody.setAttribute("hidden", "hidden");
+        testPointBody.setAttribute("hidden", "hidden");
     }
     else if(traceTableVisable)
     {
         console.log("Print trace table")
         layerBody.setAttribute("hidden", "hidden");
         traceBody.removeAttribute("hidden");
+        testPointBody.setAttribute("hidden", "hidden");
     }
     else if(testPointTableVisable)
     {
         console.log("Print test point table")
         layerBody.setAttribute("hidden", "hidden");
         traceBody.setAttribute("hidden", "hidden");
+        testPointBody.removeAttribute("hidden");
     }
     else
     {
@@ -455,6 +460,17 @@ function Create_Traces(pcbdata)
     }
 }
 
+function Create_TestPoints(pcbdata)
+{
+    globalData.pcb_testpoints = [];
+    /* Create test point objects from JSON file */
+    for(let testpoint of pcbdata.test_points)
+    {
+        console.log(testpoint)
+        globalData.pcb_testpoints.push(new PCB_TestPoint(testpoint));
+    }
+}
+
 function Create_Parts(pcbdata)
 {
     globalData.pcb_parts = [];
@@ -497,7 +513,7 @@ function LoadPCB(pcbdata)
         renderCanvas.ClearCanvas(layer[1][globalData.render_layers].GetCanvas(true));
         renderCanvas.ClearCanvas(layer[1][globalData.render_layers].GetCanvas(false));
     }
-    
+
     layerTable.clearLayerTable(); // <--- Actually viewed layer table
     Create_Layers(pcbdata); // <--- BAckground layer information
     rightSideTable.populateRightSideScreenTable();
@@ -509,6 +525,9 @@ function LoadPCB(pcbdata)
 
     // Create traces
     Create_Traces(pcbdata);
+
+    // Create test points
+    Create_TestPoints(pcbdata);
 
     // Parts
     Create_Parts(pcbdata);
@@ -530,7 +549,7 @@ function changeBomLayout(layout)
         document.getElementById("fb-btn").classList.remove("depressed");
         document.getElementById("bl-btn").classList.remove("depressed");
 
-        if (globalData.getBomSplit()) 
+        if (globalData.getBomSplit())
         {
             if(rightScreenTableVisable)
             {
@@ -560,12 +579,12 @@ function changeBomLayout(layout)
         document.getElementById("datadiv"   ).classList.add(   "split-horizontal");
         break;
     case "PCB":
-    
+
         document.getElementById("pcb-btn"     ).classList.add("depressed");
         document.getElementById("bomdiv").style.display = "none";
         document.getElementById("frontcanvas").style.display = "";
         document.getElementById("backcanvas" ).style.display = "";
-        
+
         if(rightScreenTableVisable)
         {
             document.getElementById("layerdiv"   ).style.display = "";
@@ -576,7 +595,7 @@ function changeBomLayout(layout)
         }
 
         document.getElementById("bot"        ).style.height = "calc(90%)";
-        
+
         document.getElementById("datadiv"   ).classList.add(   "split-horizontal");
         document.getElementById("bomdiv"     ).classList.remove(   "split-horizontal");
         document.getElementById("canvasdiv"  ).classList.remove(   "split-horizontal");
@@ -632,7 +651,7 @@ function changeBomLayout(layout)
         }));
 
         document.getElementById("canvasdiv"  ).style.height = "calc(99%)";
-        
+
         break;
     case "TB":
         document.getElementById("bom-tb-btn"     ).classList.add("depressed");
@@ -693,7 +712,7 @@ function changeBomLayout(layout)
             cursor: "row-resize"
         }));
 
-        
+
         break;
     case "LR":
         document.getElementById("bom-lr-btn"     ).classList.add("depressed");
@@ -753,7 +772,7 @@ function changeBomLayout(layout)
             onDragEnd: render.resizeAll,
             cursor: "row-resize"
         }));
-        
+
         break;
     }
     globalData.setBomLayout(layout);
@@ -781,13 +800,13 @@ function toggleFullScreen()
     }
 }
 
-//XXX: I would like this to be in the html functions js file. But this function needs to be 
+//XXX: I would like this to be in the html functions js file. But this function needs to be
 //     placed here, otherwise the application rendering becomes very very weird.
 window.onload = function(e)
 {
     console.time("on load");
 
-    // Must occure early for storage parameters to be loaded. If not loaded early then 
+    // Must occure early for storage parameters to be loaded. If not loaded early then
     // incorrect parameters may be used.
     globalData.initStorage();
 
@@ -803,6 +822,7 @@ window.onload = function(e)
 
 
     Create_Traces(pcbdata);
+    Create_TestPoints(pcbdata);
     Create_Layers(pcbdata);
     Create_Parts(pcbdata);
     Create_Configuration(pcbdata);
