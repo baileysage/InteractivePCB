@@ -54,7 +54,7 @@ Generated JSON is validated using [JSON Formatter & Validator](https://jsonforma
     <PART_LOCATION>        ::= "\"location\":" <LOCATION>
 
     /* F = Front, B = Back, N = Neither */
-    <LOCATION>  ::= "\"F\"" | "\"B\"" | "\"N\"" 
+    <LOCATION>  ::= "\"F\"" | "\"B\"" | "\"N\""
 
     <ATTRIBUTES> ::= <ATTRIBUTE> | <ATTRIBUTE> "," <ATTRIBUTES>
     <ATTRIBUTE>  ::= "{" <NAME> "," <VALUE> "}"
@@ -92,7 +92,7 @@ Generated JSON is validated using [JSON Formatter & Validator](https://jsonforma
     <PARAMETER>          ::= "{" <NAME> "," <VALUE> "}"
 
     /*************** TEST POINT SECTION ***************/
-    <PCB_TEST_POINTS_DATA> ::= "\"configuration\":" "[" <TEST_POINTS> "]"
+    <PCB_TEST_POINTS_DATA> ::= "\"test points\":" "[" <TEST_POINTS> "]"
 
     <TEST_POINTS>     ::= <TEST_POINT> | <TEST_POINT> "," <TEST_POINTS>
     <TEST_POINT>      ::= "{" <NAME> "," <TEST_POINT_DESCRIPTION> "," <TEST_POINT_EXPECTED> "}"
@@ -150,7 +150,7 @@ Generated JSON is validated using [JSON Formatter & Validator](https://jsonforma
 
     <ELONGATION> ::= "\"elongation\":" <POSITIVE_REAL_NUMBER>
     <DIAMETER>   ::= "\"diameter\":" <REAL_NUMBER>
-    <RADIUS>     ::= "\"radius\"" ":" <REAL_NUMBER> 
+    <RADIUS>     ::= "\"radius\"" ":" <REAL_NUMBER>
     <ANGLE0>    ::= "\"angle0\"" ":" <REAL_NUMBER>
     <ANGLE1>    ::= "\"angle1\"" ":" <REAL_NUMBER>
 
@@ -161,7 +161,7 @@ Generated JSON is validated using [JSON Formatter & Validator](https://jsonforma
 
     <REAL_NUMBER>          ::= <POSITIVE_REAL_NUMBER> | <NEGATIVE_REAL_NUMBER>
     <POSITIVE_REAL_NUMBER> ::=     ("0" |  [1-9] [0-9]*) ("." [0-9]+ )?
-    <NEGATIVE_REAL_NUMBER> ::= "-" ([1-9] [0-9]*) ("." [0-9]+ )? | "-" ("0" "." [0-9]+) 
+    <NEGATIVE_REAL_NUMBER> ::= "-" ([1-9] [0-9]*) ("." [0-9]+ )? | "-" ("0" "." [0-9]+)
 
     <STRING>      ::= ([a-z] | [A-Z]) ([a-z] | [A-Z] | [0-9] | "-" | "_" | "$")*
     <DATE_STRING> ::= ([a-z] | [A-Z] | [0-9] | "-" | "_" | ":" | " ")*

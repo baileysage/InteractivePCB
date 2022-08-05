@@ -68,12 +68,12 @@
     DESCRIPTION: Scans a string and replaces douple quotes (") with a space character. This is needed
                  so that the resulting JSON file is valid. Without this check the resulting JSON
                  could include double quotes embedded in a  part and the resulting JSON is invalid
-                 which will make iPCB not work. 
+                 which will make iPCB not work.
     */
     string removeDoubleQuote(string passedString)
     {
-        for (int i = 0; passedString[i]; ++i) 
-        {    
+        for (int i = 0; passedString[i]; ++i)
+        {
             if(passedString[i] == '\"')
             {
                 passedString[i] = ' ';
@@ -122,7 +122,7 @@
     }
 
     /********** VIA DEFINITIONS **********/
-    
+
     void Print_Segment_Via(string viaType, string layerName, real x, real y, real diameter, real drill)
     {
         printf(   "{\"type\":\"%s\",\"layer\":\"%s\",\"x\":%5.5f,\"y\":%5.5f,\"diameter\":%5.5f,\"drill\":%5.5f}"
@@ -172,7 +172,7 @@
     void Print_Metadata_CompanyName(UL_BOARD B)
     {
             /*
-                Iterate over the board attributes looking for 'COMPANY'. If this attribute exists 
+                Iterate over the board attributes looking for 'COMPANY'. If this attribute exists
                 it returns the value set for 'COMPANY' if set, otherwise returns an empty string.
             */
             string companyName = "";
@@ -189,7 +189,7 @@
     void Print_Metadata_ProjectRevision(UL_BOARD B)
     {
         /*
-            Iterate over the board attributes looking for 'REV' or 'REVISION'. If this attribute exists 
+            Iterate over the board attributes looking for 'REV' or 'REVISION'. If this attribute exists
             it returns the value set for 'REV' or 'REVISION' if set, otherwise returns an empty string.
         */
         string revision = "";
@@ -212,7 +212,7 @@
     {
         // Used to hold the project name
         string projectName[];
-        // filename(xxx) removes the directory part of the string if it exists. 
+        // filename(xxx) removes the directory part of the string if it exists.
         // strsplit splits its input string by looking for '.' and puts the result in projectName
         int n = strsplit(projectName, filename(pcbFileName), '.');
         // The first element (at index 0), contains the filename.
@@ -264,7 +264,7 @@
         board(B)
         {
             /*
-                Print the metadata information to file. 
+                Print the metadata information to file.
             */
             printf("\"metadata\":{");
             Print_Metadata_ProtocolVersion(PROTOCOL_VERSION);
@@ -330,7 +330,7 @@
             }
             printedOnce = 1;
         }
-        
+
         //S.polygons(P)
         //{
         //    if(printedOnce == 1)
@@ -713,7 +713,7 @@
         E.package.contacts(C)
         {
             if (!firstPad)
-            {   
+            {
                 printf(",");
             }
             Print_Part_Package_Pad(C);
@@ -822,6 +822,40 @@
 /**************************************************************************************************/
 
 /**************************************************************************************************/
+/********************                    TEST POINT DEFINITIONS                ********************/
+/**************************************************************************************************/
+void Print_TestPoints()
+{
+    printf("\"test_points\": [");
+
+    board(B)
+    {
+        int firstTestPoint = 1;
+        B.elements(E)
+        {
+            E.package.contacts(C)
+            {
+                if(C.name == "TP")
+                {
+                    if(!firstTestPoint)
+                    {
+                        printf(",");
+                    }
+                    printf( "{\"name\":\"%s\",\"description\":\"%s\",\"expected\":\"%s\"}"
+                            ,C.name
+                            ,E.attribute["DESCRIPTION"]
+                            ,E.attribute["EXPECTED"]
+                          );
+                    firstTestPoint = 0;
+                }
+            }
+        }
+    }
+    printf("]");
+}
+/**************************************************************************************************/
+
+/**************************************************************************************************/
 /********************                  CONFIGURATION DEFINITIONS               ********************/
 /**************************************************************************************************/
     void Print_Configuration_Data()
@@ -852,12 +886,6 @@
     }
 /**************************************************************************************************/
 
-/**************************************************************************************************/
-/********************                    TEST POINT DEFINITIONS                ********************/
-/**************************************************************************************************/
-
-/**************************************************************************************************/
-
 output(outputFileName,"wt")
 {
     board(B)
@@ -874,6 +902,8 @@ output(outputFileName,"wt")
     Print_Board_Data();
     printf(",");
     Print_Parts_Data();
+    printf(",");
+    Print_TestPoints();
     printf(",");
     Print_Configuration_Data();
     printf("}");
