@@ -23,8 +23,16 @@ class Table_TestPointEntry
         tr.appendChild(td);
 
         td = document.createElement("TD");
+        td.contentEditable = "true"
+        tr.appendChild(td);
+
+        td = document.createElement("TD");
         td.innerHTML = testPoint.description;
         tr.appendChild(td);
+
+
+
+
 
         return tr;
     }

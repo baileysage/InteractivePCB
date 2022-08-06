@@ -65,6 +65,12 @@ function populateTestPointHeader()
     th.appendChild(span);
     tr.appendChild(th);
 
+    th = document.createElement("TH");
+    th.innerHTML = "Measured";
+    span = document.createElement("SPAN");
+    span.classList.add("none");
+    th.appendChild(span);
+    tr.appendChild(th);
 
     th = document.createElement("TH");
     th.innerHTML = "Description";
