@@ -1,4 +1,6 @@
-# Project Title
+# Interactive PCB
+
+[![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/summary/new_code?id=oceanofthelost_InteractivePCB)
 
 [InteractivePCB](https://github.com/oceanofthelost/InteractivePCB) is a hard fork of [InteractiveHtmlBom](https://github.com/openscopeproject/InteractiveHtmlBom) with a focus interactions with a PCB beyond a bill of materials. To that end, InteractivePCB lets one interaction with individual PCB layers, aid in PCB assembly by showing similar parts, and also provide an interactive BOM.
 
