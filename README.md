@@ -13,10 +13,11 @@ Currently InteractivePCB is designed to work with EagleCAD with minor support fo
 	1. [Installation](#installation)
 	1. [Usage](#usage)
 		1. [EagleCAD](#eaglecad)
+	1. [Branch Conventions](#branch-conventions)
 1. [Release Process](#release-process)
-	1. [Bugfix Release](#bugfix-release)
-	1. [Feature Release](#Feature-release)
 	1. [Creating A Release](#creating-a-release)
+		1. [Bugfix Release](#bugfix-release)
+		1. [Feature Release](#Feature-release)
 	1. [Versioning](#versioning)
 1. [How to Get Help](#how-to-get-help)
 1. [Contributing](#contributing)
@@ -92,23 +93,25 @@ Now open `iPCB.html` in a web browser.
 
 **[Back to top](#table-of-contents)**
 
+
+### Branch Conventions
+
+Development consists of three primary branches:
+
+1. **master**: Primary branch used for commuting all new development. Mastre branch will always consist of the latest software and may contain bugs and is not recommended for everyday use.
+2. **Development_V2**: Bugfixes and requested minor features to be integrated into V2 are committed to **Development_V2** branch. Commits may be cherry picked from master ad added, or fixes may be ported to to master. When V3 is released **Development_V2** will be closed and replaced with **Development_V3**. Primary existence for **Developmen_\*** to provide an area to perform release candidate testing and bug fixes outside of master which may have breaking changes that are not ready for release.
+3. **Release**: Public releases are merged from master and Development_\* branches directly into Release. After enough testing has been preformed on a release candidate it is deemed to be ready for release. All commits on release are tagged with a version number and also correspond to a working implementation of InteractivePCB.
+
+
+Master branch is used like development branch. Reason master is not named develop is because initial development was by solo developer and solo developer did not care to over complicate development with multiple branches. Now that  project has grown this is being addressed and at some point in the future master will be renamed to develop to make it clear where primary development should occur.
+
 ## Release Process
-
-Creating a release shall follow either a bugfix or feature release process.
-
-### Bugfix Release
-
-Bugfix releases are designed to address specific issues found in release software. Once an issue is identified and an issue ticket created on GitHub, development will commonsense on fixing the issue. Upon fixing the bug and adding the change to the software, testing will be preformed and when complete will a new release will be made, tagged, and released on [GitHub]([released](https://github.com/oceanofthelost/InteractivePCB/releases).
-
-
-### Feature Release
-
-Feature releases used for adding new capabilities to InteractivePCB. First a feature request is made by creating a GitHuib issue. Next development on the feature will commence on a new branch and once complete will be merged back into master. When enough features are integrated or a milestone has been reached, then a release candidate will be created. Once a release candidate is made testing will commence to discover and fix any bugs. Once testing is complete a release will be made from the release candidate, tagged, and released on [GitHub]([released](https://github.com/oceanofthelost/InteractivePCB/releases).
-
 
 ### Creating A Release
 
-To create a release, use the following steps:
+Releases fall into one of two categorizes, bugfix and feature. The following section discuss the generic release steps common to both bugfix and feature releases.
+
+Generic steps for creating a release are:
 
 1. Set new version number in `version.js`
 2. Open a terminal and navigate to the GUI folder.
@@ -128,6 +131,15 @@ Next, from GitHub:
 5. Add a section on how to download release, unzip and basic steps to use Interactive PCB.
 6. Under "Attach binaries" Upload zip file generated in last step along with any ElectronicCAD plugins.
 
+
+#### Bugfix Release
+
+Bugfix releases are designed to address specific issues found in release software. Once an issue is identified and an issue ticket created on GitHub, development will commonsense on fixing the issue. Upon fixing the bug and adding the change to the software, testing will be preformed and when complete will a new release will be made, tagged, and released on [GitHub]([released](https://github.com/oceanofthelost/InteractivePCB/releases).
+
+
+#### Feature Release
+
+Feature releases used for adding new capabilities to InteractivePCB. First a feature request is made by creating a GitHuib issue. Next development on the feature will commence on a new branch and once complete will be merged back into master. When enough features are integrated or a milestone has been reached, then a release candidate will be created. Once a release candidate is made testing will commence to discover and fix any bugs. Once testing is complete a release will be made from the release candidate, tagged, and released on [GitHub]([released](https://github.com/oceanofthelost/InteractivePCB/releases).
 
 
 ### Versioning
