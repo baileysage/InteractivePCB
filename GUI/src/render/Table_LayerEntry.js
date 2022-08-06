@@ -53,7 +53,6 @@ class Table_LayerEntry
             this.visible_front = true;
             globalData.layer_list.get(layer.name)[globalData.render_layers].SetVisibility(true,true);
             globalData.writeStorage("checkbox_layer_front_" + layer.name + "_visible", "true");
-            console.log("HERE");
         }
         else if ( globalData.readStorage( "checkbox_layer_front_" + layer.name + "_visible" ) == "true")
         {
@@ -87,11 +86,11 @@ class Table_LayerEntry
         // Assumes that all layers are visible by default.
         if (globalData.readStorage( "checkbox_layer_color_" + layer.name ) == null )
         {
-            
+
         }
         else
         {
-         
+
         }
 
 
@@ -108,10 +107,10 @@ class Table_LayerEntry
     }
 
     /*
-        Create a checkbox entry for layer table. 
+        Create a checkbox entry for layer table.
 
         When checked (visible) an eye icon will be used
-        and when unselected (not visible) an eye icon will 
+        and when unselected (not visible) an eye icon will
         slash will be used.
     */
     CreateCheckbox_Visible(layer, isFront)
@@ -119,7 +118,7 @@ class Table_LayerEntry
         let newlabel = document.createElement("Label");
         let td       = document.createElement("TD");
         let input    = document.createElement("input");
-        
+
         input.type = "checkbox";
         newlabel.classList.add("check_box_layer")
         if(isFront)
@@ -134,7 +133,7 @@ class Table_LayerEntry
         input.onchange = createLayerCheckboxChangeHandler(layer, isFront);
 
         var span = document.createElement("Span");
-        span.classList.add("checkmark")
+        span.classList.add("layer_checkbox")
 
         newlabel.appendChild(input);
         newlabel.appendChild(span);
@@ -147,12 +146,9 @@ class Table_LayerEntry
         let newlabel = document.createElement("Label");
         let td       = document.createElement("TD");
         let input    = document.createElement("input");
-        
+
         input.type = "checkbox";
         newlabel.classList.add("check_box_color")
-
-
-        input.onchange = function(){console.log("HELLO WORLD")}
 
         var span = document.createElement("Span");
         span.classList.add("checkmark_color")

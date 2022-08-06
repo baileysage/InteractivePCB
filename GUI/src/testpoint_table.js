@@ -93,7 +93,6 @@ function populateTestPointBody()
     // remove entries that do not match filter
     for (let testpoint of globalData.pcb_testpoints)
     {
-        console.log(testpoint)
         testPointBody.appendChild(new Table_TestPointEntry(testpoint));
     }
 }

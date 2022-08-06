@@ -27,6 +27,9 @@ var colorMap        = require("./colormap.js");
 
 var rightSideTable = require("./RightSideScreenTable.js")
 
+
+
+
 function setDarkMode(value)
 {
     let topmostdiv = document.getElementById("topmostdiv");
@@ -39,6 +42,24 @@ function setDarkMode(value)
         topmostdiv.classList.remove("dark");
     }
     globalData.writeStorage("darkmode", value);
+
+
+    const sheets = document.styleSheets[0].rules;
+    for (var i = 0, len = sheets.length; i < len; i++)
+    {
+        if (sheets[i].selectorText == '.layer_checkbox')
+        {
+            if (value)
+            {
+                 sheets[i].style['filter'] = 'invert(100%)';
+            }
+            else
+            {
+                 sheets[i].style['filter'] = 'invert(0%)';
+            }
+
+        }
+    }
 
     render.RenderPCB(globalData.GetAllCanvas().front);
     render.RenderPCB(globalData.GetAllCanvas().back);
@@ -404,14 +425,12 @@ function Render_RightScreenTable()
     }
     else if(traceTableVisable)
     {
-        console.log("Print trace table")
         layerBody.setAttribute("hidden", "hidden");
         traceBody.removeAttribute("hidden");
         testPointBody.setAttribute("hidden", "hidden");
     }
     else if(testPointTableVisable)
     {
-        console.log("Print test point table")
         layerBody.setAttribute("hidden", "hidden");
         traceBody.setAttribute("hidden", "hidden");
         testPointBody.removeAttribute("hidden");
@@ -466,7 +485,6 @@ function Create_TestPoints(pcbdata)
     /* Create test point objects from JSON file */
     for(let testpoint of pcbdata.test_points)
     {
-        console.log(testpoint)
         globalData.pcb_testpoints.push(new PCB_TestPoint(testpoint));
     }
 }
