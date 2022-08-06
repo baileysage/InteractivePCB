@@ -195,8 +195,7 @@ def main():
       outputFile = args[1]
 
     if (os.path.isfile (outputFile)):
-      print ("FATAL ERROR: Output file " + outputFile + " does already exist")
-      exit ()
+      print ("WARNING: Output file " + outputFile + " already exists. Overwriting")
 
   # run the actual merge
   merge (inputFile, outputFile)

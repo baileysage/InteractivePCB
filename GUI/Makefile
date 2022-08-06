@@ -31,21 +31,21 @@ Build/index.js_pretty: $(JS_DEPS)/.stamp $(JS_SRCS) Build/pcbdata.json index.css
 	$(BROWSERIFY) ./src/ipcb.js ./src/render.js ./src/htmlFunctions.js ./src/pcb.js ./src/colormap.js --debug --outfile $@
 
 Build/index.js: Build/index.js_pretty | Build
-	#cp $< $@
-	npx uglify-js  --compress -- $< > $@
+	cp $< $@
+	#npx uglify-js  --compress -- $< > $@
 
 Build/index.css: index.css | Build
-	#cp $< $@
-	npx uglifycss $< --ugly-comments  > $@
+	cp $< $@
+	#npx uglifycss $< --ugly-comments  > $@
 
 Build/iPCB.html: iPCB.html | Build
-	#cp $< $@
-	npx html-minifier --collapse-whitespace --remove-comments --remove-optional-tags --remove-redundant-attributes --remove-script-type-attributes --remove-tag-whitespace --use-short-doctype --minify-css true --minify-js true $<  > $@
+	cp $< $@
+	#npx html-minifier --collapse-whitespace --remove-comments --remove-optional-tags --remove-redundant-attributes --remove-script-type-attributes --remove-tag-whitespace --use-short-doctype --minify-css true --minify-js true $<  > $@
 
 Build/pcbdata.json: ../Examples/Eagle/Simple_BRD/pcbdata.json | Build
 	cat $< | sed 's/var pcbdata =//g' | python -m json.tool | sed  '1s;^;var pcbdata =;' > $@
 
-Release/iPCB.html: Build/iPCB.html Build/index.css Build/index.js
+Release/iPCB.html: Build/iPCB.html Build/index.css Build/index.js | Release
 	python htmlmerger.py $< $@
 
 Release:
