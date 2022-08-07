@@ -1,4 +1,5 @@
 # Specify filepatterns you want git to ignore.
 Gui/Build/*
+Gui/Release/*
 GUI/node_modules
 *.b#*

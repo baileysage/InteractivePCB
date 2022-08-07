@@ -724,7 +724,91 @@
 
     void Print_Part_Package_BoundingBox(UL_ELEMENT E)
     {
-        Print_BoundingBox(u2mm(E.package.area.x1), u2mm(E.package.area.y1), u2mm(E.package.area.x2), u2mm(E.package.area.y2));
+        int min_x = E.x;
+        int max_x = E.x;
+
+        int min_y = E.y;
+        int max_y = E.y;
+
+        int dx = 0;
+        int dy = 0;
+
+        int dx_tmp = 0;
+        int dy_tmp = 0;
+
+        E.package.contacts(C)
+        {
+            if(min_x > C.x)
+            {
+                min_x = C.x;
+            }
+
+            if(max_x < C.x)
+            {
+                max_x = C.x;
+            }
+
+            if(min_y > C.y)
+            {
+                min_y = C.y;
+            }
+
+            if(max_y < C.y)
+            {
+                max_y = C.y;
+            }
+
+
+
+            if(C.smd)
+            {
+                dx_tmp = (C.smd.dx)/2 + (C.smd.dx)/4;
+                dy_tmp = (C.smd.dy)/2 + (C.smd.dy)/4;
+            }
+            else
+            {
+                if(C.pad.shape[LAYER_TOP] == PAD_SHAPE_SQUARE)
+                {
+                    dx_tmp = (C.pad.diameter[LAYER_TOP]);
+                    dy_tmp = dx_tmp;
+                }
+                else if(C.pad.shape[LAYER_TOP] == PAD_SHAPE_ROUND)
+                {
+                    dx_tmp = (C.pad.diameter[LAYER_TOP]);
+                    dy_tmp = dx_tmp;
+                }
+                else if(C.pad.shape[LAYER_TOP] == PAD_SHAPE_OCTAGON)
+                {
+                    dx_tmp = (C.pad.diameter[LAYER_TOP])/2 + (C.pad.diameter[LAYER_TOP])/8;
+                    dy_tmp = dx_tmp;
+                }
+                else if(C.pad.shape[LAYER_TOP] == PAD_SHAPE_LONG)
+                {
+                    dx_tmp = (C.pad.diameter[LAYER_TOP]);
+                    dy_tmp = dx_tmp;
+                }
+                else if(C.pad.shape[LAYER_TOP] == PAD_SHAPE_OFFSET)
+                {
+                    dx_tmp = (C.pad.diameter[LAYER_TOP]);
+                    dy_tmp = dx_tmp;
+                }
+            }
+
+
+            if(dx < dx_tmp)
+            {
+                dx = dx_tmp;
+            }
+
+            if(dy < dy_tmp)
+            {
+                dy = dy_tmp;
+            }
+        }
+
+
+
+        Print_BoundingBox(u2mm(min_x-dx), u2mm(min_y-dy), u2mm(max_x+dx), u2mm(max_y+dy));
     }
 
     void Print_Part_Name(string name)
