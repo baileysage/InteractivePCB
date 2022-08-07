@@ -150,13 +150,14 @@
         Print_Segment_Via("via_octagon", layerName, x, y, diameter, drill);
     }
 
-    void Print_BoundingBox(real x0, real y0, real x1, real y1)
+    void Print_BoundingBox(real x0, real y0, real x1, real y1, real angle)
     {
-        printf(   "\"bounding_box\":{\"x0\":%5.5f,\"y0\":%5.5f,\"x1\":%5.5f,\"y1\":%5.5f}"
+        printf(   "\"bounding_box\":{\"x0\":%5.5f,\"y0\":%5.5f,\"x1\":%5.5f,\"y1\":%5.5f,\"angle\":%5.5f}"
                 , x0
                 , y0
                 , x1
                 , y1
+                , angle
               );
     }
 /**************************************************************************************************/
@@ -536,7 +537,7 @@
     {
         board(B)
         {
-            Print_BoundingBox(u2mm(B.area.x1), u2mm(B.area.y1), u2mm(B.area.x2), u2mm(B.area.y2));
+            Print_BoundingBox(u2mm(B.area.x1), u2mm(B.area.y1), u2mm(B.area.x2), u2mm(B.area.y2), 0);
         }
     }
 
@@ -767,27 +768,17 @@
             }
             else
             {
-                if(C.pad.shape[LAYER_TOP] == PAD_SHAPE_SQUARE)
-                {
-                    dx_tmp = (C.pad.diameter[LAYER_TOP]);
-                    dy_tmp = dx_tmp;
-                }
-                else if(C.pad.shape[LAYER_TOP] == PAD_SHAPE_ROUND)
-                {
-                    dx_tmp = (C.pad.diameter[LAYER_TOP]);
-                    dy_tmp = dx_tmp;
-                }
-                else if(C.pad.shape[LAYER_TOP] == PAD_SHAPE_OCTAGON)
+                if (    (C.pad.shape[LAYER_TOP] == PAD_SHAPE_SQUARE)
+                     || (C.pad.shape[LAYER_TOP] == PAD_SHAPE_ROUND)
+                     || (C.pad.shape[LAYER_TOP] == PAD_SHAPE_OCTAGON)
+                    )
                 {
                     dx_tmp = (C.pad.diameter[LAYER_TOP])/2 + (C.pad.diameter[LAYER_TOP])/8;
                     dy_tmp = dx_tmp;
                 }
-                else if(C.pad.shape[LAYER_TOP] == PAD_SHAPE_LONG)
-                {
-                    dx_tmp = (C.pad.diameter[LAYER_TOP]);
-                    dy_tmp = dx_tmp;
-                }
-                else if(C.pad.shape[LAYER_TOP] == PAD_SHAPE_OFFSET)
+                else if (   (C.pad.shape[LAYER_TOP] == PAD_SHAPE_LONG)
+                         || (C.pad.shape[LAYER_TOP] == PAD_SHAPE_OFFSET)
+                        )
                 {
                     dx_tmp = (C.pad.diameter[LAYER_TOP]);
                     dy_tmp = dx_tmp;
@@ -806,9 +797,7 @@
             }
         }
 
-
-
-        Print_BoundingBox(u2mm(min_x-dx), u2mm(min_y-dy), u2mm(max_x+dx), u2mm(max_y+dy));
+        Print_BoundingBox(u2mm(min_x-dx), u2mm(min_y-dy), u2mm(max_x+dx), u2mm(max_y+dy), E.angle);
     }
 
     void Print_Part_Name(string name)

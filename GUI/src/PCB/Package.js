@@ -14,7 +14,8 @@ class Package
 {
     constructor(iPCB_JSON_Package)
     {
-        this.boundingBox = new BoundingBox(iPCB_JSON_Package.bounding_box.x0, iPCB_JSON_Package.bounding_box.y0, iPCB_JSON_Package.bounding_box.x1, iPCB_JSON_Package.bounding_box.y1);
+        this.boundingBox = new BoundingBox(iPCB_JSON_Package.bounding_box.x0, iPCB_JSON_Package.bounding_box.y0, iPCB_JSON_Package.bounding_box.x1, iPCB_JSON_Package.bounding_box.y1, iPCB_JSON_Package.bounding_box.angle);
+
         this.pads = [];
 
         for(let pad of iPCB_JSON_Package.pads)
@@ -23,15 +24,15 @@ class Package
             {
                 this.pads.push(new Package_Pad_Rectangle(pad));
             }
-            else if (pad.type == "oblong") 
+            else if (pad.type == "oblong")
             {
                 this.pads.push(new Package_Pad_Oblong(pad));
             }
-            else if (pad.type == "round") 
+            else if (pad.type == "round")
             {
                 this.pads.push(new Package_Pad_Round(pad));
             }
-            else if (pad.type == "octagon") 
+            else if (pad.type == "octagon")
             {
                 this.pads.push(new Package_Pad_Octagon(pad));
             }

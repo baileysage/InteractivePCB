@@ -6,41 +6,39 @@ var render_lowlevel = require("./render/render_lowlevel.js");
 
 class BoundingBox
 {
-    constructor(x0, y0, x1, y1)
+    constructor(x0, y0, x1, y1, angle)
     {
-        /*
-                The following derive the corner points for the
-                rectangular pad. These are calculated using the center 
-                point of the rectangle along with the width and height 
-                of the rectangle. 
-        */
+        this.centerPoint = new Point((x0+x1)/2,((y0+y1)/2))
+
+        // Translating coordinate to reference center point.
+        // This will be needed to properly rotate bounding box around object.
         // Top left point
-        this.point0 = new Point(x0,y0);
+        this.point0 = new Point(x0-this.centerPoint.x,y0-this.centerPoint.y);
         // Top right point
-        this.point1 = new Point(x1,y0);
+        this.point1 = new Point(x1-this.centerPoint.x,y0-this.centerPoint.y);
         // Bottom right point
-        this.point2 = new Point(x1,y1);
+        this.point2 = new Point(x1-this.centerPoint.x,y1-this.centerPoint.y);
         // Bottom left point
-        this.point3 = new Point(x0,y1);
+        this.point3 = new Point(x0-this.centerPoint.x,y1-this.centerPoint.y);
+
+        this.angle = angle;
 
     }
 
     Render(guiContext, color)
     {
-        let centerPoint = new Point(0, 0);
-
-        // First fill the box. 
+        // First fill the box.
         let renderOptions = {
             color: color,
             fill: true,
             globalAlpha: 0.2
         };
 
-        render_lowlevel.RegularPolygon( 
+        render_lowlevel.RegularPolygon(
             guiContext,
-            centerPoint, 
+            this.centerPoint,
             [this.point0, this.point1, this.point2, this.point3],
-            0,
+            this.angle,
             renderOptions
         );
 
@@ -48,15 +46,15 @@ class BoundingBox
         renderOptions = {
             color: color,
             fill: false,
-            globalAlpha: 1, 
+            globalAlpha: 1,
             lineWidth: 0.33
         };
 
-        render_lowlevel.RegularPolygon( 
+        render_lowlevel.RegularPolygon(
             guiContext,
-            centerPoint, 
+            this.centerPoint,
             [this.point0, this.point1, this.point2, this.point3],
-            0,
+            this.angle,
             renderOptions
         );
     }
