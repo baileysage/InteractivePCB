@@ -12,7 +12,6 @@
 /**************************************************************************************************/
 /********************                    GLOBAL DEFINITIONS                    ********************/
 /**************************************************************************************************/
-    string dirName;
 
     int PROTOCOL_VERSION = 2;
 
@@ -24,18 +23,79 @@
       if (library)   library(L)   return(filedir(L.name));
     }
 
-    if (dlgMessageBox("Do you want to select output directory? If \"No\", JSON file will save to project directory.", "&Yes", "&No") == 0)
+
+
+    int Result = 0;
+
+    int setting_DarkMode = 0;
+    int setting_HighlightFirstPin = 0;
+    int settings_HidePlacedParts = 0;
+    int setting_CombineValues = 0;
+    int setting_RenderingBOMLayout = 0;
+    int setting_AdditionalTable = 0;
+    string setting_OutputDirectory = get_project_path();
+    string selectionOptions_bomLayoutSelections[]        = { "BOM Only", "BOM Left, PCB Right", "BOM Top, PCB Bottom", "PCB Only" };
+    string selectionOptions_bomLayoutSelectionsMapping[] = { "BOM", "LR", "TB", "PCB" };
+    string selectionOptions_TableSelections[]        = {"None", "Trace Table", "Test Point Table", "Layer Table"};
+    string selectionOptions_TableSelectionsMapping[] = {"None", "Tr", "Tp", "Lr"};
+    string setting_AdditionalCheckBoxes = "";
+    string setting_AdditionalPartAttributes = "";
+    Result = dlgDialog("interactive PCB Export")
     {
-       dirName = dlgDirectory("Select directory", "");
+        dlgGroup("iPCB Settings")
+        {
+            dlgHBoxLayout
+            {
+                dlgGroup("Rendering")
+                {
+                    dlgCheckBox("&Dark mode"          , setting_DarkMode);
+                    dlgCheckBox("&Highlight first pin", setting_HighlightFirstPin);
+                    dlgCheckBox("&Hide placed parts", settings_HidePlacedParts);
+                    dlgStretch(1);
+                }
+                dlgGroup("Additional BOM Settings")
+                {
+                    dlgCheckBox("&Combine BOM values"     , setting_CombineValues);
+                    dlgLabel("Additional Check boxes");
+                    dlgStringEdit(setting_AdditionalCheckBoxes);
+                    dlgLabel("Additional Part Attributes");
+                    dlgStringEdit(setting_AdditionalPartAttributes);
+                }
+            }
 
-    }
-    else
-    {
-       dirName = get_project_path();
-    }
 
+            dlgGroup("Layout Settings")
+            {
+                dlgHBoxLayout
+                {
+                    dlgVBoxLayout
+                    {
+                        dlgLabel("&Default BOM & PCB Layout");
+                        dlgListBox(selectionOptions_bomLayoutSelections, setting_RenderingBOMLayout);
+                    }
+                    dlgVBoxLayout
+                    {
+                        dlgLabel("&Default Additional Table");
+                        dlgListBox(selectionOptions_TableSelections    , setting_AdditionalTable);
+                    }
+                }
+            }
+        }
+        dlgHBoxLayout
+        {
+            dlgPushButton("&Output Directory")
+            {
+                setting_OutputDirectory = dlgDirectory("Select directory", get_project_path());
+            }
+            dlgLabel(setting_OutputDirectory,1);
+        }
+        dlgPushButton("&Execute")
+        {
+           dlgAccept();
+        }
+    };
 
-    string outputFileName = dirName + "/" +"pcbdata.json";
+    string outputFileName = setting_OutputDirectory + "/" +"pcbdata.json";
 
     string layerNames[];
 
@@ -931,6 +991,33 @@ void Print_TestPoints()
 /**************************************************************************************************/
 /********************                  CONFIGURATION DEFINITIONS               ********************/
 /**************************************************************************************************/
+    void ConfigurationParameter_String(string category, string name, string value)
+    {
+        printf( "{\"category\":\"%s\",\"name\":\"%s\",\"value\":\"%s\"}"
+                    ,category
+                    ,name
+                    ,value
+                  );
+    }
+
+    void ConfigurationParameter_Integer(string category, string name, int value)
+    {
+        printf( "{\"category\":\"%s\",\"name\":\"%s\",\"value\":\"%d\"}"
+                    ,category
+                    ,name
+                    ,value
+                  );
+    }
+
+    void ConfigurationParameter_Real(string category, string name, real value)
+    {
+        printf( "{\"category\":\"%s\",\"name\":\"%s\",\"value\":\"%5.5f\"}"
+                    ,category
+                    ,name
+                    ,value
+                  );
+    }
+
     void Print_Configuration_Data()
     {
         printf("\"configuration\": [");
@@ -946,38 +1033,58 @@ void Print_TestPoints()
                     {
                         printf(",");
                     }
-                    printf( "{\"category\":\"%s\",\"name\":\"%s\",\"value\":\"%s\"}"
-                            ,"color"
-                            ,L.name
-                            ,PalletColorToHTMLString(palette(L.color))
-                          );
+                    ConfigurationParameter_String("color", L.name ,PalletColorToHTMLString(palette(L.color)));
                     firstLayer = 0;
                 }
             }
         }
+
+        // Now print config data based on user preferences
+
+        printf(",");
+        ConfigurationParameter_Integer("setting" , "dark_mode"           , setting_DarkMode);
+        printf(",");
+        ConfigurationParameter_Integer("setting" , "hight_first_pin"     , setting_HighlightFirstPin);
+        printf(",");
+        ConfigurationParameter_Integer("setting" , "hide_placed_parts"   , settings_HidePlacedParts);
+        printf(",");
+        ConfigurationParameter_Integer("setting" , "combine_values"      , setting_CombineValues);
+        printf(",");
+        ConfigurationParameter_String("setting"  , "bom_pcb_layout"      , selectionOptions_bomLayoutSelectionsMapping[setting_RenderingBOMLayout]);
+        printf(",");
+        ConfigurationParameter_String("setting"  , "additional_table"    , selectionOptions_TableSelectionsMapping[setting_AdditionalTable]);
+        printf(",");
+        ConfigurationParameter_String("setting"  , "bom_checkboxes"      , setting_AdditionalCheckBoxes);
+        printf(",");
+        ConfigurationParameter_String("setting"  , "bom_part_attributes" , setting_AdditionalPartAttributes);
         printf("]");
     }
 /**************************************************************************************************/
 
-output(outputFileName,"wt")
-{
-    board(B)
-    {
-        B.layers(L)
-        {
-            layerNames[L.number] = L.name;
-        }
-    }
 
-    printf("var pcbdata =  {");
-    Print_Metadata();
-    printf(",");
-    Print_Board_Data();
-    printf(",");
-    Print_Parts_Data();
-    printf(",");
-    Print_TestPoints();
-    printf(",");
-    Print_Configuration_Data();
-    printf("}");
+
+if (Result != -1)
+{
+    output(outputFileName,"wt")
+    {
+        board(B)
+        {
+            B.layers(L)
+            {
+                layerNames[L.number] = L.name;
+            }
+        }
+
+        printf("var pcbdata =  {");
+        Print_Metadata();
+        printf(",");
+        Print_Board_Data();
+        printf(",");
+        Print_Parts_Data();
+        printf(",");
+        Print_TestPoints();
+        printf(",");
+        Print_Configuration_Data();
+        printf("}");
+    }
 }

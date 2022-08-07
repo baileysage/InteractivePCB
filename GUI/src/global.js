@@ -190,7 +190,9 @@ function getLayerSplit()
 
 function destroyLayerSplit()
 {
-    if(layersplit !== null)
+    if(    (layersplit !== null)
+        && (layersplit !== undefined)
+      )
     {
         layersplit.destroy();
     }

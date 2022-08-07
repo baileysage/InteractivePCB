@@ -5,7 +5,7 @@ var render     = require("./render.js");
 
 function createCheckboxChangeHandler(checkbox, bomentry)
 {
-    return function(event) 
+    return function(event)
     {
         if(bomentry.checkboxes.get(checkbox))
         {
@@ -35,20 +35,20 @@ function createCheckboxChangeHandler(checkbox, bomentry)
         {
             globalData.setCurrentHighlightedRowId(rowid, false);
         }
-        
+
         // If highlighted then a special color will be used for the part.
         render.drawHighlights(IsCheckboxClicked(globalData.getCurrentHighlightedRowId(), "placed"));
     };
 }
 
-function IsCheckboxClicked(bomrowid, checkboxname) 
+function IsCheckboxClicked(bomrowid, checkboxname)
 {
     let checkboxnum = 0;
-    while (checkboxnum < globalData.getCheckboxes().length && globalData.getCheckboxes()[checkboxnum].toLowerCase() != checkboxname.toLowerCase()) 
+    while (checkboxnum < globalData.getCheckboxes().length && globalData.getCheckboxes()[checkboxnum].toLowerCase() != checkboxname.toLowerCase())
     {
         checkboxnum++;
     }
-    if (!bomrowid || checkboxnum >= globalData.getCheckboxes().length) 
+    if (!bomrowid || checkboxnum >= globalData.getCheckboxes().length)
     {
         return;
     }
@@ -84,11 +84,11 @@ function NumericCompare(a,b)
 function ConvertReferenceDesignatorsToRanges(ReferenceDesignations)
 {
     /*
-        Extract reference designation from the list. 
-        It is assumed the reference designation is  teh same across all 
-        in the input list. 
+        Extract reference designation from the list.
+        It is assumed the reference designation is  teh same across all
+        in the input list.
 
-        In addition also extract the numeric value in a separate list. 
+        In addition also extract the numeric value in a separate list.
     */
     let numbers    = ReferenceDesignations.map(x => parseInt(x.split(/(\d+$)/)[1],10));
     // Only extract reference designation from first element as all others are assumed to be equal.
@@ -101,7 +101,7 @@ function ConvertReferenceDesignatorsToRanges(ReferenceDesignations)
 
     /*
         Following code was adapted from KiCost project. Code ported to JavaScript from Python.
-        Removed a check for sub parts as iPCB deals with parts from a PCB perspective and not 
+        Removed a check for sub parts as iPCB deals with parts from a PCB perspective and not
         schematic perspective, this do not need sub part checking.
     */
 
@@ -172,10 +172,10 @@ function populateBomBody()
 
         // Checkboxes
         let additionalCheckboxes = globalData.getBomCheckboxes().split(",");
-        for (let checkbox of additionalCheckboxes) 
+        for (let checkbox of additionalCheckboxes)
         {
             checkbox = checkbox.trim();
-            if (checkbox) 
+            if (checkbox)
             {
                 td = document.createElement("TD");
                 let input = document.createElement("input");
@@ -189,18 +189,25 @@ function populateBomBody()
                 }
                 else
                 {
-                    bomentry.checkboxes.set(checkbox,false)
+                    // Needed for when parts combined by value
+                    if(bomentry.checkboxes.set !== undefined)
+                    {
+                        bomentry.checkboxes.set(checkbox,false)
+                    }
                 }
 
-                if(bomentry.checkboxes.get(checkbox))
-                {
-                    input.checked = true;
-                }
-                else
-                {
-                    input.checked = false;
-                }
-
+            // Needed for when parts combined by value
+            if(bomentry.checkboxes.get !== undefined)
+            {
+                    if(bomentry.checkboxes.get(checkbox))
+                    {
+                        input.checked = true;
+                    }
+                    else
+                    {
+                        input.checked = false;
+                    }
+            }
                 td.appendChild(input);
                 tr.appendChild(td);
             }
@@ -240,7 +247,7 @@ function populateBomBody()
 
         bom.appendChild(tr);
         let handler = createRowHighlightHandler(tr.id, references);
-        
+
          tr.onclick = handler;
          globalData.pushHighlightHandlers({
              id: tr.id,
@@ -255,8 +262,8 @@ function createRowHighlightHandler(rowid, refs)
     return function(event)
     {
         /*
-            If control key pressed pressed, then keep original rows highlighted and 
-            highlight new selected row. 
+            If control key pressed pressed, then keep original rows highlighted and
+            highlight new selected row.
         */
         if(event.ctrlKey)
         {
@@ -330,14 +337,14 @@ function populateBomTable()
     Filter(filterBOM.value)
 }
 
-function populateBomHeader() 
+function populateBomHeader()
 {
     let bomhead   = document.getElementById("bomhead");
     while (bomhead.firstChild)
     {
         bomhead.removeChild(bomhead.firstChild);
     }
-    
+
     let tr = document.createElement("TR");
     let th = document.createElement("TH");
     th.classList.add("numCol");
@@ -351,7 +358,7 @@ function populateBomHeader()
     {
         // remove beginning and trailing whitespace
         x2 = x2.trim()
-        if (x2) 
+        if (x2)
         {
             tr.appendChild(createColumnHeader(x2, "Checkboxes"));
         }
@@ -368,7 +375,7 @@ function populateBomHeader()
     {
         // remove beginning and trailing whitespace
         x = x.trim()
-        if (x) 
+        if (x)
         {
             tr.appendChild(createColumnHeader(x, "Attributes"));
         }
@@ -404,7 +411,7 @@ function Filter(s)
 
     for (let part of bomBody.rows)
     {
-        // This is searching for the string across the entire rows 
+        // This is searching for the string across the entire rows
         // text.
         if(part.innerText.trim().toLowerCase().includes(s))
         {

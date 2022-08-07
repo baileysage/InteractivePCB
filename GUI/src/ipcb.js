@@ -28,6 +28,14 @@ var colorMap        = require("./colormap.js");
 var rightSideTable = require("./RightSideScreenTable.js")
 
 
+/* Layer table */
+let layerTableVisable     = true;
+let traceTableVisable     = false;
+let testPointTableVisable = false;
+
+let rightScreenTableVisable = layerTableVisable || traceTableVisable || testPointTableVisable;
+let mainLayout = "";
+
 
 
 function setDarkMode(value)
@@ -304,13 +312,6 @@ document.onkeydown = function(e)
     }
 };
 
-/* Layer table */
-let layerTableVisable     = true;
-let traceTableVisable     = false;
-let testPointTableVisable = false;
-
-let rightScreenTableVisable = layerTableVisable || traceTableVisable || testPointTableVisable;
-let mainLayout = "";
 
 document.getElementById("lay-btn").classList.add("depressed");
 function LayerTable_Toggle()
@@ -507,11 +508,80 @@ function Create_Configuration(pcbdata)
         {
             colorMap.SetColor(config.name, config.value);
         }
+        else if(config.category=="setting")
+        {
+            if( config.name =="dark_mode")
+            {
+                globalData.writeStorage("darkmode", config.value == 1);
+            }
+            else if(config.name =="hight_first_pin")
+            {
+                globalData.writeStorage("highlightpin1", config.value == 1);
+            }
+            else if(config.name =="hide_placed_parts")
+            {
+                globalData.writeStorage("hidePlacedParts", config.value == 1);
+            }
+            else if(config.name =="combine_values")
+            {
+                globalData.writeStorage("combineValues", config.value == 1);
+            }
+            else if(config.name =="bom_pcb_layout")
+            {
+                globalData.writeStorage("bomlayout", config.value);
+            }
+            else if(config.name =="additional_table")
+            {
+                if( config.value == "Tr")
+                {
+                    layerTableVisable     = false;
+                    traceTableVisable     = true;
+                    testPointTableVisable = false;
+                }
+                else if( config.value == "Tp")
+                {
+                    layerTableVisable     = false;
+                    traceTableVisable     = false;
+                    testPointTableVisable = true;
+                }
+                else if( config.value == "Lr")
+                {
+                    layerTableVisable     = true;
+                    traceTableVisable     = false;
+                    testPointTableVisable = false;
+                }
+                else
+                {
+                    layerTableVisable     = false;
+                    traceTableVisable     = false;
+                    testPointTableVisable = false;
+                }
+            }
+            else if(config.name =="bom_checkboxes")
+            {
+                let element = document.getElementById("bomCheckboxes");
+                element.value = config.value;
+                globalData.setBomCheckboxes(config.value);
+                globalData.writeStorage("bomCheckboxes", config.value);
+            }
+            else if(config.name =="bom_part_attributes")
+            {
+                let element = document.getElementById("additionalAttributes");
+                element.value = config.value;
+                globalData.setAdditionalAttributes(config.value);
+                globalData.writeStorage("additionalAttributes", config.value);
+            }
+            else
+            {
+               console.log("Warning: Unsupported setting parameter ", config.category, config.name, config.value);
+            }
+        }
         else
         {
             console.log("Warning: Unsupported parameter ", config.category, config.name);
         }
     }
+
 }
 
 function LoadPCB(pcbdata)
@@ -567,6 +637,8 @@ function changeBomLayout(layout)
         document.getElementById("fb-btn").classList.remove("depressed");
         document.getElementById("bl-btn").classList.remove("depressed");
 
+
+
         if (globalData.getBomSplit())
         {
             if(rightScreenTableVisable)
@@ -587,7 +659,7 @@ function changeBomLayout(layout)
         {
             rightScreenTableVisable = false;
             document.getElementById("lay-btn").classList.remove("depressed");
-            document.getElementById("trace-tn").classList.remove("depressed");
+            document.getElementById("trace-btn").classList.remove("depressed");
             document.getElementById("testpoint-btn").classList.remove("depressed");
             document.getElementById("layerdiv").style.display = "none";
         }
@@ -824,7 +896,7 @@ window.onload = function(e)
 {
     console.time("on load");
 
-    // Must occure early for storage parameters to be loaded. If not loaded early then
+    // Must occur early for storage parameters to be loaded. If not loaded early then
     // incorrect parameters may be used.
     globalData.initStorage();
 
@@ -862,6 +934,8 @@ window.onload = function(e)
     // Set up mouse event handlers
     handlers_mouse.addMouseHandlers(document.getElementById("frontcanvas"), globalData.GetAllCanvas().front);
     handlers_mouse.addMouseHandlers(document.getElementById("backcanvas") , globalData.GetAllCanvas().back);
+
+    console.log(globalData.readStorage("bomlayout"))
 
     globalData.setBomLayout(globalData.readStorage("bomlayout"));
     if (!globalData.getBomLayout())
@@ -960,7 +1034,7 @@ window.onresize = render.resizeAll;
 window.matchMedia("print").addListener(render.resizeAll);
 
 module.exports = {
-    changeBomLayout        , setDarkMode     , changeCanvasLayout,
+    changeBomLayout        , setDarkMode      , changeCanvasLayout,
     setAdditionalAttributes, LayerTable_Toggle, TraceTable_Toggle,
     TestPointTable_Toggle  , toggleFullScreen , LoadPCB, LayerTable_Off,
     LayerTable_On          , TraceTable_Off   , TraceTable_On,

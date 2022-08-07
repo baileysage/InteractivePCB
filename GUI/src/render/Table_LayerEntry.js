@@ -164,7 +164,6 @@ class Table_LayerEntry
         {
             console.log("WARNING: Only RGB color codes supported", colorCode);
             colorCode = colorCode.substring(0, 7);
-            console.log(colorCode);
             input.value = colorCode;
             input.defaultValue = colorCode;
         }
