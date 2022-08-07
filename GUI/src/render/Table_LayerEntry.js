@@ -2,7 +2,7 @@
 
 var globalData = require("../global.js");
 var colorMap   = require("../colormap.js");
-
+var render     = require("../render.js");
 
 function createLayerCheckboxChangeHandler(layer, isFront)
 {
@@ -47,44 +47,47 @@ class Table_LayerEntry
         this.visible_front = true;
         this.visible_back  = true;
 
+        this.layerName = layer.name;
+        this.activeColorSpanElement = document.createElement("Span");
+
         // Assumes that all layers are visible by default.
-        if (globalData.readStorage( "checkbox_layer_front_" + layer.name + "_visible" ) == null)
+        if (globalData.readStorage( "checkbox_layer_front_" + this.layerName + "_visible" ) == null)
         {
             this.visible_front = true;
-            globalData.layer_list.get(layer.name)[globalData.render_layers].SetVisibility(true,true);
-            globalData.writeStorage("checkbox_layer_front_" + layer.name + "_visible", "true");
+            globalData.layer_list.get(this.layerName)[globalData.render_layers].SetVisibility(true,true);
+            globalData.writeStorage("checkbox_layer_front_" + this.layerName + "_visible", "true");
         }
-        else if ( globalData.readStorage( "checkbox_layer_front_" + layer.name + "_visible" ) == "true")
+        else if ( globalData.readStorage( "checkbox_layer_front_" + this.layerName + "_visible" ) == "true")
         {
-            globalData.layer_list.get(layer.name)[globalData.render_layers].SetVisibility(true,true);
+            globalData.layer_list.get(this.layerName)[globalData.render_layers].SetVisibility(true,true);
             this.visible_front = true;
         }
         else
         {
-            globalData.layer_list.get(layer.name)[globalData.render_layers].SetVisibility(true,false);
+            globalData.layer_list.get(this.layerName)[globalData.render_layers].SetVisibility(true,false);
             this.visible_front = false;
         }
 
-        if (globalData.readStorage( "checkbox_layer_back_" + layer.name + "_visible" ) == null)
+        if (globalData.readStorage( "checkbox_layer_back_" + this.layerName + "_visible" ) == null)
         {
             this.visible_back = true;
-            globalData.layer_list.get(layer.name)[globalData.render_layers].SetVisibility(false,true);
-            globalData.writeStorage("checkbox_layer_back_" + layer.name + "_visible", "true");
+            globalData.layer_list.get(this.layerName)[globalData.render_layers].SetVisibility(false,true);
+            globalData.writeStorage("checkbox_layer_back_" + this.layerName + "_visible", "true");
         }
         // Assumes that all layers are visible by default.
-        else if (globalData.readStorage( "checkbox_layer_back_" + layer.name + "_visible" ) == "true")
+        else if (globalData.readStorage( "checkbox_layer_back_" + this.layerName + "_visible" ) == "true")
         {
-            globalData.layer_list.get(layer.name)[globalData.render_layers].SetVisibility(false,true);
+            globalData.layer_list.get(this.layerName)[globalData.render_layers].SetVisibility(false,true);
             this.visible_back = true;
         }
         else
         {
-            globalData.layer_list.get(layer.name)[globalData.render_layers].SetVisibility(false,false);
+            globalData.layer_list.get(this.layerName)[globalData.render_layers].SetVisibility(false,false);
             this.visible_back = false;
         }
 
         // Assumes that all layers are visible by default.
-        if (globalData.readStorage( "checkbox_layer_color_" + layer.name ) == null )
+        if (globalData.readStorage( "checkbox_layer_color_" + this.layerName) == null )
         {
 
         }
@@ -101,7 +104,7 @@ class Table_LayerEntry
 
         // Layer
         let td = document.createElement("TD");
-        td.innerHTML = layer.name;
+        td.innerHTML = this.layerName;
         tr.appendChild(td);
         return tr;
     }
@@ -141,21 +144,45 @@ class Table_LayerEntry
         return td;
     }
 
+    UpdateActiveSpanElementColor(event)
+    {
+        this.activeColorSpanElement.style.backgroundColor = event.target.value;
+        colorMap.SetColor(this.layerName,event.target.value );
+        render.rerenderAll();
+    }
+
     CreateCheckbox_Color(layer)
     {
         let newlabel = document.createElement("Label");
         let td       = document.createElement("TD");
         let input    = document.createElement("input");
 
-        input.type = "checkbox";
+        input.type = "color";
+        let colorCode = colorMap.GetTraceColor(this.layerName)
+
+        if(colorCode.length > 7)
+        {
+            console.log("WARNING: Only RGB color codes supported", colorCode);
+            colorCode = colorCode.substring(0, 7);
+            console.log(colorCode);
+            input.value = colorCode;
+            input.defaultValue = colorCode;
+        }
+        else
+        {
+            input.value = colorCode;
+            input.defaultValue = colorCode;
+        }
+
+        input.addEventListener("change", this.UpdateActiveSpanElementColor.bind(this), false);
+
         newlabel.classList.add("check_box_color")
 
-        var span = document.createElement("Span");
-        span.classList.add("checkmark_color")
-        span.style.backgroundColor = colorMap.GetTraceColor(layer.name);
+        this.activeColorSpanElement.classList.add("checkmark_color")
+        this.activeColorSpanElement.style.backgroundColor = colorMap.GetTraceColor(this.layerName);
 
         newlabel.appendChild(input);
-        newlabel.appendChild(span);
+        newlabel.appendChild(this.activeColorSpanElement);
         td.appendChild(newlabel);
         return td;
     }
