@@ -431,16 +431,32 @@ function FilterByAttribute(s)
 
     if(s != "")
     {
+        // Removes strings that are also empty which occur
+        // if a comma is entered but not a another character ('aaa,').
+        let filterStrings = s.split(",").filter(element => {return element !== ''});
+
+
         for (let part of bomBody.rows)
         {
-            if(part.innerText.trim().toLowerCase().includes(s))
+            for(let filterString of filterStrings)
             {
-                part.style.display = "none";
+                if(part.innerText.trim().toLowerCase().includes(filterString))
+                {
+                    part.style.display = "none";
+                    break;
+                }
+                else
+                {
+                    part.style.display = "";
+                }
             }
-            else
-            {
-                part.style.display = "";
-            }
+        }
+    }
+    else
+    {
+         for (let part of bomBody.rows)
+        {
+            part.style.display = "";
         }
     }
 }
