@@ -249,6 +249,7 @@ function populateBomBody()
         let handler = createRowHighlightHandler(tr.id, references);
 
          tr.onclick = handler;
+         tr.onmousemove = handler;
          globalData.pushHighlightHandlers({
              id: tr.id,
              handler: handler,
@@ -261,54 +262,58 @@ function createRowHighlightHandler(rowid, refs)
 {
     return function(event)
     {
-        /*
-            If control key pressed pressed, then keep original rows highlighted and
-            highlight new selected row.
-        */
-        if(event.ctrlKey)
+        if(event.shiftKey || (event.type =="click"))
         {
-            /* Only append the new cicked object if not currently highlited */
-            let alreadySelected = false;
-            /* Disable highlight on all rows */
-            let highlitedRows = globalData.getCurrentHighlightedRowId()
-            for(let highlitedRow of highlitedRows)
+            console.log(event)
+            /*
+                If control key pressed pressed, then keep original rows highlighted and
+                highlight new selected row.
+            */
+            if(event.ctrlKey )
             {
-                // USed here so that the row if highlighted will not highlighted
-                if (highlitedRow == rowid)
+                /* Only append the new cicked object if not currently highlited */
+                let alreadySelected = false;
+                /* Disable highlight on all rows */
+                let highlitedRows = globalData.getCurrentHighlightedRowId()
+                for(let highlitedRow of highlitedRows)
                 {
-                    alreadySelected = true;
+                    // USed here so that the row if highlighted will not highlighted
+                    if (highlitedRow == rowid)
+                    {
+                        alreadySelected = true;
+                    }
+                }
+
+                if(alreadySelected == false)
+                {
+                    document.getElementById(rowid).classList.add("highlighted");
+                    globalData.setCurrentHighlightedRowId(rowid, true);
+                    globalData.setHighlightedRefs(refs, true);
+                    render.drawHighlights(IsCheckboxClicked(rowid, "placed"));
                 }
             }
-
-            if(alreadySelected == false)
+            else
             {
+                /* Disable highlight on all rows */
+                let highlitedRows = globalData.getCurrentHighlightedRowId()
+                for(let highlitedRow of highlitedRows)
+                {
+                    // USed here so that the row if highlighted will not highlighted
+                    if (highlitedRow == rowid)
+                    {
+                        // Skip do nothing
+                    }
+                    else
+                    {
+                        document.getElementById(highlitedRow).classList.remove("highlighted");
+                    }
+                }
+                // Highlight current clicked row
                 document.getElementById(rowid).classList.add("highlighted");
-                globalData.setCurrentHighlightedRowId(rowid, true);
-                globalData.setHighlightedRefs(refs, true);
+                globalData.setCurrentHighlightedRowId(rowid, false);
+                globalData.setHighlightedRefs(refs);
                 render.drawHighlights(IsCheckboxClicked(rowid, "placed"));
             }
-        }
-        else
-        {
-            /* Disable highlight on all rows */
-            let highlitedRows = globalData.getCurrentHighlightedRowId()
-            for(let highlitedRow of highlitedRows)
-            {
-                // USed here so that the row if highlighted will not highlighted
-                if (highlitedRow == rowid)
-                {
-                    // Skip do nothing
-                }
-                else
-                {
-                    document.getElementById(highlitedRow).classList.remove("highlighted");
-                }
-            }
-            // Highlight current clicked row
-            document.getElementById(rowid).classList.add("highlighted");
-            globalData.setCurrentHighlightedRowId(rowid, false);
-            globalData.setHighlightedRefs(refs);
-            render.drawHighlights(IsCheckboxClicked(rowid, "placed"));
         }
     }
 }
